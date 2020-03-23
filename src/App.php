@@ -98,8 +98,29 @@ class App {
 		$this->nav = Nav::get_instance();
 		$this->nav->init();
 
+		add_action(
+			'plugins_loaded',
+			function() {
+				$this->set_up_item_type_sync();
+			},
+			999
+		);
+
 		if ( defined( 'WP_CLI' ) ) {
 			$this->set_up_cli_commands();
+		}
+	}
+
+	protected function set_up_item_type_sync() {
+		$item_type_syncs = [];
+
+		if ( function_exists( 'bp_docs_get_post_type_name' ) ) {
+			$item_type_syncs[] = 'BuddyPressDocsSync';
+		}
+
+		foreach ( $item_type_syncs as $item_type_sync ) {
+			$class_name = __NAMESPACE__ . '\Sync\\' . $item_type_sync;
+			call_user_func( [ $class_name, 'set_up_sync_hooks' ] );
 		}
 	}
 
