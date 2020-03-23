@@ -1,0 +1,11 @@
+{
+    "name": "cuny-academic-commons/cac-group-library",
+    "description": "Group Library for the CUNY Academic Commons",
+    "type": "project",
+    "require-dev": {
+        "phpcompatibility/phpcompatibility-wp": "^2.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+        "wp-coding-standards/wpcs": "^2.0"
+    },
+    "require": {}
+}
