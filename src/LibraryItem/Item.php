@@ -18,8 +18,12 @@ class Item {
 		'user_id'        => 0,
 	);
 
-	public function __construct() {
+	public function __construct( $item_id = null ) {
 		$this->table_name = cac_group_library()->schema->get_table_name();
+
+		if ( ! is_null( $item_id  )) {
+			$this->populate( $item_id );
+		}
 	}
 
 	public function exists() {
@@ -154,7 +158,7 @@ class Item {
 	 * @return int
 	 */
 	public function get_group_id() {
-		return (int) $this->data['invitee_id'];
+		return (int) $this->data['group_id'];
 	}
 
 	/**
