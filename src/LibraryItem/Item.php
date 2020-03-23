@@ -68,7 +68,7 @@ class Item {
 			$this->set_id( $id );
 		} else {
 			$wpdb->update(
-				"{$prefix}cac_invites",
+				$this->table_name,
 				array(
 					'group_id'       => $this->get_group_id(),
 					'source_item_id' => $this->get_source_item_id(),

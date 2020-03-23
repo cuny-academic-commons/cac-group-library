@@ -12,9 +12,10 @@ class BuddyPressDocsSync implements SyncInterface {
 		add_action( 'save_post', [ __CLASS__, 'sync_to_library' ] );
 	}
 
-	public static function get_library_item_from_source_item_id( $post_id ) {
+	public static function get_library_item_from_source_item_id( $post_id, $group_id ) {
 		$found = Query::get(
 			[
+				'group_id'       => $group_id,
 				'item_type'      => 'bp_doc',
 				'source_item_id' => $post_id,
 			]
@@ -36,10 +37,12 @@ class BuddyPressDocsSync implements SyncInterface {
 			return;
 		}
 
-		$item = self::get_library_item_from_source_item_id( $post_id );
+		$group_id = bp_docs_get_associated_group_id( $post_id );
+
+		$item = self::get_library_item_from_source_item_id( $post_id, $group_id );
 
 		$item->set_date_modified( date( 'Y-m-d H:i:s' ) );
-		$item->set_group_id( bp_docs_get_associated_group_id( $post_id ) );
+		$item->set_group_id( $group_id );
 		$item->set_item_type( 'bp_doc' );
 		$item->set_source_item_id( $post_id );
 		$item->set_title( $post->post_title );

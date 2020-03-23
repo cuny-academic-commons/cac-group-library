@@ -30,6 +30,10 @@ class Query {
 			$sql['where']['source_item_id'] = $wpdb->prepare( 'source_item_id = %d', $args['source_item_id'] );
 		}
 
+		if ( null !== $args['group_id'] ) {
+			$sql['where']['group_id'] = $wpdb->prepare( 'group_id = %d', $args['group_id'] );
+		}
+
 		$where = '';
 		if ( $sql['where'] ) {
 			$sql['where'] = ' WHERE ' . implode( ' AND ', $sql['where'] );
