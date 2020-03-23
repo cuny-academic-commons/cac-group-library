@@ -12,6 +12,7 @@
  * @package         Cac_Onboarding
  */
 
+define( 'CAC_GROUP_LIBRARY_VER', '0.1.0-20200323' );
 define( 'CAC_GROUP_LIBRARY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CAC_GROUP_LIBRARY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
