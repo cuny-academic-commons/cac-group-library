@@ -5,6 +5,8 @@ namespace CAC\GroupLibrary;
 class App {
 	protected $modal;
 	protected $api;
+	protected $schema;
+
 	public $frontend;
 
 	protected $post_type = 'cac_library_item';
@@ -96,19 +98,9 @@ class App {
 		$this->nav = Nav::get_instance();
 		$this->nav->init();
 
-		return;
-
-		$this->props();
-
 		if ( defined( 'WP_CLI' ) ) {
 			$this->set_up_cli_commands();
 		}
-
-		$this->modal = Modal::get_instance();
-		$this->modal->init();
-
-		$this->api = API::get_instance();
-		$this->api->init();
 	}
 
 	/**
@@ -175,7 +167,18 @@ class App {
 	}
 
 	protected function set_up_cli_commands() {
-		\WP_CLI::add_command( 'caco database', '\CAC\Onboarding\CLI\Command\DatabaseCommand' );
-		\WP_CLI::add_command( 'caco invitation', '\CAC\Onboarding\CLI\Command\InvitationCommand' );
+		\WP_CLI::add_command( 'cacgl database', '\CAC\GroupLibrary\CLI\Command\DatabaseCommand' );
+	}
+
+	public function __get( $key ) {
+		$value = null;
+
+		switch ( $key ) {
+			case 'schema':
+				$value = $this->{$key};
+				break;
+		}
+
+		return $value;
 	}
 }

@@ -25,8 +25,8 @@ class Nav {
 	}
 
 	public function init() {
-		add_action( 'bp_setup_nav', [ $this, 'add_library_nav_item' ], 200 );
-		add_action( 'bp_actions', [ $this, 'remove_nav_items' ], 200 );
+		add_action( 'bp_setup_nav', array( $this, 'add_library_nav_item' ), 200 );
+		add_action( 'bp_actions', array( $this, 'remove_nav_items' ), 200 );
 	}
 
 	public function add_library_nav_item() {
@@ -37,14 +37,14 @@ class Nav {
 		$group = groups_get_current_group();
 
 		bp_core_new_subnav_item(
-			[
+			array(
 				'slug'            => cac_group_library()->get_prop( 'nav_slug' ),
 				'parent_slug'     => $group->slug,
 				'parent_url'      => bp_get_group_permalink( $group ),
 				'name'            => 'Library',
-				'screen_function' => [ '\CAC\GroupLibrary\Screens\Library', 'panel' ],
+				'screen_function' => array( '\CAC\GroupLibrary\Screens\Library', 'panel' ),
 				'position'        => 32,
-			],
+			),
 			'groups'
 		);
 	}
