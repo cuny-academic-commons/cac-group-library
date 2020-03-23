@@ -16,11 +16,14 @@ define( 'CAC_GROUP_LIBRARY_VER', '0.1.0-20200323' );
 define( 'CAC_GROUP_LIBRARY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CAC_GROUP_LIBRARY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-add_action( 'bp_include', function() {
-	require __DIR__ . '/autoload.php';
+add_action(
+	'bp_include',
+	function() {
+		require __DIR__ . '/autoload.php';
 
-	cac_group_library()->init();
-} );
+		cac_group_library()->init();
+	}
+);
 
 /**
  * Shorthand function to fetch our CAC Group Library instance.
