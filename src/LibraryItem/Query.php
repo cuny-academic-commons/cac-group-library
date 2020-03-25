@@ -3,7 +3,12 @@
 namespace CAC\GroupLibrary\LibraryItem;
 
 class Query {
-	public function get( $_args = [] ) {
+	/**
+	 * @todo We must exclude non-public Docs and Papers from public listings.
+	 *       For simplicity (to avoid mirroring this kind of data in the table) we can
+	 *       probably rely on a "source_item_id__not_in" param or something like that.
+	 */
+	public static function get( $_args = [] ) {
 		global $wpdb;
 
 		$args = array_merge(
