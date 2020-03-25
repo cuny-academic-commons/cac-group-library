@@ -9,7 +9,7 @@ use \WP_Post;
 
 class BuddyPressDocsSync implements SyncInterface {
 	public static function set_up_sync_hooks() {
-		add_action( 'save_post', [ __CLASS__, 'sync_to_library' ] );
+		add_action( 'bp_docs_after_save', [ __CLASS__, 'sync_to_library' ], 999 );
 		add_action( 'trashed_post', [ __CLASS__, 'delete_library_item' ] );
 		add_action( 'delete_post', [ __CLASS__, 'delete_library_item' ] );
 	}
