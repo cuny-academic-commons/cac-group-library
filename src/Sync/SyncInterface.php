@@ -6,6 +6,7 @@ interface SyncInterface {
 	public static function set_up_sync_hooks();
 	public static function get_library_item_from_source_item_id( $source_item_id, $group_id );
 	public static function sync_to_library( $source_item_id );
+	public static function delete_library_item( $source_item_id );
 
 	/*
 	public function populate_from_source_item_id( $source_item_id );

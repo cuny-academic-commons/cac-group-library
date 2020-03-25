@@ -103,6 +103,22 @@ class Item {
 		return true;
 	}
 
+	public function delete() {
+		global $wpdb;
+
+		$deleted = $wpdb->delete(
+			$this->table_name,
+			[
+				'id' => $this->get_id(),
+			],
+			[
+				'%d',
+			]
+		);
+
+		return $deleted > 0;
+	}
+
 	public function populate( $id ) {
 		global $wpdb;
 
