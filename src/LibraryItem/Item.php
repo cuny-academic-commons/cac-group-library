@@ -232,6 +232,23 @@ class Item {
 	}
 
 	/**
+	 * Get user data.
+	 *
+	 * @return array
+	 */
+	public function get_user() {
+		$user_id = $this->get_user_id();
+
+		$retval = [
+			'id'   => $user_id,
+			'name' => bp_core_get_user_displayname( $user_id ),
+			'url'  => bp_core_get_user_domain( $user_id ),
+		];
+
+		return $retval;
+	}
+
+	/**
 	 * Set date modified.
 	 *
 	 * @param string

@@ -56,4 +56,26 @@ class Query {
 
 		return $retval;
 	}
+
+	public static function get_for_endpoint( $args ) {
+		$items = self::get( $args );
+
+		$retval = [];
+		foreach ( $items as $item ) {
+			$retval[ $item->get_id() ] = [
+				'id'             => $item->get_id(),
+				'date_modified'  => $item->get_date_modified(),
+				'description'    => $item->get_description(),
+				'file_type'      => $item->get_file_type(),
+				'group_id'       => $item->get_group_id(),
+				'item_type'      => $item->get_item_type(),
+				'source_item_id' => $item->get_source_item_id(),
+				'title'          => $item->get_title(),
+				'url'            => $item->get_url(),
+				'user'           => $item->get_user(),
+			];
+		}
+
+		return $retval;
+	}
 }
