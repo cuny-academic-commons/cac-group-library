@@ -2,13 +2,23 @@
 	<div id="cac-group-library-inner">
 		<div class="group-library-header">
 			<h2>Library</h2>
-
 		</div>
-		Success!
+
+		<div class="group-library-items">
+			<ul>
+				<li v-for="itemId in itemIds">
+					<LibraryItem
+						:itemId='itemId'
+					/>
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
 <script>
+	import LibraryItem from './LibraryItem.vue'
+
 	/*
 	import PanelTools from '../mixins/PanelTools.js'
 
@@ -18,26 +28,18 @@
 	*/
 
 	export default {
-		/*
 		components: {
-			ModalContent,
-			ModalHeader,
-			ModalNav
+			LibraryItem
 		},
-		*/
 
-		methods: {
-			ariaHidden() {
-				return ! this.$store.state.modalIsVisible ? 'true' : 'false'
-			},
-
-			overlayClass() {
-				return {
-					'caco-modal-hidden': ! this.$store.state.modalIsVisible,
-					'caco-modal-visible': this.$store.state.modalIsVisible,
-				}
+		computed: {
+			itemIds() {
+				return this.$store.state.libraryItemIds
 			}
 		},
+
+		methods: {
+		}
 
 		/*
 		mixins: [

@@ -11,79 +11,21 @@ if ( ! global._babelPolyfill ) {
 
 Vue.use( Vuex )
 
+function initialState() {
+	const { libraryItemIds, libraryItems } = window.CACGroupLibrary;
+
+	let state = {
+		libraryItemIds,
+		libraryItems,
+	}
+	console.log(state);
+
+	return state
+}
+
 const store = new Vuex.Store(
 	{
-		state: {
-			test: 1,
-			completedSteps: {
-				0: false,
-				1: true,
-				2: true,
-				3: true
-			},
-			currentMembershipTab: 'sites',
-			currentPanel: 0,
-			formInput: {
-				customMessage: '',
-				membershipItems: {
-					group: [],
-					site: []
-				},
-				groupRoles: {},
-				siteRoles: {},
-				usersByEmail: [],
-				usersByEmailRaw: '',
-				usersById: {},
-				usersByIdRaw: '',
-			},
-			initialStateIsLoading: false,
-			initialStateLoaded: false,
-			inviteableItemIds: {
-				group: [],
-				site: []
-			},
-			inviteableItems: {
-				group: {},
-				site: {}
-			},
-			panels: {
-				selectPeople: {
-					contentComponent: 'PanelSelectPeople',
-					description: '',
-					label: '1. Select People to Invite',
-					navLabel: '1. Select People',
-				},
-				membership: {
-					contentComponent: 'PanelMembership',
-					description: 'Select the type of invitation you are sending',
-					label: '2. Membership',
-					navLabel: '2. Membership',
-				},
-				review: {
-					contentComponent: 'PanelReview',
-					description: '',
-					label: '3. Review & Submit',
-					navLabel: '3. Review & Submit',
-				},
-				confirmation: {
-					contentComponent: 'PanelConfirmation',
-					description: '',
-					label: '4. Confirmation',
-					navLabel: '4. Confirmation',
-				},
-			},
-			modalIsVisible: false,
-			panelNames: [
-			'selectPeople',
-			'membership',
-			'review',
-			'confirmation',
-			],
-			validFields: {
-				inviteByEmail: true,
-				inviteByName: true,
-			}
-		},
+		state: initialState,
 
 		mutations: {
 			addUserToInviteByName( state, payload ) {
