@@ -12,13 +12,22 @@ if ( ! global._babelPolyfill ) {
 Vue.use( Vuex )
 
 function initialState() {
-	const { libraryItemIds, libraryItems } = window.CACGroupLibrary;
+	const {
+		addNewUrl, canCreateNew,
+		libraryItemIds, libraryItems
+	} = window.CACGroupLibrary;
+
+	const currentSort = 'title'
+	const currentSortOrder = 'asc'
 
 	let state = {
+		addNewUrl,
+		canCreateNew,
+		currentSort,
+		currentSortOrder,
 		libraryItemIds,
 		libraryItems,
 	}
-	console.log(state);
 
 	return state
 }

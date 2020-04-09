@@ -1,5 +1,5 @@
 <template>
-	<div class="library-item">
+	<div class="library-item group-library-row">
 		{{ title() }}
 	</div>
 </template>

@@ -5,4 +5,47 @@ body.groups.single-item.library #item-header {
 #cac-group-library-inner {
 	margin-top: 24px;
 }
+.group-library-header {
+	align-items: center;
+	border-bottom: 2px solid #eeeeee;
+	display: flex;
+	padding-bottom: 20px;
+}
+.group-library-header h2 {
+	font-size: 28px;
+	margin-right: 20px;
+}
+.group-library-header .library-search {
+	margin-left: auto;
+}
+.group-library-nav {
+	padding: 20px 0;
+}
+.group-library-pagination {
+	font-size: 11px;
+	padding-bottom: 20px;
+}
+.group-library-column-headers {
+	background: #f5f5f5;
+	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	color: #666;
+	font-weight: 700;
+	line-height: 28px;
+}
+.group-library-row {
+	display: flex;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.group-library-item-title {
+	flex-basis: 70%;
+}
+.group-library-item-added-by {
+	flex-basis: 20%;
+}
+.group-library-item-date {
+	flex-basis: 20%;
+}
+
 

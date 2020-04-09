@@ -26,10 +26,13 @@ class Library {
 			]
 		);
 
+//		$add_new_url = bp_get_group_permalink( groups_get_current_group() ) . 'library
+
 		wp_localize_script(
 			'cac-group-library',
 			'CACGroupLibrary',
 			[
+				'canCreateNew'   => true,
 				'libraryItemIds' => array_keys( $items ),
 				'libraryItems'   => $items,
 			]
