@@ -29,14 +29,17 @@
 				<SortableColumnHeader
 					label="Title"
 					name="title"
+					defaultSortOrder="asc"
 				/>
 				<SortableColumnHeader
 					label="Added by"
 					name="added-by"
+					defaultSortOrder="asc"
 				/>
 				<SortableColumnHeader
 					label="Date"
 					name="date"
+					defaultSortOrder="desc"
 				/>
 			</div>
 
