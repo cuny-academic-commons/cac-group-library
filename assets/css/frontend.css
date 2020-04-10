@@ -1,37 +1,36 @@
 
-.group-library-column-header a:link,
-.group-library-column-header a:visited,
-.group-library-column-header a {
+.group-library-column-header span {
 	color: #666;
+	cursor: pointer;
 	display: inline-block;
 	line-height: 28px;
 	position: relative;
 	text-decoration: none;
 	width: 100%;
 }
-.group-library-column-header a:after {
+.group-library-column-header span:after {
 	font-family: "dashicons";
 	font-size: 10px;
 	line-height: 28px;
 	margin-left: 8px;
 	position: absolute;
 }
-.group-library-column-header.default-sort-order-asc:hover a:after {
+.group-library-column-header.default-sort-order-asc:hover span:after {
 	content: "\f342";
 }
-.group-library-column-header.default-sort-order-desc:hover a:after {
+.group-library-column-header.default-sort-order-desc:hover span:after {
 	content: "\f346";
 }
-.group-library-column-header.is-current-sort-order-desc a:after {
+.group-library-column-header.is-current-sort-order-desc span:after {
 	content: "\f346";
 }
-.group-library-column-header.is-current-sort-order-asc a:after {
+.group-library-column-header.is-current-sort-order-asc span:after {
 	content: "\f342";
 }
-.group-library-column-header.is-current-sort-order-desc:hover a:after {
+.group-library-column-header.is-current-sort-order-desc:hover span:after {
 	content: "\f342";
 }
-.group-library-column-header.is-current-sort-order-asc:hover a:after {
+.group-library-column-header.is-current-sort-order-asc:hover span:after {
 	content: "\f346";
 }
 

@@ -37,6 +37,55 @@ const store = new Vuex.Store(
 		state: initialState,
 
 		mutations: {
+			setSort( state, payload ) {
+				const { newSort, newSortOrder } = payload
+				const { libraryItems } = state
+
+				let newItemIds = [...state.libraryItemIds]
+				newItemIds.sort( function( a, b ) {
+					const itemA = libraryItems[a]
+					const itemB = libraryItems[b]
+
+					switch ( newSort ) {
+						case 'title' :
+							const titleA = itemA.title
+							const titleB = itemB.title
+
+							if ( 'asc' === newSortOrder ) {
+								return titleA.localeCompare( titleB )
+							} else {
+								return titleB.localeCompare( titleA )
+							}
+
+						case 'added-by' :
+							const addedByA = itemA.user.name
+							const addedByB = itemB.user.name
+
+							if ( 'asc' === newSortOrder ) {
+								return addedByA.localeCompare( addedByB )
+							} else {
+								return addedByB.localeCompare( addedByA )
+							}
+
+						case 'date' :
+							const dateA = new Date( itemA.date_modified ).getTime()
+							const dateB = new Date( itemB.date_modified ).getTime()
+							console.log(dateA - dateB)
+
+							if ( 'asc' === newSortOrder ) {
+								return dateA - dateB
+							} else {
+								return dateB - dateA
+							}
+					}
+				} )
+
+				state.libraryItemIds = newItemIds
+
+				state.currentSort = newSort
+				state.currentSortOrder = newSortOrder
+			},
+
 			addUserToInviteByName( state, payload ) {
 				let newUsersById               = Object.assign( {}, state.formInput.usersById )
 				newUsersById[ payload.userId ] = payload.userName

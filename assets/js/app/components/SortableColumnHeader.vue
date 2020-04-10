@@ -1,6 +1,8 @@
 <template>
 	<div :class='itemClass()'>
-		<a :href='url()'>{{ this.labelText() }}</a>
+		<span
+			v-on:click='onHeaderClick'
+		>{{ this.labelText() }}</span>
 	</div>
 </template>
 
@@ -35,6 +37,27 @@
 				return this.label
 			},
 
+			onHeaderClick() {
+				let newSort = ''
+				let newSortOrder = ''
+
+				newSort = this.name
+
+				if ( newSort === this.currentSort ) {
+					newSortOrder = 'asc' === this.currentSortOrder ? 'desc' : 'asc'
+				} else {
+					newSortOrder = this.defaultSortOrder
+				}
+
+				this.$store.commit(
+					'setSort',
+					{
+						newSort,
+						newSortOrder
+					}
+				)
+			},
+
 			url() {
 				return ''
 			}
@@ -49,10 +72,9 @@
 </script>
 
 <style>
-.group-library-column-header a:link,
-.group-library-column-header a:visited,
-.group-library-column-header a {
+.group-library-column-header span {
 	color: #666;
+	cursor: pointer;
 	display: inline-block;
 	line-height: 28px;
 	position: relative;
@@ -60,7 +82,7 @@
 	width: 100%;
 }
 
-.group-library-column-header a:after {
+.group-library-column-header span:after {
 	font-family: "dashicons";
 	font-size: 10px;
 	line-height: 28px;
@@ -68,27 +90,27 @@
 	position: absolute;
 }
 
-.group-library-column-header.default-sort-order-asc:hover a:after {
+.group-library-column-header.default-sort-order-asc:hover span:after {
 	content: "\f342";
 }
 
-.group-library-column-header.default-sort-order-desc:hover a:after {
+.group-library-column-header.default-sort-order-desc:hover span:after {
 	content: "\f346";
 }
 
-.group-library-column-header.is-current-sort-order-desc a:after {
+.group-library-column-header.is-current-sort-order-desc span:after {
 	content: "\f346";
 }
 
-.group-library-column-header.is-current-sort-order-asc a:after {
+.group-library-column-header.is-current-sort-order-asc span:after {
 	content: "\f342";
 }
 
-.group-library-column-header.is-current-sort-order-desc:hover a:after {
+.group-library-column-header.is-current-sort-order-desc:hover span:after {
 	content: "\f342";
 }
 
-.group-library-column-header.is-current-sort-order-asc:hover a:after {
+.group-library-column-header.is-current-sort-order-asc:hover span:after {
 	content: "\f346";
 }
 </style>
