@@ -118,6 +118,10 @@ class App {
 			$item_type_syncs[] = 'BuddyPressDocsSync';
 		}
 
+		if ( defined( 'BP_GROUP_DOCUMENTS_IS_INSTALLED' ) && BP_GROUP_DOCUMENTS_IS_INSTALLED ) {
+			$item_type_syncs[] = 'BuddyPressGroupDocumentsSync';
+		}
+
 		foreach ( $item_type_syncs as $item_type_sync ) {
 			$class_name = __NAMESPACE__ . '\Sync\\' . $item_type_sync;
 			call_user_func( [ $class_name, 'set_up_sync_hooks' ] );
