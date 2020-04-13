@@ -47,11 +47,14 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 
 		$group_id = $document->group_id;
 
-		$item = self::get_library_item_from_source_item_id( $post_id, $group_id );
+		$item = self::get_library_item_from_source_item_id( $document_id, $group_id );
+
+		$path_parts = pathinfo( $document->file );
 
 		$item->set_date_modified( date( 'Y-m-d H:i:s' ) );
 		$item->set_group_id( $group_id );
 		$item->set_item_type( 'bp_group_document' );
+		$item->set_file_type( $path_parts['extension'] );
 		$item->set_source_item_id( $document_id );
 		$item->set_title( $document->name );
 		$item->set_url( $document->get_url() );

@@ -33,7 +33,7 @@ class Library {
 			'CACGroupLibrary',
 			[
 				'canCreateNew'   => true,
-				'iconUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/',
+				'iconUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/file-type-icons/',
 				'libraryItemIds' => array_keys( $items ),
 				'libraryItems'   => $items,
 			]
