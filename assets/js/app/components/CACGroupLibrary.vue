@@ -15,7 +15,7 @@
 
 		<div class="group-library-nav">
 			<div class="group-library-pagination">
-				Viewing item 1 to 50 (of 67 items)
+				<Pagination />
 			</div>
 
 			<div class="group-library-filters">
@@ -56,6 +56,7 @@
 
 <script>
 	import LibraryItem from './LibraryItem.vue'
+	import Pagination from './Pagination.vue'
 	import SortableColumnHeader from './SortableColumnHeader.vue'
 
 	/*
@@ -69,6 +70,7 @@
 	export default {
 		components: {
 			LibraryItem,
+			Pagination,
 			SortableColumnHeader
 		},
 

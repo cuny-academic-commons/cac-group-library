@@ -19,10 +19,12 @@ function initialState() {
 
 	const currentSort = 'title'
 	const currentSortOrder = 'asc'
+	const currentPage = 1
 
 	let state = {
 		addNewUrl,
 		canCreateNew,
+		currentPage,
 		currentSort,
 		currentSortOrder,
 		libraryItemIds,
