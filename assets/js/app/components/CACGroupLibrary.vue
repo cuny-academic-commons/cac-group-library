@@ -19,8 +19,11 @@
 			</div>
 
 			<div class="group-library-filters">
-				drop
-				drop
+				<FilterDropdown
+					name='itemType'
+					title='Select Item Type'
+					:opts='itemTypes'
+				/>
 			</div>
 		</div>
 
@@ -55,6 +58,7 @@
 </template>
 
 <script>
+	import FilterDropdown from './FilterDropdown.vue'
 	import LibraryItem from './LibraryItem.vue'
 	import Pagination from './Pagination.vue'
 	import SortableColumnHeader from './SortableColumnHeader.vue'
@@ -69,6 +73,7 @@
 
 	export default {
 		components: {
+			FilterDropdown,
 			LibraryItem,
 			Pagination,
 			SortableColumnHeader
@@ -79,7 +84,29 @@
 				return this.$store.state.canCreateNew
 			},
 			itemIds() {
-				return this.$store.state.libraryItemIds
+				const { currentItemType, currentFolder, libraryItems } = this.$store.state
+
+				return this.$store.state.libraryItemIds.filter(
+					function( itemId ) {
+						const theItem = libraryItems[ itemId ]
+
+						const hasCurrentItemType = 'any' === currentItemType || currentItemType === theItem.item_type  
+
+						const hasCurrentFolder = 'any' === currentFolder || currentFolder === theItem.folder  
+
+						return hasCurrentItemType && hasCurrentFolder
+					}
+				)
+			},
+			itemTypes() {
+				return [
+					{ name: 'any', label: 'Any kind' },
+					{ name: 'bp_group_document', label: 'Files' },
+					{ name: 'bp_doc', label: 'Docs' },
+					{ name: 'papers', label: 'Papers' },
+					{ name: 'atts', label: 'Forum Attachments' },
+					{ name: 'links', label: 'External Links' }
+				]
 			}
 		},
 

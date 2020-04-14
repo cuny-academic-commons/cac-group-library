@@ -2,7 +2,6 @@
 	<span>
 		Viewing {{startNumber()}} to {{endNumber()}} (of {{totalNumber()}} items)
 	</span>
-
 </template>
 
 <script>

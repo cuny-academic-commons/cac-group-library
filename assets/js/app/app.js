@@ -17,6 +17,8 @@ function initialState() {
 		libraryItemIds, libraryItems
 	} = window.CACGroupLibrary;
 
+	const currentItemType = 'any'
+	const currentFolder = 'any'
 	const currentSort = 'title'
 	const currentSortOrder = 'asc'
 	const currentPage = 1
@@ -24,6 +26,8 @@ function initialState() {
 	let state = {
 		addNewUrl,
 		canCreateNew,
+		currentFolder,
+		currentItemType,
 		currentPage,
 		currentSort,
 		currentSortOrder,
@@ -94,6 +98,10 @@ const store = new Vuex.Store(
 				state.formInput.usersById      = newUsersById
 			},
 
+			setCurrentItemType( state, payload ) {
+				state.currentItemType = payload.value
+			},
+
 			setInitialState( state, payload ) {
 				let newInviteableItems   = Object.assign( {}, payload.inviteableItems )
 				let newInviteableItemIds = Object.assign( {}, payload.inviteableItemIds )
@@ -146,51 +154,6 @@ const store = new Vuex.Store(
 			showModal( state, payload ) {
 				document.body.classList.add( 'noscroll' )
 				state.modalIsVisible = true
-			}
-		},
-
-		actions: {
-			fetchInitialState( commit ) {
-				const { endpointBase, nonce } = window.CACOModalStrings
-				const endpoint                = endpointBase + 'app-config/'
-
-				commit.commit(
-					'setInitialStateIsLoading',
-					{
-						value: true
-					}
-				)
-
-			return fetch(
-				endpoint,
-				{
-					method: 'GET',
-					credentials: 'include',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-WP-Nonce': nonce
-					}
-				}
-			)
-			.then(
-				function(response) {
-					commit.commit(
-						'setInitialStateIsLoading',
-						{
-							value: false
-						}
-					)
-					return response.json()
-				}
-			).then(
-				function(json) {
-					return json
-				}
-			).catch(
-				function(ex) {
-					console.log( 'failed', ex )
-				}
-			)
 			}
 		}
 	}
