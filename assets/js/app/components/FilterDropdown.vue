@@ -28,13 +28,31 @@
 				return 'filter-' + this.name
 			},
 
+			isLoading: {
+				get: function() {
+					return this.$store.state.isLoading
+				},
+
+				set: function() {
+					this.$store.commit(
+						'setIsLoading',
+						{
+							value: ! this.isLoading
+						}
+					)
+				}
+			},
+
 			selected: {
 				get: function() {
 					const { currentItemType } = this.$store.state
 
 					return this.opts.filter( itemType => currentItemType === itemType.code )
 				},
+
 				set: function( payload ) {
+					this.$store.commit( 'refresh' )
+
 					this.$store.commit( 
 						'setCurrentItemType', 
 						{

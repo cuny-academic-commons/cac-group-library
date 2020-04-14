@@ -13,47 +13,51 @@
 			</div>
 		</div>
 
-		<div class="group-library-nav">
-			<div class="group-library-pagination">
-				<Pagination />
-			</div>
+		<transition name="fade">
+			<div v-if="! isLoading" class="group-library-refreshable">
+				<div class="group-library-nav">
+					<div class="group-library-pagination">
+						<Pagination />
+					</div>
 
-			<div class="group-library-filters">
-				<FilterDropdown
-					name='itemType'
-					title='Select Item Type'
-					:opts='itemTypes'
-				/>
-			</div>
-		</div>
+					<div class="group-library-filters">
+						<FilterDropdown
+							name='itemType'
+							title='Select Item Type'
+							:opts='itemTypes'
+						/>
+					</div>
+				</div>
 
-		<div class="group-library-items">
-			<div class="group-library-column-headers group-library-row">
-				<SortableColumnHeader
-					label="Title"
-					name="title"
-					defaultSortOrder="asc"
-				/>
-				<SortableColumnHeader
-					label="Added by"
-					name="added-by"
-					defaultSortOrder="asc"
-				/>
-				<SortableColumnHeader
-					label="Date"
-					name="date"
-					defaultSortOrder="desc"
-				/>
-			</div>
+				<div class="group-library-items" id="group-library-items">
+					<div class="group-library-column-headers group-library-row">
+						<SortableColumnHeader
+							label="Title"
+							name="title"
+							defaultSortOrder="asc"
+						/>
+						<SortableColumnHeader
+							label="Added by"
+							name="added-by"
+							defaultSortOrder="asc"
+						/>
+						<SortableColumnHeader
+							label="Date"
+							name="date"
+							defaultSortOrder="desc"
+						/>
+					</div>
 
-			<ul>
-				<li v-for="itemId in itemIds">
-					<LibraryItem
-						:itemId='itemId'
-					/>
-				</li>
-			</ul>
-		</div>
+					<ul>
+						<li v-for="itemId in itemIds">
+							<LibraryItem
+								:itemId='itemId'
+							/>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 
@@ -83,6 +87,11 @@
 			canCreateNew() {
 				return this.$store.state.canCreateNew
 			},
+
+			isLoading() {
+				return this.$store.state.isLoading
+			},
+
 			itemIds() {
 				const { currentItemType, currentFolder, libraryItems } = this.$store.state
 
@@ -185,4 +194,10 @@ body.groups.single-item.library #item-header {
 	flex-basis: 20%;
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .25s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

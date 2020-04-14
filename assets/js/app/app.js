@@ -23,6 +23,8 @@ function initialState() {
 	const currentSortOrder = 'asc'
 	const currentPage = 1
 
+	const isLoading = false
+
 	let state = {
 		addNewUrl,
 		canCreateNew,
@@ -31,6 +33,7 @@ function initialState() {
 		currentPage,
 		currentSort,
 		currentSortOrder,
+		isLoading,
 		libraryItemIds,
 		libraryItems,
 	}
@@ -98,8 +101,23 @@ const store = new Vuex.Store(
 				state.formInput.usersById      = newUsersById
 			},
 
+			refresh( state ) {
+				state.isLoading = true
+
+				setTimeout(
+					function() {
+						state.isLoading = false
+					},
+					250
+				)
+			},
+
 			setCurrentItemType( state, payload ) {
 				state.currentItemType = payload.value
+			},
+
+			setIsLoading( state, payload ) {
+				state.isLoading = payload.value
 			},
 
 			setInitialState( state, payload ) {
