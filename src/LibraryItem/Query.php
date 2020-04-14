@@ -15,6 +15,7 @@ class Query {
 			[
 				'item_type'      => null,
 				'source_item_id' => null,
+				'orderby'        => 'name',
 			],
 			$_args
 		);
@@ -44,7 +45,14 @@ class Query {
 			$sql['where'] = ' WHERE ' . implode( ' AND ', $sql['where'] );
 		}
 
-		$query = $sql['select'] . $sql['where'] . $sql['limits'];
+		switch ( $args['orderby'] ) {
+			case 'title' :
+			default :
+				$sql['order'] = ' ORDER BY title ASC ';
+			break;
+		}
+
+		$query = $sql['select'] . $sql['where'] . $sql['order'] . $sql['limits'];
 
 		$results = $wpdb->get_col( $query );
 		$retval = array();
