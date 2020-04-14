@@ -93,20 +93,9 @@
 			},
 
 			itemIds() {
-				const { currentItemType, currentFolder, libraryItems } = this.$store.state
-
-				return this.$store.state.libraryItemIds.filter(
-					function( itemId ) {
-						const theItem = libraryItems[ itemId ]
-
-						const hasCurrentItemType = 'any' === currentItemType || currentItemType === theItem.item_type  
-
-						const hasCurrentFolder = 'any' === currentFolder || currentFolder === theItem.folder  
-
-						return hasCurrentItemType && hasCurrentFolder
-					}
-				)
+				return this.$store.state.filteredItemIds
 			},
+
 			itemTypes() {
 				return [
 					{ code: 'any', label: 'Any kind' },

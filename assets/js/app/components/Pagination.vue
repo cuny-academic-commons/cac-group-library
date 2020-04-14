@@ -28,10 +28,9 @@
 			},
 
 			totalNumber() {
-				return this.$store.state.libraryItemIds.length
+				return this.$store.state.filteredItemIds.length
 			}
 		}
-
 	}
 </script>
 

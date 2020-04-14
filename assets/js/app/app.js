@@ -23,6 +23,8 @@ function initialState() {
 	const currentSortOrder = 'asc'
 	const currentPage = 1
 
+	const filteredItemIds = libraryItemIds
+
 	const isLoading = false
 
 	let state = {
@@ -33,6 +35,7 @@ function initialState() {
 		currentPage,
 		currentSort,
 		currentSortOrder,
+		filteredItemIds,
 		isLoading,
 		libraryItemIds,
 		libraryItems,
@@ -50,7 +53,7 @@ const store = new Vuex.Store(
 				const { newSort, newSortOrder } = payload
 				const { libraryItems } = state
 
-				let newItemIds = [...state.libraryItemIds]
+				let newItemIds = [...state.filteredItemIds]
 				newItemIds.sort( function( a, b ) {
 					const itemA = libraryItems[a]
 					const itemB = libraryItems[b]
@@ -89,7 +92,7 @@ const store = new Vuex.Store(
 					}
 				} )
 
-				state.libraryItemIds = newItemIds
+				state.filteredItemIds = newItemIds
 
 				state.currentSort = newSort
 				state.currentSortOrder = newSortOrder
@@ -114,6 +117,10 @@ const store = new Vuex.Store(
 
 			setCurrentItemType( state, payload ) {
 				state.currentItemType = payload.value
+
+				state.filteredItemIds = state.libraryItemIds.filter(
+					itemId => payload.value === state.libraryItems[ itemId ].item_type
+				)
 			},
 
 			setIsLoading( state, payload ) {
