@@ -94,7 +94,7 @@
 							break
 
 							default :
-
+								filename = 'general.png'
 							break
 						}
 					break

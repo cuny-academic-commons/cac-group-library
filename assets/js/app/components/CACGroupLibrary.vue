@@ -100,12 +100,12 @@
 			},
 			itemTypes() {
 				return [
-					{ name: 'any', label: 'Any kind' },
-					{ name: 'bp_group_document', label: 'Files' },
-					{ name: 'bp_doc', label: 'Docs' },
-					{ name: 'papers', label: 'Papers' },
-					{ name: 'atts', label: 'Forum Attachments' },
-					{ name: 'links', label: 'External Links' }
+					{ code: 'any', label: 'Any kind' },
+					{ code: 'bp_group_document', label: 'Files' },
+					{ code: 'bp_doc', label: 'Docs' },
+					{ code: 'papers', label: 'Papers' },
+					{ code: 'atts', label: 'Forum Attachments' },
+					{ code: 'links', label: 'External Links' }
 				]
 			}
 		},
