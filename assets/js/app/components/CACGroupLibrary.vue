@@ -24,7 +24,7 @@
 						<FilterDropdown
 							name='itemType'
 							title='Select Item Type'
-							:opts='itemTypesWithItems()' 
+							:opts='itemTypesWithItems()'
 						/>
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 					</div>
 
 					<ul>
-						<li v-for="itemId in itemIds">
+						<li v-for="itemId in paginatedItemIds">
 							<LibraryItem
 								:itemId='itemId'
 							/>
@@ -88,12 +88,16 @@
 				return this.$store.state.canCreateNew
 			},
 
+			paginatedItemIds() {
+				return this.$store.state.paginatedItemIds
+			},
+
 			isLoading() {
 				return this.$store.state.isLoading
 			},
 
 			itemIds() {
-				return this.$store.state.filteredItemIds
+				return this.$store.state.libraryItemIds
 			},
 
 			itemTypes() {
@@ -107,6 +111,10 @@
 					{ code: 'links', label: 'External Links' }
 				]
 			},
+		},
+
+		created() {
+			this.$store.commit( 'refreshFilteredItemIds' )
 		},
 
 		methods: {

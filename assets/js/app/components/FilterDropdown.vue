@@ -28,21 +28,6 @@
 				return 'filter-' + this.name
 			},
 
-			isLoading: {
-				get: function() {
-					return this.$store.state.isLoading
-				},
-
-				set: function() {
-					this.$store.commit(
-						'setIsLoading',
-						{
-							value: ! this.isLoading
-						}
-					)
-				}
-			},
-
 			selected: {
 				get: function() {
 					const { currentItemType } = this.$store.state
@@ -51,14 +36,15 @@
 				},
 
 				set: function( payload ) {
-					this.$store.commit( 'refresh' )
-
-					this.$store.commit( 
-						'setCurrentItemType', 
+					this.$store.commit(
+						'setCurrentItemType',
 						{
 							value: payload.code
-						} 
+						}
 					)
+
+					this.$store.commit( 'refresh' )
+
 				}
 			},
 		},

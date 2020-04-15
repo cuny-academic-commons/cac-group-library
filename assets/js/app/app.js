@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import fetch from 'isomorphic-fetch'
-console.log( 'trying hard' );
 
 import CACGroupLibrary from './components/CACGroupLibrary.vue'
 
@@ -21,9 +20,12 @@ function initialState() {
 	const currentFolder = 'any'
 	const currentSort = 'title'
 	const currentSortOrder = 'asc'
+
 	const currentPage = 1
+	const perPage = 3
 
 	const filteredItemIds = libraryItemIds
+	const paginatedItemIds = libraryItemIds
 
 	const isLoading = false
 
@@ -39,6 +41,8 @@ function initialState() {
 		isLoading,
 		libraryItemIds,
 		libraryItems,
+		paginatedItemIds,
+		perPage,
 	}
 
 	return state
@@ -53,47 +57,6 @@ const store = new Vuex.Store(
 				const { newSort, newSortOrder } = payload
 				const { libraryItems } = state
 
-				let newItemIds = [...state.filteredItemIds]
-				newItemIds.sort( function( a, b ) {
-					const itemA = libraryItems[a]
-					const itemB = libraryItems[b]
-
-					switch ( newSort ) {
-						case 'title' :
-							const titleA = itemA.title
-							const titleB = itemB.title
-
-							if ( 'asc' === newSortOrder ) {
-								return titleA.localeCompare( titleB )
-							} else {
-								return titleB.localeCompare( titleA )
-							}
-
-						case 'added-by' :
-							const addedByA = itemA.user.name
-							const addedByB = itemB.user.name
-
-							if ( 'asc' === newSortOrder ) {
-								return addedByA.localeCompare( addedByB )
-							} else {
-								return addedByB.localeCompare( addedByA )
-							}
-
-						case 'date' :
-							const dateA = new Date( itemA.date_modified ).getTime()
-							const dateB = new Date( itemB.date_modified ).getTime()
-							console.log(dateA - dateB)
-
-							if ( 'asc' === newSortOrder ) {
-								return dateA - dateB
-							} else {
-								return dateB - dateA
-							}
-					}
-				} )
-
-				state.filteredItemIds = newItemIds
-
 				state.currentSort = newSort
 				state.currentSortOrder = newSortOrder
 			},
@@ -107,6 +70,8 @@ const store = new Vuex.Store(
 			refresh( state ) {
 				state.isLoading = true
 
+				this.commit( 'refreshFilteredItemIds' )
+
 				setTimeout(
 					function() {
 						state.isLoading = false
@@ -115,12 +80,75 @@ const store = new Vuex.Store(
 				)
 			},
 
+			refreshFilteredItemIds( state ) {
+				let newFilteredItemIds = [...state.libraryItemIds]
+
+				// Item type dropdown.
+				const theCurrentItemType = state.currentItemType
+				if ( 'any' !== theCurrentItemType ) {
+					newFilteredItemIds = newFilteredItemIds.filter(
+						itemId => theCurrentItemType === state.libraryItems[ itemId ].item_type
+					)
+				}
+
+				// Sort.
+				const { currentSort, currentSortOrder, libraryItems } = state
+				newFilteredItemIds.sort( function( a, b ) {
+					const itemA = libraryItems[a]
+					const itemB = libraryItems[b]
+
+					switch ( currentSort ) {
+						case 'title' :
+							const titleA = itemA.title
+							const titleB = itemB.title
+
+							if ( 'asc' === currentSortOrder ) {
+								return titleA.localeCompare( titleB )
+							} else {
+								return titleB.localeCompare( titleA )
+							}
+
+						case 'added-by' :
+							const addedByA = itemA.user.name
+							const addedByB = itemB.user.name
+
+							if ( 'asc' === currentSortOrder ) {
+								return addedByA.localeCompare( addedByB )
+							} else {
+								return addedByB.localeCompare( addedByA )
+							}
+
+						case 'date' :
+							const dateA = new Date( itemA.date_modified ).getTime()
+							const dateB = new Date( itemB.date_modified ).getTime()
+
+							if ( 'asc' === currentSortOrder ) {
+								return dateA - dateB
+							} else {
+								return dateB - dateA
+							}
+					}
+				} )
+
+				state.filteredItemIds = newFilteredItemIds
+
+				// Paginate.
+				const { perPage, currentPage } = state
+				const startNumber = ( perPage * ( currentPage - 1 ) )
+
+				let newPaginatedItemIds = [...newFilteredItemIds]
+
+				newPaginatedItemIds = newPaginatedItemIds.slice( startNumber, startNumber + perPage )
+
+				state.paginatedItemIds = newPaginatedItemIds
+			},
+
 			setCurrentItemType( state, payload ) {
 				state.currentItemType = payload.value
+			},
 
-				state.filteredItemIds = state.libraryItemIds.filter(
-					itemId => payload.value === state.libraryItems[ itemId ].item_type
-				)
+			setCurrentPage( state, payload ) {
+				state.currentPage = payload.value
 			},
 
 			setIsLoading( state, payload ) {

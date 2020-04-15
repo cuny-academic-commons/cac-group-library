@@ -49,6 +49,14 @@
 					newSortOrder = this.defaultSortOrder
 				}
 
+				// Go back to page 1.
+				this.$store.commit(
+					'setCurrentPage',
+					{
+						value: 1
+					}
+				)
+
 				this.$store.commit(
 					'setSort',
 					{
@@ -56,6 +64,8 @@
 						newSortOrder
 					}
 				)
+
+				this.$store.commit( 'refreshFilteredItemIds' )
 			},
 
 			url() {
