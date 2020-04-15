@@ -24,7 +24,7 @@
 						<FilterDropdown
 							name='itemType'
 							title='Select Item Type'
-							:opts='itemTypes'
+							:opts='itemTypesWithItems()' 
 						/>
 					</div>
 				</div>
@@ -97,6 +97,7 @@
 			},
 
 			itemTypes() {
+				// @todo Remove those types with no corresponding items.
 				return [
 					{ code: 'any', label: 'Any kind' },
 					{ code: 'bp_group_document', label: 'Files' },
@@ -105,10 +106,40 @@
 					{ code: 'atts', label: 'Forum Attachments' },
 					{ code: 'links', label: 'External Links' }
 				]
-			}
+			},
 		},
 
 		methods: {
+			getItem( itemId ) {
+				return this.$store.state.libraryItems[ itemId ]
+			},
+
+			itemTypesWithItems() {
+				const { itemIds, getItem } = this
+
+				return this.itemTypes.filter(
+					function( itemType ) {
+						if ( 'any' === itemType.code ) {
+							return true
+						}
+
+						let itemOfTypeExists = false
+						let itemId
+
+						for ( var i in itemIds ) {
+							itemId = itemIds[ i ]
+
+							if ( itemType.code === getItem( itemId ).item_type ) {
+								itemOfTypeExists = true
+								break
+							}
+						}
+
+						return itemOfTypeExists
+					}
+				)
+			},
+
 			onAddNewClick() {
 				return
 			}
