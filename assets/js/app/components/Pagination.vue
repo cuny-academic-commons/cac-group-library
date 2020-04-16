@@ -80,6 +80,7 @@
 }
 
 .pagination-links {
+	font-size: 12px;
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -93,6 +94,14 @@
 	display: block;
 	float: left;
 	padding: 0 4px;
+}
+
+.pagination-links li a {
+	text-decoration: underline;
+}
+
+.pagination-links li a:hover {
+	text-decoration: none;
 }
 
 .pagination-links li.disabled {
