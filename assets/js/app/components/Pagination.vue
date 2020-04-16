@@ -75,5 +75,32 @@
 </script>
 
 <style>
+.group-library-pagination {
+	position: relative;
+}
 
+.pagination-links {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.pagination-links ul {
+	list-style-type: none;
+}
+
+.pagination-links li {
+	display: block;
+	float: left;
+	padding: 0 4px;
+}
+
+.pagination-links li.disabled {
+	display: none;
+}
+
+.pagination-links li.active a {
+	color: #000;
+	text-decoration: none;
+}
 </style>

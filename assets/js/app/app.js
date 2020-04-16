@@ -80,6 +80,17 @@ const store = new Vuex.Store(
 				)
 			},
 
+			/**
+			 * Master method for applying current filter + sort + pagination.
+			 *
+			 * In the following order:
+			 * - List of all libraryItemIds belonging to group is filtered using currentItemType,
+			 *   then currentFolder. This list is stored as filteredItemIds, and is used for
+			 *   things like the total item count in pagination (viewing 1-10 of 25 items, etc)
+			 * - filteredItemIds is sorted according to currentSort and currentSortBy
+			 * - Pagination is applied on the filtered and sorted items. The IDs of the items displayed
+			 *   in the current set of results is stored as paginatedItemIds.
+			 */
 			refreshFilteredItemIds( state ) {
 				let newFilteredItemIds = [...state.libraryItemIds]
 
