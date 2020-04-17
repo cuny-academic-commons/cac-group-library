@@ -154,6 +154,10 @@ const store = new Vuex.Store(
 				state.paginatedItemIds = newPaginatedItemIds
 			},
 
+			setCurrentFolder( state, payload ) {
+				state.currentFolder = payload.value
+			},
+
 			setCurrentItemType( state, payload ) {
 				state.currentItemType = payload.value
 			},

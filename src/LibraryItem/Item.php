@@ -9,6 +9,7 @@ class Item {
 		'date_modified'  => '0000-00-00 00:00:00',
 		'description'    => '',
 		'file_type'      => '',
+		'folders'        => [],
 		'group_id'       => 0,
 		'id'             => 0,
 		'item_type'      => '',
@@ -100,6 +101,9 @@ class Item {
 			);
 		}
 
+		// Set folders no matter what, in case of deletion.
+		$set = wp_set_object_terms( $this->get_id(), $this->get_folders(), 'cacgl_folder' );
+
 		return true;
 	}
 
@@ -139,6 +143,9 @@ class Item {
 		$this->set_date_modified( $row->date_modified );
 		$this->set_description( $row->description );
 		$this->set_url( $row->url );
+
+		$folders = wp_get_object_terms( $this->get_id(), 'cacgl_folder' );
+		$this->set_folders( wp_list_pluck( $folders, 'slug' ) );
 	}
 
 	/**
@@ -249,6 +256,35 @@ class Item {
 	}
 
 	/**
+	 * Get folders.
+	 *
+	 * @return array
+	 */
+	public function get_folders() {
+		if ( ! is_array( $this->data['folders'] ) ) {
+			$folders = [];
+		} else {
+			$folders = $this->data['folders'];
+		}
+
+		return $folders;
+	}
+
+	/**
+	 * Get folder objects.
+	 *
+	 * @return array
+	 */
+	public function get_folder_objects() {
+		return array_map(
+			function( $folder_slug ) {
+				return get_term_by( 'slug', $folder_slug, 'cacgl_folder' );
+			},
+			$this->get_folders()
+		);
+	}
+
+	/**
 	 * Set date modified.
 	 *
 	 * @param string
@@ -338,4 +374,12 @@ class Item {
 		$this->data['user_id'] = intval( $user_id );
 	}
 
+	/**
+	 * Set folders.
+	 *
+	 * @param array Array of slugs. Group folder slugs are of the form {$group_id}-{$slug}.
+	 */
+	public function set_folders( $folders ) {
+		$this->data['folders'] = $folders;
+	}
 }

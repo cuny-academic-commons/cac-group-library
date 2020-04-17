@@ -31,11 +31,18 @@ class Schema {
 	}
 
 	public function init() {
-		add_action( 'init', array( $this, 'register_post_types' ) );
+		add_action( 'init', array( $this, 'register_taxonomy' ), 20 );
 	}
 
-	public function register_post_types() {
-
+	public function register_taxonomy() {
+		register_taxonomy(
+			'cacgl_folder',
+			'cacgl_library_item',
+			[
+				'public'  => false,
+				'show_ui' => false,
+			]
+		);
 	}
 
 	public function install_table() {

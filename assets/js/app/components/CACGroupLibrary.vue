@@ -21,11 +21,8 @@
 					</div>
 
 					<div class="group-library-filters">
-						<FilterDropdown
-							name='itemType'
-							title='Select Item Type'
-							:opts='itemTypesWithItems()'
-						/>
+						<FolderFilterDropdown />
+						<ItemTypeFilterDropdown />
 					</div>
 				</div>
 
@@ -62,7 +59,8 @@
 </template>
 
 <script>
-	import FilterDropdown from './FilterDropdown.vue'
+	import FolderFilterDropdown from './FilterDropdowns/FolderFilterDropdown.vue'
+	import ItemTypeFilterDropdown from './FilterDropdowns/ItemTypeFilterDropdown.vue'
 	import LibraryItem from './LibraryItem.vue'
 	import Pagination from './Pagination.vue'
 	import SortableColumnHeader from './SortableColumnHeader.vue'
@@ -77,7 +75,8 @@
 
 	export default {
 		components: {
-			FilterDropdown,
+			FolderFilterDropdown,
+			ItemTypeFilterDropdown,
 			LibraryItem,
 			Pagination,
 			SortableColumnHeader
@@ -95,22 +94,6 @@
 			isLoading() {
 				return this.$store.state.isLoading
 			},
-
-			itemIds() {
-				return this.$store.state.libraryItemIds
-			},
-
-			itemTypes() {
-				// @todo Remove those types with no corresponding items.
-				return [
-					{ code: 'any', label: 'Any kind' },
-					{ code: 'bp_group_document', label: 'Files' },
-					{ code: 'bp_doc', label: 'Docs' },
-					{ code: 'papers', label: 'Papers' },
-					{ code: 'atts', label: 'Forum Attachments' },
-					{ code: 'links', label: 'External Links' }
-				]
-			},
 		},
 
 		created() {
@@ -118,46 +101,11 @@
 		},
 
 		methods: {
-			getItem( itemId ) {
-				return this.$store.state.libraryItems[ itemId ]
-			},
-
-			itemTypesWithItems() {
-				const { itemIds, getItem } = this
-
-				return this.itemTypes.filter(
-					function( itemType ) {
-						if ( 'any' === itemType.code ) {
-							return true
-						}
-
-						let itemOfTypeExists = false
-						let itemId
-
-						for ( var i in itemIds ) {
-							itemId = itemIds[ i ]
-
-							if ( itemType.code === getItem( itemId ).item_type ) {
-								itemOfTypeExists = true
-								break
-							}
-						}
-
-						return itemOfTypeExists
-					}
-				)
-			},
 
 			onAddNewClick() {
 				return
 			}
 		}
-
-		/*
-		mixins: [
-			PanelTools
-		],
-		*/
 	}
 </script>
 

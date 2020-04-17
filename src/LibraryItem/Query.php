@@ -75,6 +75,7 @@ class Query {
 				'date_modified'  => $item->get_date_modified(),
 				'description'    => $item->get_description(),
 				'file_type'      => $item->get_file_type(),
+				'folders'        => $item->get_folder_objects(),
 				'group_id'       => $item->get_group_id(),
 				'item_type'      => $item->get_item_type(),
 				'source_item_id' => $item->get_source_item_id(),

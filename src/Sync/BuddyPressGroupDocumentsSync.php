@@ -4,13 +4,14 @@ namespace CAC\GroupLibrary\Sync;
 
 use CAC\GroupLibrary\LibraryItem\Item;
 use CAC\GroupLibrary\LibraryItem\Query;
+use CAC\GroupLibrary\Folder;
 
 use \BP_Group_Documents;
 
 class BuddyPressGroupDocumentsSync implements SyncInterface {
 	public static function set_up_sync_hooks() {
 		add_action(
-			'bp_group_documents_add_success',
+			'bp_group_documents_data_after_save',
 			function( $document ) {
 				self::sync_to_library( $document->id );
 			}
@@ -51,6 +52,15 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 
 		$path_parts = pathinfo( $document->file );
 
+		$categories = wp_get_object_terms( $document->id, 'group-documents-category' );
+		$folders = array_map(
+			function( $category ) use ( $group_id ) {
+				$folder = Folder::get_group_folder_by_name( $group_id, $category->name );
+				return $folder->slug;
+			},
+			$categories
+		);
+
 		$item->set_date_modified( date( 'Y-m-d H:i:s' ) );
 		$item->set_group_id( $group_id );
 		$item->set_item_type( 'bp_group_document' );
@@ -59,6 +69,7 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 		$item->set_title( $document->name );
 		$item->set_url( $document->get_url() );
 		$item->set_user_id( $document->user_id );
+		$item->set_folders( $folders );
 
 		$item->save();
 	}

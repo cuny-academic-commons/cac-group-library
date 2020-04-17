@@ -30,28 +30,20 @@
 
 			selected: {
 				get: function() {
-					const { currentItemType } = this.$store.state
-
-					return this.opts.filter( itemType => currentItemType === itemType.code )
+					return this.getCurrentCallback()
 				},
 
 				set: function( payload ) {
-					this.$store.commit(
-						'setCurrentItemType',
-						{
-							value: payload.code
-						}
-					)
-
-					this.$store.commit( 'refresh' )
-
+					this.setCurrentCallback( payload )
 				}
 			},
 		},
 
 		props: {
+			getCurrentCallback: Function,
 			name: String,
 			opts: Array,
+			setCurrentCallback: Function,
 			title: String,
 		}
 	}
