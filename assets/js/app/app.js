@@ -102,6 +102,21 @@ const store = new Vuex.Store(
 					)
 				}
 
+				// Folder dropdown.
+				const theCurrentFolder = state.currentFolder
+				if ( 'any' !== theCurrentFolder ) {
+					newFilteredItemIds = newFilteredItemIds.filter(
+						function( itemId ) {
+							for ( var i in state.libraryItems[ itemId ].folders ) {
+								if ( theCurrentFolder === state.libraryItems[ itemId ].folders[ i ].slug ) {
+									return true
+								}
+							}
+							return false
+						}
+					)
+				}
+
 				// Sort.
 				const { currentSort, currentSortOrder, libraryItems } = state
 				newFilteredItemIds.sort( function( a, b ) {
