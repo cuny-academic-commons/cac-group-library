@@ -4,7 +4,6 @@
 			class="library-search-input"
 			placeholder="Enter text to search library"
 			v-bind:style="backgroundStyles()"
-			v-on:blur="onBlur()"
 			v-on:focus="onFocus()"
 			v-model="currentSearchTerm"
 		/>
@@ -76,13 +75,20 @@
 				}
 			},
 
-			onBlur() {
-				this.isSearchExpanded = false
-			},
+			onCloseClick( event ) {
+				this.$store.commit(
+					'setCurrentSearchTerm',
+					{ value: '' }
+				)
 
-			onCloseClick() {
-				this.isSearchExpanded = false
-				this.currentSearchTerm = ''
+				this.$store.commit(
+					'setIsSearchExpanded',
+					{ value: false }
+				)
+
+				this.$store.commit( 'refreshFilteredItemIds' )
+
+				return false
 			},
 
 			onFocus() {
@@ -121,5 +127,6 @@
 	position: absolute;
 	right: 0;
 	top: 8px;
+	z-index: 50;
 }
 </style>
