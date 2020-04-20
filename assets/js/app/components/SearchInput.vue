@@ -30,6 +30,8 @@
 						'setCurrentSearchTerm',
 						{ value }
 					)
+
+					this.$store.commit( 'refreshFilteredItemIds' )
 				}
 			},
 

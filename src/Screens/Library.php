@@ -34,6 +34,7 @@ class Library {
 			[
 				'appUrlBase'     => bp_get_group_permalink( groups_get_current_group() ) . '/library/',
 				'canCreateNew'   => true,
+				'imgUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/',
 				'iconUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/file-type-icons/',
 				'libraryItemIds' => array_keys( $items ),
 				'libraryItems'   => $items,

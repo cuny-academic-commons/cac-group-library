@@ -115,6 +115,22 @@ export default new Vuex.Store(
 					)
 				}
 
+				// Search.
+				const theCurrentSearchTerm = state.currentSearchTerm.toLowerCase()
+				if ( '' !== theCurrentSearchTerm ) {
+					newFilteredItemIds = newFilteredItemIds.filter(
+						function( itemId ) {
+							var theLibraryItem = state.libraryItems[ itemId ]
+
+							var matchTitle = -1 !== theLibraryItem.title.toLowerCase().indexOf( theCurrentSearchTerm )
+							var matchDescription = -1 !== theLibraryItem.description.toLowerCase().indexOf( theCurrentSearchTerm )
+
+							return matchTitle || matchDescription
+						}
+					)
+					console.log(newFilteredItemIds)
+				}
+
 				// Sort.
 				const { currentSort, currentSortOrder, libraryItems } = state
 				newFilteredItemIds.sort( function( a, b ) {
