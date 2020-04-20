@@ -16,16 +16,6 @@ window.cacGroupLibrary = new Vue(
 		el: '#cac-group-library',
 		router,
 		store,
-		/*
-		components: {
-			app: CACGroupLibrary
-		},
-		*/
 		render: h => h( App ),
-			/*
-			mixins: [
-			AjaxTools
-			]
-			*/
 	}
 );

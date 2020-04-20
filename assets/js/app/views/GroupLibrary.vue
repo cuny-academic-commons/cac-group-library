@@ -1,15 +1,16 @@
 <template>
 	<div id="cac-group-library-inner">
-		<div class="group-library-header">
+		<div :class="headerClass">
 			<h2>Library</h2>
 
-			<button
-				v-if='canCreateNew'
-				v-on:click='onAddNewClick'
-			>Add New Item</button>
+			<div class="header-actions">
+				<router-link
+					class="add-new-item-button"
+					v-if='canCreateNew'
+					to='/new'
+				>Add New Item</router-link>
 
-			<div class="library-search">
-				Search interface
+				<SearchInput />
 			</div>
 		</div>
 
@@ -63,6 +64,7 @@
 	import ItemTypeFilterDropdown from '../components/FilterDropdowns/ItemTypeFilterDropdown.vue'
 	import LibraryItem from '../components/LibraryItem.vue'
 	import Pagination from '../components/Pagination.vue'
+	import SearchInput from '../components/SearchInput.vue'
 	import SortableColumnHeader from '../components/SortableColumnHeader.vue'
 
 	/*
@@ -79,12 +81,36 @@
 			ItemTypeFilterDropdown,
 			LibraryItem,
 			Pagination,
+			SearchInput,
 			SortableColumnHeader
 		},
 
 		computed: {
 			canCreateNew() {
 				return this.$store.state.canCreateNew
+			},
+
+			headerClass() {
+				let itemClasses = [ 'group-library-header' ]
+
+				if ( this.isSearchExpanded ) {
+					itemClasses.push( 'search-is-expanded' )
+				}
+
+				return itemClasses.join( ' ' )
+			},
+
+			isSearchExpanded: {
+				get() {
+					return this.$store.state.isSearchExpanded
+				},
+
+				set( value ) {
+					this.$store.commit(
+						'setIsSearchExpanded',
+						{ value }
+					)
+				}
 			},
 
 			paginatedItemIds() {
@@ -130,8 +156,28 @@ body.groups.single-item.library #item-header {
 	margin-right: 20px;
 }
 
+.group-library-header .header-actions {
+	display: block;
+	position: relative;
+	margin-left: 30px;
+	margin-right: 12px;
+	height: 28px;
+	width: 100%;
+}
+
+.group-library-header.search-is-expanded .header-actions {
+	margin-right: 7px;
+}
+
+.add-new-item-button {
+	position: absolute;
+}
+
 .group-library-header .library-search {
-	margin-left: auto;
+	position: absolute;
+	right: 0;
+	text-align: right;
+	top: 0
 }
 
 .group-library-nav {
@@ -173,7 +219,16 @@ body.groups.single-item.library #item-header {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .25s;
 }
+
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.search-is-expanded .add-new-item-button {
+	opacity: 0;
+}
+
+.add-new-item-button {
+	transition: opacity .25s;
 }
 </style>

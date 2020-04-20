@@ -14,6 +14,9 @@ function initialState() {
 	const currentSort = 'title'
 	const currentSortOrder = 'asc'
 
+	const currentSearchTerm = ''
+	const isSearchExpanded = false
+
 	const currentPage = 1
 	const perPage = 3
 
@@ -28,10 +31,12 @@ function initialState() {
 		currentFolder,
 		currentItemType,
 		currentPage,
+		currentSearchTerm,
 		currentSort,
 		currentSortOrder,
 		filteredItemIds,
 		isLoading,
+		isSearchExpanded,
 		libraryItemIds,
 		libraryItems,
 		paginatedItemIds,
@@ -174,8 +179,16 @@ export default new Vuex.Store(
 				state.currentPage = payload.value
 			},
 
+			setCurrentSearchTerm( state, payload ) {
+				state.currentSearchTerm = payload.value
+			},
+
 			setIsLoading( state, payload ) {
 				state.isLoading = payload.value
+			},
+
+			setIsSearchExpanded( state, payload ) {
+				state.isSearchExpanded = payload.value
 			},
 
 			setInitialState( state, payload ) {
