@@ -1,5 +1,5 @@
 <template>
-	<span>
+	<span class="group-library-filter-dropdown">
 		<label
 			v-bind:for="fieldId"
 			class="screen-reader-only">
@@ -7,6 +7,7 @@
 		</label>
 
 		<v-select
+			v-bind:clearable="false"
 			v-bind:id="fieldId"
 			v-model="selected"
 			:options="opts">
@@ -50,4 +51,8 @@
 </script>
 
 <style>
+.v-select {
+	display: inline-block;
+	width: 200px;
+}
 </style>
