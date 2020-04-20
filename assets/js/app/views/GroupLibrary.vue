@@ -18,7 +18,10 @@
 			<div v-if="! isLoading" class="group-library-refreshable">
 				<div class="group-library-nav">
 					<div class="group-library-pagination">
-						<Pagination />
+						<transition name="fade" mode="out-in">
+							<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
+							<Pagination v-else key="pagination" />
+						</transition>
 					</div>
 
 					<div class="group-library-filters">
@@ -65,6 +68,7 @@
 	import LibraryItem from '../components/LibraryItem.vue'
 	import Pagination from '../components/Pagination.vue'
 	import SearchInput from '../components/SearchInput.vue'
+	import SearchResultsCount from '../components/SearchResultsCount.vue'
 	import SortableColumnHeader from '../components/SortableColumnHeader.vue'
 
 	/*
@@ -82,6 +86,7 @@
 			LibraryItem,
 			Pagination,
 			SearchInput,
+			SearchResultsCount,
 			SortableColumnHeader
 		},
 
@@ -217,7 +222,7 @@ body.groups.single-item.library #item-header {
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .25s;
+  transition: opacity .5s;
 }
 
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {

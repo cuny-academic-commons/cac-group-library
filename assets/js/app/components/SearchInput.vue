@@ -45,6 +45,9 @@
 						'setIsSearchExpanded',
 						{ value }
 					)
+
+					// Required to trigger pagination.
+					this.$store.commit( 'refreshFilteredItemIds' )
 				}
 			}
 		},

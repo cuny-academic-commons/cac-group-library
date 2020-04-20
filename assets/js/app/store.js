@@ -128,7 +128,6 @@ export default new Vuex.Store(
 							return matchTitle || matchDescription
 						}
 					)
-					console.log(newFilteredItemIds)
 				}
 
 				// Sort.
@@ -173,12 +172,15 @@ export default new Vuex.Store(
 				state.filteredItemIds = newFilteredItemIds
 
 				// Paginate.
-				const { perPage, currentPage } = state
+				const { perPage, currentPage, isSearchExpanded } = state
 				const startNumber = ( perPage * ( currentPage - 1 ) )
 
 				let newPaginatedItemIds = [...newFilteredItemIds]
 
-				newPaginatedItemIds = newPaginatedItemIds.slice( startNumber, startNumber + perPage )
+				// Search results are not paginated.
+				if ( ! isSearchExpanded ) {
+					newPaginatedItemIds = newPaginatedItemIds.slice( startNumber, startNumber + perPage )
+				}
 
 				state.paginatedItemIds = newPaginatedItemIds
 			},
