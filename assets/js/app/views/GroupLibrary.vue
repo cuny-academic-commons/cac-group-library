@@ -27,6 +27,7 @@
 					<div class="group-library-filters">
 						<FolderFilterDropdown />
 						<ItemTypeFilterDropdown />
+						<DescriptionToggle />
 					</div>
 				</div>
 
@@ -63,6 +64,7 @@
 </template>
 
 <script>
+	import DescriptionToggle from '../components/DescriptionToggle.vue'
 	import FolderFilterDropdown from '../components/FilterDropdowns/FolderFilterDropdown.vue'
 	import ItemTypeFilterDropdown from '../components/FilterDropdowns/ItemTypeFilterDropdown.vue'
 	import LibraryItem from '../components/LibraryItem.vue'
@@ -81,6 +83,7 @@
 
 	export default {
 		components: {
+			DescriptionToggle,
 			FolderFilterDropdown,
 			ItemTypeFilterDropdown,
 			LibraryItem,
@@ -235,5 +238,16 @@ body.groups.single-item.library #item-header {
 
 .add-new-item-button {
 	transition: opacity .25s;
+}
+
+.group-library-filters {
+	position: relative;
+	padding-right: 10px;
+}
+
+.description-toggle {
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 </style>

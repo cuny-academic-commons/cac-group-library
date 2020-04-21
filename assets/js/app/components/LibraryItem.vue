@@ -14,7 +14,7 @@
 
 				<p
 					class="library-item-description"
-					v-if="hasDescription()"
+					v-if="showDescription()"
 				>
 					{{ description() }}
 				</p>
@@ -60,8 +60,8 @@
 				return this.$store.state.libraryItems[ this.itemId ]
 			},
 
-			hasDescription() {
-				return this.description().length > 0
+			showDescription() {
+				return this.description().length > 0 && this.$store.state.showDescriptions
 			},
 
 			iconSrc() {
