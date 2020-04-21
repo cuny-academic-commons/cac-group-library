@@ -45,6 +45,11 @@
 						{ value }
 					)
 
+					this.$store.commit(
+						'setShowDescriptions',
+						{ value }
+					)
+
 					// Required to trigger pagination.
 					this.$store.commit( 'refreshFilteredItemIds' )
 				}
@@ -83,6 +88,11 @@
 
 				this.$store.commit(
 					'setIsSearchExpanded',
+					{ value: false }
+				)
+
+				this.$store.commit(
+					'setShowDescriptions',
 					{ value: false }
 				)
 

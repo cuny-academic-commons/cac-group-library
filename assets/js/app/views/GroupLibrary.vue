@@ -118,6 +118,11 @@
 						'setIsSearchExpanded',
 						{ value }
 					)
+
+					this.$store.commit(
+						'setShowDescriptions',
+						{ value }
+					)
 				}
 			},
 
