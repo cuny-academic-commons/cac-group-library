@@ -73,14 +73,6 @@
 	import SearchResultsCount from '../components/SearchResultsCount.vue'
 	import SortableColumnHeader from '../components/SortableColumnHeader.vue'
 
-	/*
-	import PanelTools from '../mixins/PanelTools.js'
-
-	import ModalContent from './ModalContent.vue'
-	import ModalHeader from './ModalHeader.vue'
-	import ModalNav from './ModalNav.vue'
-	*/
-
 	export default {
 		components: {
 			DescriptionToggle,
@@ -172,7 +164,7 @@ body.groups.single-item.library #item-header {
 .group-library-header .header-actions {
 	display: block;
 	position: relative;
-	margin-left: 30px;
+	margin-left: 20px;
 	margin-right: 12px;
 	height: 28px;
 	width: 100%;
@@ -182,8 +174,27 @@ body.groups.single-item.library #item-header {
 	margin-right: 7px;
 }
 
-.add-new-item-button {
+a.add-new-item-button {
+	background: #1C576C 0% 0% no-repeat padding-box;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 11px;
+	left: 0;
+	line-height: 24px;
+	padding: 0 12px;
 	position: absolute;
+	text-decoration: none;
+	top: 2px;
+}
+
+a.add-new-item-button,
+a.add-new-item-button:link,
+a.add-new-item-button:visited {
+	color: #fff;
+}
+
+a.add-new-item-button:hover {
+	background-color: #4f8a95;
 }
 
 .group-library-header .library-search {
