@@ -4,7 +4,10 @@
 			Viewing {{startNumber()}} to {{endNumber()}} (of {{totalNumber()}} items)
 		</div>
 
-		<div class="pagination-links">
+		<div 
+			class="pagination-links"
+			v-if="hasMoreThanOnePage()"
+		>
 			<Paginate
 				:clickHandler="clickHandler"
 				:pageCount="pageCount()"
@@ -57,6 +60,10 @@
 				const pagEnd = this.startNumber() + this.perPage - 1
 
 				return ( pagEnd > this.totalNumber() ) ? this.totalNumber() : pagEnd
+			},
+			
+			hasMoreThanOnePage() {
+				return this.pageCount() > 1
 			},
 
 			pageCount() {
