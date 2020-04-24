@@ -80,6 +80,8 @@ class Query {
 				'item_type'      => $item->get_item_type(),
 				'source_item_id' => $item->get_source_item_id(),
 				'title'          => $item->get_title(),
+				'topic_title'    => $item->get_topic_title(),
+				'topic_url'      => $item->get_topic_url(),
 				'url'            => $item->get_url(),
 				'user'           => $item->get_user(),
 			];

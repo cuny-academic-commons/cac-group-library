@@ -167,6 +167,48 @@ class Item {
 	}
 
 	/**
+	 * Get topic title.
+	 *
+	 * Only relevant for attachments. Otherwise returns empty.
+	 */
+	public function get_topic_title() {
+		if ( 'forum_attachment' !== $this->get_item_type() ) {
+			return '';
+		}
+
+		$attachment = get_post( $this->get_source_item_id() );
+		$parent     = get_post( $attachment->post_parent );
+
+		if ( bbp_get_reply_post_type() === $parent->post_type ) {
+			$topic_id = bbp_get_reply_topic_id( $parent->ID );
+		} else {
+			$topic_id = $parent->ID;
+		}
+
+		$topic = get_post( $topic_id );
+
+		return $topic->post_title;
+	}
+
+	/**
+	 * Get topic URL.
+	 *
+	 * Only relevant for attachments. Otherwise returns empty.
+	 *
+	 * For replies, gives the permalink to the specific reply.
+	 */
+	public function get_topic_url() {
+		if ( 'forum_attachment' !== $this->get_item_type() ) {
+			return '';
+		}
+
+		$attachment = get_post( $this->get_source_item_id() );
+		$parent     = get_post( $attachment->post_parent );
+
+		return get_permalink( $parent );
+	}
+
+	/**
 	 * Get file type.
 	 *
 	 * @return string

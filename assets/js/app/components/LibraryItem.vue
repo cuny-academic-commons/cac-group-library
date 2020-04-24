@@ -16,7 +16,13 @@
 					class="library-item-description"
 					v-if="showDescription()"
 				>
-					{{ description() }}
+					<span v-if="isForumAttachment()">
+						In topic <a :href="topicUrl()">{{ topicTitle() }}</a>
+					</span>
+
+					<span v-else>
+						{{ description() }}
+					</span>
 				</p>
 			</div>
 		</div>
@@ -60,8 +66,12 @@
 				return this.$store.state.libraryItems[ this.itemId ]
 			},
 
+			isForumAttachment() {
+				return 'forum_attachment' === this.itemType()
+			},
+
 			showDescription() {
-				return this.description().length > 0 && this.$store.state.showDescriptions
+				return this.$store.state.showDescriptions
 			},
 
 			getFileTypeBase() {
@@ -137,6 +147,14 @@
 				return this.getItem().title
 			},
 
+			topicTitle() {
+				return this.getItem().topic_title
+			},
+
+			topicUrl() {
+				return this.getItem().topic_url
+			},
+
 			url() {
 				return this.getItem().url
 			}
@@ -164,5 +182,9 @@
 
 .group-library-item-title-details {
 	margin-left: calc(12px + 16px);
+}
+
+.library-item-description {
+	margin-top: 6px;
 }
 </style>
