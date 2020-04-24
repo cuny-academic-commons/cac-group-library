@@ -27,7 +27,7 @@
 					{ code: 'bp_group_document', label: 'Files' },
 					{ code: 'bp_doc', label: 'Docs' },
 					{ code: 'papers', label: 'Papers' },
-					{ code: 'atts', label: 'Forum Attachments' },
+					{ code: 'forum_attachment', label: 'Forum Attachments' },
 					{ code: 'links', label: 'External Links' }
 				]
 			},

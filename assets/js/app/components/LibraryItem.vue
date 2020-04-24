@@ -64,6 +64,51 @@
 				return this.description().length > 0 && this.$store.state.showDescriptions
 			},
 
+			getFileTypeBase() {
+				let fileName
+
+				switch ( this.fileType() ) {
+					case 'pdf' :
+						fileName = 'pdf'
+					break
+
+					case 'xls' :
+					case 'xlsx' :
+						fileName = 'excel'
+					break
+
+					case 'doc' :
+					case 'docx' :
+						fileName = 'word'
+					break
+
+					case 'ppt' :
+					case 'pptx' :
+						fileName = 'powerpoint'
+					break
+
+					case 'mp3' :
+						fileName = 'audio'
+					break
+
+					case 'jpg' :
+					case 'jpeg' :
+					case 'gif' :
+					case 'bmp' :
+					case 'png' :
+					case 'svg' :
+					case 'tif' :
+						fileName = 'image'
+					break
+
+					default :
+						fileName = 'general'
+					break
+				}
+
+				return fileName
+			},
+
 			iconSrc() {
 				let fileName
 
@@ -73,44 +118,11 @@
 					break
 
 					case 'bp_group_document' :
-						switch ( this.fileType() ) {
-							case 'pdf' :
-								fileName = 'pdf.png'
-							break
+						fileName = this.getFileTypeBase() + '.png'
+					break
 
-							case 'xls' :
-							case 'xlsx' :
-								fileName = 'excel.png'
-							break
-
-							case 'doc' :
-							case 'docx' :
-								fileName = 'word.png'
-							break
-
-							case 'ppt' :
-							case 'pptx' :
-								fileName = 'word.png'
-							break
-
-							case 'mp3' :
-								fileName = 'audio.png'
-							break
-
-							case 'jpg' :
-							case 'jpeg' :
-							case 'gif' :
-							case 'bmp' :
-							case 'png' :
-							case 'svg' :
-							case 'tif' :
-								fileName = 'image.png'
-							break
-
-							default :
-								fileName = 'general.png'
-							break
-						}
+					case 'forum_attachment' :
+						fileName = this.getFileTypeBase() + '-attachment.png'
 					break
 				}
 
