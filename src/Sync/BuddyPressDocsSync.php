@@ -32,7 +32,7 @@ class BuddyPressDocsSync implements SyncInterface {
 		return $item;
 	}
 
-	public static function sync_to_library( $post_id ) {
+	public static function sync_to_library( $post_id, $args = [] ) {
 		$post = get_post( $post_id );
 
 		if ( ( ! ( $post instanceof WP_Post ) ) || bp_docs_get_post_type_name() !== $post->post_type ) {
@@ -48,11 +48,28 @@ class BuddyPressDocsSync implements SyncInterface {
 			return;
 		}
 
+		$r = array_merge(
+			[
+				'date_type' => 'now',
+			],
+			$args
+		);
+
+		switch ( $r['date_type'] ) {
+			case 'now' :
+				$date = date( 'Y-m-d H:i:s' );
+			break;
+
+			default :
+				$date = $post->post_modified;
+			break;
+		}
+
 		$group_id = bp_docs_get_associated_group_id( $post_id );
 
 		$item = self::get_library_item_from_source_item_id( $post_id, $group_id );
 
-		$item->set_date_modified( date( 'Y-m-d H:i:s' ) );
+		$item->set_date_modified( $date );
 		$item->set_group_id( $group_id );
 		$item->set_item_type( 'bp_doc' );
 		$item->set_source_item_id( $post_id );

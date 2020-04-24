@@ -43,7 +43,14 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 		return $item;
 	}
 
-	public static function sync_to_library( $document_id ) {
+	public static function sync_to_library( $document_id, $args = [] ) {
+		$r = array_merge(
+			[
+				'date_type' => 'now',
+			],
+			$args
+		);
+
 		$document = new BP_Group_Documents( $document_id );
 
 		$group_id = $document->group_id;
@@ -61,7 +68,17 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 			$categories
 		);
 
-		$item->set_date_modified( date( 'Y-m-d H:i:s' ) );
+		switch ( $r['date_type'] ) {
+			case 'now' :
+				$date = date( 'Y-m-d H:i:s' );
+			break;
+
+			default :
+				$date = date( 'Y-m-d H:i:s', $document->modified_ts );
+			break;
+		}
+
+		$item->set_date_modified( $date );
 		$item->set_group_id( $group_id );
 		$item->set_item_type( 'bp_group_document' );
 		$item->set_file_type( $path_parts['extension'] );

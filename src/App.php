@@ -193,6 +193,7 @@ class App {
 
 	protected function set_up_cli_commands() {
 		\WP_CLI::add_command( 'cacgl database', '\CAC\GroupLibrary\CLI\Command\DatabaseCommand' );
+		\WP_CLI::add_command( 'cacgl sync', '\CAC\GroupLibrary\CLI\Command\SyncCommand' );
 	}
 
 	public function __get( $key ) {
