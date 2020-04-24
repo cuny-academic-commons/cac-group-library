@@ -9,9 +9,9 @@ use \WP_Post;
 
 class ForumAttachmentsSync implements SyncInterface {
 	public static function set_up_sync_hooks() {
-//		add_action( 'bp_docs_after_save', [ __CLASS__, 'sync_to_library' ], 999 );
-//		add_action( 'trashed_post', [ __CLASS__, 'delete_library_item' ] );
-//		add_action( 'delete_post', [ __CLASS__, 'delete_library_item' ] );
+		add_action( 'add_attachment', [ __CLASS__, 'sync_to_library' ], 999 );
+		add_action( 'trashed_post', [ __CLASS__, 'delete_library_item' ] );
+		add_action( 'delete_post', [ __CLASS__, 'delete_library_item' ] );
 	}
 
 	public static function get_library_item_from_source_item_id( $post_id, $group_id ) {
@@ -35,7 +35,8 @@ class ForumAttachmentsSync implements SyncInterface {
 	public static function sync_to_library( $post_id, $args = [] ) {
 		$post = get_post( $post_id );
 
-		if ( ! ( $post instanceof WP_Post ) ) {
+		$group_id = self::get_group_id( $post_id );
+		if ( ! $group_id ) {
 			return;
 		}
 
@@ -61,28 +62,14 @@ class ForumAttachmentsSync implements SyncInterface {
 			break;
 		}
 
-		$parent = get_post( $post->post_parent );
-		if ( 'reply' === $parent->post_type ) {
-			$topic_id = bbp_get_reply_topic_id( $parent->ID );
-		} else {
-			$topic_id = $parent->ID;
-		}
-
-		$forum_id = bbp_get_topic_forum_id( $topic_id );
-
-		global $wpdb, $bp;
-		$group_id = $wpdb->get_var( $wpdb->prepare( "SELECT group_id FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'forum_id' AND meta_value = %s", $forum_id ) );
-
-		if ( ! $group_id ) {
-			return;
-		}
-
 		$file      = get_attached_file( $post_id );
 		$file_type = '';
 		if ( $file ) {
 			$path_parts = pathinfo( $file );
 			$file_type  = $path_parts['extension'];
 		}
+
+		$file_url = wp_get_attachment_url( $post_id );
 
 		$item = self::get_library_item_from_source_item_id( $post_id, $group_id );
 
@@ -92,7 +79,7 @@ class ForumAttachmentsSync implements SyncInterface {
 		$item->set_file_type( $file_type );
 		$item->set_source_item_id( $post_id );
 		$item->set_title( $post->post_title );
-		$item->set_url( get_permalink( $post ) );
+		$item->set_url( $file_url );
 		$item->set_user_id( $post->post_author );
 
 		$item->save();
@@ -105,6 +92,11 @@ class ForumAttachmentsSync implements SyncInterface {
 			return false;
 		}
 
+		$group_id = self::get_group_id( $post_id );
+		if ( ! $group_id ) {
+			return;
+		}
+
 		$item = self::get_library_item_from_source_item_id( $post_id, $group_id );
 
 		if ( ! $item->exists() ) {
@@ -112,5 +104,31 @@ class ForumAttachmentsSync implements SyncInterface {
 		}
 
 		return $item->delete();
+	}
+
+	protected static function get_group_id( $attachment_id ) {
+		$attachment = get_post( $attachment_id );
+
+		if ( ! ( $attachment instanceof WP_Post ) || 'attachment' !== $attachment->post_type ) {
+			return 0;
+		}
+
+		$parent = get_post( $attachment->post_parent );
+		if ( ! ( $parent instanceof WP_Post ) || ! in_array( $parent->post_type, [ bbp_get_topic_post_type(), bbp_get_reply_post_type() ], true ) ) {
+			return 0;
+		}
+
+		if ( 'reply' === $parent->post_type ) {
+			$topic_id = bbp_get_reply_topic_id( $parent->ID );
+		} else {
+			$topic_id = $parent->ID;
+		}
+
+		$forum_id = bbp_get_topic_forum_id( $topic_id );
+
+		global $wpdb, $bp;
+		$group_id = $wpdb->get_var( $wpdb->prepare( "SELECT group_id FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'forum_id' AND meta_value = %s", $forum_id ) );
+
+		return intval( $group_id );
 	}
 }

@@ -122,6 +122,10 @@ class App {
 			$item_type_syncs[] = 'BuddyPressGroupDocumentsSync';
 		}
 
+		if ( defined( 'GDBBPRESSATTACHMENTS_CAP' ) ) {
+			$item_type_syncs[] = 'ForumAttachmentsSync';
+		}
+
 		foreach ( $item_type_syncs as $item_type_sync ) {
 			$class_name = __NAMESPACE__ . '\Sync\\' . $item_type_sync;
 			call_user_func( [ $class_name, 'set_up_sync_hooks' ] );
