@@ -80,21 +80,35 @@
 
 							case 'xls' :
 							case 'xlsx' :
-								filename = 'excel.png'
+								fileName = 'excel.png'
 							break
 
 							case 'doc' :
 							case 'docx' :
-								filename = 'word.png'
+								fileName = 'word.png'
 							break
 
 							case 'ppt' :
 							case 'pptx' :
-								filename = 'word.png'
+								fileName = 'word.png'
+							break
+
+							case 'mp3' :
+								fileName = 'audio.png'
+							break
+
+							case 'jpg' :
+							case 'jpeg' :
+							case 'gif' :
+							case 'bmp' :
+							case 'png' :
+							case 'svg' :
+							case 'tif' :
+								fileName = 'image.png'
 							break
 
 							default :
-								filename = 'general.png'
+								fileName = 'general.png'
 							break
 						}
 					break
