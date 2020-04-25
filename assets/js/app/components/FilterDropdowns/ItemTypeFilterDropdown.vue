@@ -26,7 +26,7 @@
 					{ code: 'any', label: 'Any kind' },
 					{ code: 'bp_group_document', label: 'Files' },
 					{ code: 'bp_doc', label: 'Docs' },
-					{ code: 'papers', label: 'Papers' },
+					{ code: 'cacsp_paper', label: 'Papers' },
 					{ code: 'forum_attachment', label: 'Forum Attachments' },
 					{ code: 'links', label: 'External Links' }
 				]
