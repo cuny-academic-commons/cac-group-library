@@ -8,6 +8,7 @@ use \WP_CLI_Command;
 use CAC\GroupLibrary\Sync\BuddyPressDocsSync;
 use CAC\GroupLibrary\Sync\BuddyPressGroupDocumentsSync;
 use CAC\GroupLibrary\Sync\ForumAttachmentsSync;
+use CAC\GroupLibrary\Sync\PapersSync;
 
 class SyncCommand extends WP_CLI_Command {
 	/**
@@ -19,7 +20,7 @@ class SyncCommand extends WP_CLI_Command {
 	 * options:
 	 *   - bp_doc
 	 *   - bp_group_document
-	 *   - cacap_paper
+	 *   - cacsp_paper
 	 *   - forum_attachment
 	 */
 	public function __invoke( $args, $assoc_args ) {
@@ -36,6 +37,10 @@ class SyncCommand extends WP_CLI_Command {
 
 			case 'forum_attachment' :
 				$this->sync_forum_attachment();
+			break;
+
+			case 'cacsp_paper' :
+				$this->sync_cacsp_paper();
 			break;
 		}
 	}
@@ -79,6 +84,21 @@ class SyncCommand extends WP_CLI_Command {
 
 		foreach ( $att_ids as $att_id ) {
 			ForumAttachmentsSync::sync_to_library( $att_id, [ 'date_type' => 'date_modified' ] );
+			$progress->tick();
+		}
+
+		$progress->finish();
+	}
+
+	protected function sync_cacsp_paper() {
+		global $wpdb;
+
+		$att_ids = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'cacsp_paper' and post_status IN ( 'private', 'publish' )" );
+
+		$progress = WP_CLI\Utils\make_progress_bar( 'Syncing papers', count( $att_ids ) );
+
+		foreach ( $att_ids as $att_id ) {
+			PapersSync::sync_to_library( $att_id, [ 'date_type' => 'date_modified' ] );
 			$progress->tick();
 		}
 
