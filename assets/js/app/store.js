@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 function initialState() {
 	const {
-		addNewUrl, canCreateNew, foldersOfGroup,
+		canCreateNew, foldersOfGroup,
 		libraryItemIds, libraryItems
 	} = window.CACGroupLibrary;
 
@@ -33,23 +33,22 @@ function initialState() {
 		bpDoc: {
 			title: '',
 			content: '',
-			folders: [],
+			folder: '',
 			parent: 0,
 		},
 		bpGroupDocument: {
 			title: '',
 			description: '',
-			folders: [],
+			folder: '',
 		},
 		externalLink: {
 			title: '',
 			url: '',
-			folders: [],
+			folder: '',
 		}
 	}
 
-	let state = {
-		addNewUrl,
+	return {
 		canCreateNew,
 		currentFolder,
 		currentItemType,
@@ -59,9 +58,6 @@ function initialState() {
 		currentSortOrder,
 		filteredItemIds,
 		foldersOfGroup,
-		foldersBpDoc: [],
-		foldersBpGroupDocument: [],
-		foldersExternalLink: [],
 		forms,
 		isLoading,
 		isSearchExpanded,
@@ -70,16 +66,17 @@ function initialState() {
 		paginatedItemIds,
 		perPage,
 		showDescriptions,
+		submitInProgress: false,
 		validationErrors: {},
 		visitedFields: {}
 	}
-
-	return state
 }
+
+console.log(initialState())
 
 export default new Vuex.Store(
 	{
-		state: initialState,
+		state: initialState(),
 
 		mutations: {
 			setSort( state, payload ) {
@@ -220,24 +217,6 @@ export default new Vuex.Store(
 				state.validationErrors = {}
 			},
 
-			setAddNewFolders( state, payload ) {
-				const { form, value } = payload
-
-				switch ( form ) {
-					case 'externalLink' :
-						state.foldersExternalLink = value
-					break;
-
-					case 'bpDoc' :
-						state.foldersBpDoc = value
-					break;
-
-					case 'bpGroupDocument' :
-						state.foldersBpGroupDocument = value
-					break;
-				}
-			},
-
 			setCurrentFolder( state, payload ) {
 				state.currentFolder = payload.value
 			},
@@ -273,7 +252,6 @@ export default new Vuex.Store(
 
 				let newForm  = Object.assign( {}, state.forms[ form ] )
 
-				newForm.folders = ['foo']
 				Vue.set( newForm, field, value )
 
 				let newForms = Object.assign( {}, state.forms )
@@ -298,6 +276,10 @@ export default new Vuex.Store(
 				state.showDescriptions = payload.value
 			},
 
+			setSubmitInProgress( state, payload ) {
+				state.submitInProgress = payload.value
+			},
+
 			setValidationError( state, payload ) {
 				const { nodeName, message } = payload
 
@@ -308,10 +290,14 @@ export default new Vuex.Store(
 		},
 
 		actions: {
-			submitAddNew( commit, store ) {
-				const { endpointBase, nonce } = window.CACGroupLibrary
+			submitAddNew( commit ) {
+				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
-				const body = commit.state.forms
+				const itemType = commit.state.forms.itemTypeSelector
+				const body = Object.assign( {}, commit.state.forms[ itemType ], {
+					itemType,
+					groupId
+				} )
 
 				const endpoint = endpointBase + 'library-item'
 

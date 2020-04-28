@@ -39,6 +39,7 @@ class Library {
 				'canCreateNew'   => groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() ),
 				'endpointBase'   => home_url() . '/wp-json/cacgl/v1/',
 				'foldersOfGroup' => $folders,
+				'groupId'        => bp_get_current_group_id(),
 				'imgUrlBase'     => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/',
 				'iconUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/file-type-icons/',
 				'libraryItemIds' => array_keys( $items ),

@@ -7,6 +7,8 @@ use \WP_REST_Server;
 use \WP_REST_Request;
 use \WP_REST_Response;
 
+use \CAC\GroupLibrary\LibraryItem\Item;
+
 /**
  * library-item endpoint.
  */
@@ -35,7 +37,17 @@ class LibraryItem extends WP_REST_Controller {
 	 * @return bool
 	 */
 	public function create_item_permissions_check( $request ) {
-		return is_user_logged_in();
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		$group_id = $request->get_param( 'groupId' );
+
+		if ( ! $group_id || ! groups_is_user_member( get_current_user_id(), $group_id ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -46,60 +58,55 @@ class LibraryItem extends WP_REST_Controller {
 	 */
 	public function create_item( $request ) {
 		$params = $request->get_params();
-		_b( $params ); return;
 
-		$users = array(
-			'email' => $params['usersByEmail'],
-			'id' => array_map( 'intval', array_keys( $params['usersById'] ) ),
-		);
-
-		$event = new Event();
-
-		$event->set_user_id( get_current_user_id() );
-
-		$timestamp = time();
-		$event->set_timestamp( time() );
-
-		$retval = array(
+		$retval = [
 			'success' => false,
-		);
+		];
 
-		foreach ( $users as $identifier_type => $identifiers ) {
-			foreach ( $identifiers as $identifier ) {
-				$i = new Invitation();
-
-				if ( 'email' === $identifier_type ) {
-					$i->set_invitee_email( $identifier );
-				} else {
-					$i->set_invitee_id( $identifier );
-				}
-
-				$i->set_inviter_id( get_current_user_id() );
-				$i->set_date_created( date( 'Y-m-d H:i:s', $timestamp ) );
-				$i->set_message( $params['customMessage'] );
-
-				foreach ( $params['membershipItems']['group'] as $group_id ) {
-					$group_role = isset( $params['groupRoles'][ $group_id ] ) ? $params['groupRoles'][ $group_id ] : 'member';
-
-					// If the user is already a member of the group, omit the invitation.
-					$i->add_group_membership( $group_id, $group_role );
-				}
-
-				foreach ( $params['membershipItems']['site'] as $site_id ) {
-					$site_role = isset( $params['siteRoles'][ $site_id ] ) ? $params['siteRoles'][ $site_id ] : 'member';
-					$i->add_site_membership( $site_id, $site_role );
-				}
-
-				$saved = $i->save();
-
-				$event->add_invitation( $i );
-			}
+		$item_type = isset( $params['itemType'] ) ? $params['itemType'] : '';
+		if ( ! $item_type ) {
+			return rest_ensure_response( $retval );
 		}
 
-		$event->process();
+		switch ( $item_type ) {
+			case 'externalLink' :
+				$retval = $this->create_external_link( $params );
+			break;
+		}
 
-		// @todo More fine-grained success/failure?
-		$retval['success'] = true;
+		return rest_ensure_response( $retval );
+	}
+
+	protected function create_external_link( $params ) {
+		$retval = [
+			'success' => false,
+		];
+
+		$group_id = $params['groupId'];
+
+		if ( empty( $params['title'] ) || empty( $params['url'] ) ) {
+			$retval['message'] = 'You must provide a title and a link.';
+			return $retval;
+		}
+
+		$library_item = new Item();
+		$library_item->set_date_modified( date( 'Y-m-d H:i:s' ) );
+		$library_item->set_group_id( $group_id );
+		$library_item->set_item_type( 'external_link' );
+		$library_item->set_user_id( get_current_user_id() );
+		$library_item->set_title( $params['title'] );
+		$library_item->set_url( $params['url'] );
+
+		// todo add new folder
+		if ( ! empty( $params['folder'] ) && '_addNew' !== $params['folder'] ) {
+			$library_item->set_folders( [ $params['folder'] ] );
+		}
+
+		$saved = $library_item->save();
+
+		if ( $saved ) {
+			$retval['success'] = true;
+		}
 
 		return rest_ensure_response( $retval );
 	}

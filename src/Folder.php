@@ -31,6 +31,26 @@ class Folder {
 		return get_term( $created['term_id'], self::get_taxonomy_name() );
 	}
 
+	public static function get_group_folder_by_slug( $group_id, $slug ) {
+		$term = get_term_by( 'slug', $slug, self::get_taxonomy_name() );
+		if ( $term ) {
+			return $term;
+		}
+
+		// A new term is needed, so we create it.
+		$created = wp_insert_term(
+			$name,
+			self::get_taxonomy_name(),
+			[
+				'slug' => $slug,
+			]
+		);
+
+		update_term_meta( $created['term_id'], 'group_id', $group_id );
+
+		return get_term( $created['term_id'], self::get_taxonomy_name() );
+	}
+
 	public static function get_folders_of_group( $group_id ) {
 		$tq = new WP_Term_Query(
 			[

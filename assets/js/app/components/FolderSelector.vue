@@ -1,5 +1,6 @@
 <template>
 	<div class="folder-selector-dropdown">
+		{{ showme }}
 		<v-select
 			:id="inputId"
 			v-model="selected"
@@ -38,17 +39,15 @@
 				return folders
 			},
 
+			showme() {
+				return this.$store.state.forms.externalLink
+			},
+
 			selected: {
 				get() {
-					const folders = this.$store.state.foldersExternalLink
+					const { folder } = this.$store.state.forms[ this.form ]
 
-					if ( folders.length === 0 ) {
-						return ''
-					}
-
-					const theFolder = folders.shift()
-
-					if ( '_addNew' === theFolder ) {
+					if ( '_addNew' === folder ) {
 						return { 'code': '_addNew', label: 'Add new folder' }
 					}
 
@@ -56,22 +55,23 @@
 					let theTerm
 					for ( var i in foldersOfGroup ) {
 						theTerm = foldersOfGroup[ i ]
-						if ( theTerm.slug === theFolder ) {
+						if ( theTerm.slug === folder ) {
 							const retVal = { 'code': theTerm.slug, label: theTerm.name }
 							return retVal
 						}
 					}
 
-					return ''
+					return folder
 				},
 
 				set( value ) {
-					const theValue = null === value ? [] : [ value.code ]
+					const theValue = null === value ? [] : value.code
 
 					this.$store.commit(
-						'setAddNewFolders',
+						'setFormFieldValue',
 						{
-							form: 'externalLink',
+							field: 'folder',
+							form: this.form,
 							value: theValue
 						}
 					)
