@@ -66,9 +66,12 @@ class Item {
 			);
 
 			$id = $wpdb->insert_id;
+
+			$saved = $id > 0;
+
 			$this->set_id( $id );
 		} else {
-			$wpdb->update(
+			$saved = $wpdb->update(
 				$this->table_name,
 				array(
 					'group_id'       => $this->get_group_id(),
@@ -102,9 +105,11 @@ class Item {
 		}
 
 		// Set folders no matter what, in case of deletion.
-		$set = wp_set_object_terms( $this->get_id(), $this->get_folders(), 'cacgl_folder' );
+		if ( $saved ) {
+			$set = wp_set_object_terms( $this->get_id(), $this->get_folders(), 'cacgl_folder' );
+		}
 
-		return true;
+		return $saved;
 	}
 
 	public function delete() {

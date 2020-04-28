@@ -76,7 +76,6 @@ class Schema {
 					KEY title (title),
 					KEY date_modified (date_modified),
 					KEY item_type (item_type),
-					UNIQUE KEY tsg (item_type,source_item_id,group_id)
 				) {$charset_collate};";
 
 		return $sql;
