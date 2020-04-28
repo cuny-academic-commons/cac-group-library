@@ -43,6 +43,9 @@ button.description-toggle:hover {
 .group-library-item-title-details {
 	margin-left: calc(12px + 16px);
 }
+.library-item-description {
+	margin-top: 6px;
+}
 
 
 .group-library-pagination {
@@ -248,5 +251,82 @@ a.add-new-item-button:hover {
 	position: absolute;
 	right: 0;
 	top: 0;
+}
+
+
+.add-new-field.has-error input {
+	border-color: #f00;
+}
+.add-new-field.has-error .field-error {
+	background: #db1717;
+	border: 1px solid #a71a1a;
+	border-radius: 2px;
+	color: #fff;
+	padding: 10px;
+	margin-top: 7px;
+	width: 80%;
+}
+
+
+.folder-selector-dropdown .vs__dropdown-option:last-child {
+	background: #f5f5f5;
+	margin-top: 10px;
+}
+.folder-selector-dropdown .vs__dropdown-option:last-child:hover {
+	background: #5897fb;
+}
+
+
+.add-new-form {
+	padding-bottom: 100px;
+}
+
+
+.item-type-selector label {
+	display: block;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+.item-type-selector .v-select {
+	width: 300px;
+}
+
+
+.back-to-library {
+	font-size: 12px;
+	line-height: 20px;
+	margin-bottom: 18px;
+}
+.back-to-library .dashicons {
+	color: #1c576c;
+	font-size: 14px;
+	line-height: 20px;
+}
+.add-new-content {
+	border-top: 1px solid #ccc;
+	margin-top: 20px;
+	padding-top: 20px;
+}
+.add-new-form {
+	margin-top: 20px;
+	max-width: 690px;
+}
+.add-new-field {
+	margin-bottom: 20px;
+}
+.add-new-field label {
+	display: block;
+	font-weight: bold;
+}
+.add-new-field-text input {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 12px;
+	line-height: 35px;
+	padding: 0 8px;
+	width: calc(100% - 16px);
+}
+.add-new-field p.description {
+	font-style: italic;
 }
 

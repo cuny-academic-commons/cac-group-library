@@ -2,6 +2,8 @@
 
 namespace CAC\GroupLibrary;
 
+use \WP_Term_Query;
+
 class Folder {
 	public static function get_taxonomy_name() {
 		return 'cacgl_folder';
@@ -24,6 +26,25 @@ class Folder {
 			]
 		);
 
+		update_term_meta( $created['term_id'], 'group_id', $group_id );
+
 		return get_term( $created['term_id'], self::get_taxonomy_name() );
+	}
+
+	public static function get_folders_of_group( $group_id ) {
+		$tq = new WP_Term_Query(
+			[
+				'hide_empty' => false,
+				'taxonomy'   => self::get_taxonomy_name(),
+				'meta_query' => [
+					[
+						'key'   => 'group_id',
+						'value' => $group_id,
+					]
+				],
+			]
+		);
+
+		return (array) $tq->terms;
 	}
 }

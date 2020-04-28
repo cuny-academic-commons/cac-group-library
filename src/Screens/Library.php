@@ -3,6 +3,7 @@
 namespace CAC\GroupLibrary\Screens;
 
 use CAC\GroupLibrary\LibraryItem\Query;
+use CAC\GroupLibrary\Folder;
 
 class Library {
 	public static function panel() {
@@ -28,16 +29,21 @@ class Library {
 
 //		$add_new_url = bp_get_group_permalink( groups_get_current_group() ) . 'library
 
+		$folders = Folder::get_folders_of_group( bp_get_current_group_id() );
+
 		wp_localize_script(
 			'cac-group-library',
 			'CACGroupLibrary',
 			[
 				'appUrlBase'     => bp_get_group_permalink( groups_get_current_group() ) . '/library/',
 				'canCreateNew'   => groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() ),
+				'endpointBase'   => home_url() . '/wp-json/cacgl/v1/',
+				'foldersOfGroup' => $folders,
 				'imgUrlBase'     => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/',
 				'iconUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/file-type-icons/',
 				'libraryItemIds' => array_keys( $items ),
 				'libraryItems'   => $items,
+				'nonce'          => wp_create_nonce( 'wp_rest' ),
 			]
 		);
 

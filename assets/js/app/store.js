@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import fetch from 'isomorphic-fetch'
 
 Vue.use(Vuex)
 
 function initialState() {
 	const {
-		addNewUrl, canCreateNew,
+		addNewUrl, canCreateNew, foldersOfGroup,
 		libraryItemIds, libraryItems
 	} = window.CACGroupLibrary;
 
@@ -27,6 +28,26 @@ function initialState() {
 
 	const isLoading = false
 
+	const forms = {
+		itemTypeSelector: '',
+		bpDoc: {
+			title: '',
+			content: '',
+			folders: [],
+			parent: 0,
+		},
+		bpGroupDocument: {
+			title: '',
+			description: '',
+			folders: [],
+		},
+		externalLink: {
+			title: '',
+			url: '',
+			folders: [],
+		}
+	}
+
 	let state = {
 		addNewUrl,
 		canCreateNew,
@@ -37,6 +58,11 @@ function initialState() {
 		currentSort,
 		currentSortOrder,
 		filteredItemIds,
+		foldersOfGroup,
+		foldersBpDoc: [],
+		foldersBpGroupDocument: [],
+		foldersExternalLink: [],
+		forms,
 		isLoading,
 		isSearchExpanded,
 		libraryItemIds,
@@ -44,6 +70,8 @@ function initialState() {
 		paginatedItemIds,
 		perPage,
 		showDescriptions,
+		validationErrors: {},
+		visitedFields: {}
 	}
 
 	return state
@@ -188,6 +216,28 @@ export default new Vuex.Store(
 				state.paginatedItemIds = newPaginatedItemIds
 			},
 
+			resetValidationErrors( state ) {
+				state.validationErrors = {}
+			},
+
+			setAddNewFolders( state, payload ) {
+				const { form, value } = payload
+
+				switch ( form ) {
+					case 'externalLink' :
+						state.foldersExternalLink = value
+					break;
+
+					case 'bpDoc' :
+						state.foldersBpDoc = value
+					break;
+
+					case 'bpGroupDocument' :
+						state.foldersBpGroupDocument = value
+					break;
+				}
+			},
+
 			setCurrentFolder( state, payload ) {
 				state.currentFolder = payload.value
 			},
@@ -204,6 +254,38 @@ export default new Vuex.Store(
 				state.currentSearchTerm = payload.value
 			},
 
+			setFieldHasBeenVisited( state, payload ) {
+				const { formName, fieldName } = payload
+
+				let newVisitedFields = Object.assign( {}, state.visitedFields )
+
+				if ( ! newVisitedFields.hasOwnProperty( formName ) ) {
+					newVisitedFields[ formName ] = []
+				}
+
+				newVisitedFields[ formName ].push( fieldName )
+
+				state.visitedFields = newVisitedFields
+			},
+
+			setFormFieldValue( state, payload ) {
+				const { form, field, value } = payload
+
+				let newForm  = Object.assign( {}, state.forms[ form ] )
+
+				newForm.folders = ['foo']
+				Vue.set( newForm, field, value )
+
+				let newForms = Object.assign( {}, state.forms )
+				Vue.set( newForms, form, newForm )
+
+				state.forms = newForms
+			},
+
+			setItemTypeSelector( state, payload ) {
+				state.forms.itemTypeSelector = payload.value
+			},
+
 			setIsLoading( state, payload ) {
 				state.isLoading = payload.value
 			},
@@ -215,6 +297,37 @@ export default new Vuex.Store(
 			setShowDescriptions( state, payload ) {
 				state.showDescriptions = payload.value
 			},
+
+			setValidationError( state, payload ) {
+				const { nodeName, message } = payload
+
+				state.validationErrors = Object.assign( {}, state.validationErrors, {
+					[nodeName]: message
+				} )
+			}
+		},
+
+		actions: {
+			submitAddNew( commit, store ) {
+				const { endpointBase, nonce } = window.CACGroupLibrary
+
+				const body = commit.state.forms
+
+				const endpoint = endpointBase + 'library-item'
+
+				return fetch(
+					endpoint,
+					{
+						method: 'POST',
+						credentials: 'include',
+						headers: {
+							'Content-Type': 'application/json',
+							'X-WP-Nonce': nonce
+						},
+						body: JSON.stringify( body )
+					}
+				)
+			}
 		}
 	}
 )

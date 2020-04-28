@@ -3,8 +3,8 @@
 namespace CAC\GroupLibrary;
 
 class App {
-	protected $modal;
 	protected $api;
+	protected $nav;
 	protected $schema;
 
 	public $frontend;
@@ -19,51 +19,6 @@ class App {
 	 * @var string
 	 */
 	protected $nav_slug = 'library';
-
-	/**
-	 * Subnav slug for "Invitations Received" page.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @var string
-	 */
-	protected $subnav_slug_received = 'received';
-
-	/**
-	 * Subnav slug for "Invitations Sent" page.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @var string
-	 */
-	protected $subnav_slug_sent = 'sent';
-
-	/**
-	 * Subnav slug for "Claim an Invitation" page.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @var string
-	 */
-	protected $subnav_slug_claim = 'claim';
-
-	/**
-	 * Slug for top-level "Claim an Invitation" page.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @var string
-	 */
-	protected $slug_claim = 'claim-an-invitation';
-
-	/**
-	 * Position to place our menu in the user nav and admin bar.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @var int
-	 */
-	protected $nav_position = 77;
 
 	/**
 	 * Method to fetch any non-static property.
@@ -97,6 +52,9 @@ class App {
 
 		$this->nav = Nav::get_instance();
 		$this->nav->init();
+
+		$this->api = API::get_instance();
+		$this->api->init();
 
 		add_action(
 			'plugins_loaded',
