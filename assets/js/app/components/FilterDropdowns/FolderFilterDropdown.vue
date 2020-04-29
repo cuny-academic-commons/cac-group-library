@@ -17,6 +17,10 @@
 		},
 
 		computed: {
+			foldersOfGroup() {
+				return this.$store.state.foldersOfGroup
+			},
+
 			itemIds() {
 				return this.$store.state.libraryItemIds
 			},
@@ -25,6 +29,7 @@
 		methods: {
 			folders() {
 				const { itemIds, getItem } = this
+				const vm = this
 
 				let folders = []
 
@@ -33,8 +38,8 @@
 						const theItem = getItem( itemId )
 						for ( var i in theItem.folders ) {
 							folders.push( {
-								code: theItem.folders[ i ].slug,
-								label: theItem.folders[ i ].name
+								code: theItem.folders[ i ],
+								label: vm.getFolderName( theItem.folders[ i ] )
 							} )
 						}
 					}
@@ -68,6 +73,10 @@
 			getCurrentCallback() {
 				const { currentFolder } = this.$store.state
 				return this.folders().filter( folder => currentFolder === folder.code )
+			},
+
+			getFolderName( slug ) {
+				return this.foldersOfGroup[ slug ]
 			},
 
 			getItem( itemId ) {

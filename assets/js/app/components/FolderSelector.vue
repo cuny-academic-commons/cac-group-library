@@ -28,9 +28,8 @@
 
 				let theFolder
 				const { foldersOfGroup } = this
-				for ( var i in foldersOfGroup ) {
-					theFolder = foldersOfGroup[ i ]
-					folders.push( { 'code': theFolder.slug, label: theFolder.name } )
+				for ( var groupFolderSlug in foldersOfGroup ) {
+					folders.push( { 'code': groupFolderSlug, label: foldersOfGroup[ groupFolderSlug ] } )
 				}
 
 				folders.push( { 'code': '_addNew', label: 'Add new folder' } )
@@ -47,13 +46,8 @@
 					}
 
 					const { foldersOfGroup } = this
-					let theTerm
-					for ( var i in foldersOfGroup ) {
-						theTerm = foldersOfGroup[ i ]
-						if ( theTerm.slug === folder ) {
-							const retVal = { 'code': theTerm.slug, label: theTerm.name }
-							return retVal
-						}
+					if ( foldersOfGroup.hasOwnProperty( folder ) ) {
+						return { 'code': folder, label: foldersOfGroup[ folder ] }
 					}
 
 					return folder

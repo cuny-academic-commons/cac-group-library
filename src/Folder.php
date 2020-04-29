@@ -65,6 +65,11 @@ class Folder {
 			]
 		);
 
-		return (array) $tq->terms;
+		$folders = [];
+		foreach ( $tq->terms as $term ) {
+			$folders[ $term->slug ] = $term->name;
+		}
+
+		return $folders;
 	}
 }

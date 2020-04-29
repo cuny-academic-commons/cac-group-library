@@ -133,7 +133,7 @@ export default new Vuex.Store(
 					newFilteredItemIds = newFilteredItemIds.filter(
 						function( itemId ) {
 							for ( var i in state.libraryItems[ itemId ].folders ) {
-								if ( theCurrentFolder === state.libraryItems[ itemId ].folders[ i ].slug ) {
+								if ( theCurrentFolder === state.libraryItems[ itemId ].folders[ i ] ) {
 									return true
 								}
 							}

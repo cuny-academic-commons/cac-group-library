@@ -71,10 +71,10 @@ class Query {
 
 		$retval = [];
 		foreach ( $items as $item ) {
+			// Important! The group ID is not sent but is assumed from the request.
 			$formatted_item = [
 				'id'             => $item->get_id(),
 				'date_modified'  => $item->get_date_modified(),
-				'group_id'       => $item->get_group_id(),
 				'item_type'      => $item->get_item_type(),
 				'source_item_id' => $item->get_source_item_id(),
 				'title'          => $item->get_title(),
@@ -103,7 +103,7 @@ class Query {
 				$formatted_item['file_type'] = $file_type;
 			}
 
-			$folders = $item->get_folder_objects();
+			$folders = $item->get_folders();
 			if ( $folders ) {
 				$formatted_item['folders'] = $folders;
 			}
