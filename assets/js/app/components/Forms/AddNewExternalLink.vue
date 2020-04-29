@@ -1,6 +1,6 @@
 <template>
 	<div class="add-new-form">
-		<p>Please note: If you are linking to a document or other file that’s hosted externally, it will have a time stamp from when it was added to the group library. These files are linked, which means any changes made in the original location won’t trigger notifications to the group.</p>
+		<p>Please note: If you are linking to a document or other file that&apos;s hosted externally, it will have a time stamp from when it was added to the group library. These files are linked, which means any changes made in the original location won&apos;t trigger notifications to the group.</p>
 
 		<form class="add-new-form-externalLink" v-on:submit.prevent="isFormValidated">
 			<AddNewField
