@@ -12,11 +12,7 @@
 	export default {
 		computed: {
 			formData() {
-				let theFormData = Object.assign( {}, this.$store.state.forms[ this.formName ], {
-					folders: this.$store.state.foldersExternalLink
-				} )
-
-				return theFormData
+				return this.$store.state.forms[ this.formName ]
 			},
 
 			submitInProgress: {
@@ -30,8 +26,7 @@
 			},
 
 			validated() {
-				return true
-				return this.validateForm( 'externalLink' )
+				return this.validateForm( this.formName )
 			}
 		},
 
