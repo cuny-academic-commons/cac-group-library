@@ -1,6 +1,5 @@
 <template>
 	<div class="folder-selector-dropdown">
-		{{ showme }}
 		<v-select
 			:id="inputId"
 			v-model="selected"
@@ -37,10 +36,6 @@
 				folders.push( { 'code': '_addNew', label: 'Add new folder' } )
 
 				return folders
-			},
-
-			showme() {
-				return this.$store.state.forms.externalLink
 			},
 
 			selected: {
