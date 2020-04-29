@@ -131,12 +131,16 @@
 						fileName = this.getFileTypeBase() + '.png'
 					break
 
-					case 'forum_attachment' :
-						fileName = this.getFileTypeBase() + '-attachment.png'
+					case 'cacsp_paper' :
+						fileName = 'papers.png'
 					break
 
 					case 'external_link' :
 						fileName = this.getServiceFromUrl() + '.png'
+					break
+
+					case 'forum_attachment' :
+						fileName = this.getFileTypeBase() + '-attachment.png'
 					break
 				}
 
