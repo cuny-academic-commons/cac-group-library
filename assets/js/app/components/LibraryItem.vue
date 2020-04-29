@@ -144,9 +144,22 @@
 			},
 
 			getServiceFromUrl() {
-				const url = this.url()
+				const el = document.createElement('a')
+				el.href = this.url()
 
-				console.log( url )
+				if ( el.hostname.endsWith( '.dropbox.com' ) ) {
+					return 'dropbox'
+				}
+
+				if ( 'docs.google.com' === el.hostname ) {
+					return 'drive'
+				}
+
+				if ( '1drv.ms' === el.hostname || 'onedrive.live.com' === el.hostname ) {
+					return 'onedrive'
+				}
+
+				return 'external'
 			},
 
 			itemType() {
