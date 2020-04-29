@@ -21,13 +21,6 @@ class Library {
 		wp_enqueue_script( 'cac-group-library-vendors', CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/js/vendors.js', [], CAC_GROUP_LIBRARY_VER, true );
 		wp_enqueue_script( 'cac-group-library', CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/js/frontend.js', [ 'cac-group-library-runtime', 'cac-group-library-vendors' ], CAC_GROUP_LIBRARY_VER, true );
 
-		$items = Query::get_for_endpoint(
-			[
-				'group_id' => bp_get_current_group_id(),
-			]
-		);
-
-//		$add_new_url = bp_get_group_permalink( groups_get_current_group() ) . 'library
 
 		$folders = Folder::get_folders_of_group( bp_get_current_group_id() );
 
@@ -42,8 +35,6 @@ class Library {
 				'groupId'        => bp_get_current_group_id(),
 				'imgUrlBase'     => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/',
 				'iconUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/file-type-icons/',
-				'libraryItemIds' => array_keys( $items ),
-				'libraryItems'   => $items,
 				'nonce'          => wp_create_nonce( 'wp_rest' ),
 			]
 		);
