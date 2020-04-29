@@ -325,7 +325,12 @@ class Item {
 	public function get_folder_objects() {
 		return array_map(
 			function( $folder_slug ) {
-				return get_term_by( 'slug', $folder_slug, 'cacgl_folder' );
+				$term = get_term_by( 'slug', $folder_slug, 'cacgl_folder' );
+
+				return [
+					'name' => $term->name,
+					'slug' => $term->slug,
+				];
 			},
 			$this->get_folders()
 		);

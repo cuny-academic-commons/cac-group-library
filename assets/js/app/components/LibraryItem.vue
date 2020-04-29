@@ -55,11 +55,13 @@
 			},
 
 			description() {
-				return this.getItem().description
+				const item = this.getItem()
+				return item.hasOwnProperty( 'description' ) ? item.description : ''
 			},
 
 			fileType() {
-				return this.getItem().file_type
+				const item = this.getItem()
+				return item.hasOwnProperty( 'file_type' ) ? item.file_type : ''
 			},
 
 			getItem() {
@@ -175,11 +177,13 @@
 			},
 
 			topicTitle() {
-				return this.getItem().topic_title
+				const item = this.getItem()
+				return item.hasOwnProperty( 'topic_title' ) ? item.topic_title : ''
 			},
 
 			topicUrl() {
-				return this.getItem().topic_url
+				const item = this.getItem()
+				return item.hasOwnProperty( 'topic_url' ) ? item.topic_url : ''
 			},
 
 			url() {

@@ -71,21 +71,44 @@ class Query {
 
 		$retval = [];
 		foreach ( $items as $item ) {
-			$retval[ $item->get_id() ] = [
+			$formatted_item = [
 				'id'             => $item->get_id(),
 				'date_modified'  => $item->get_date_modified(),
-				'description'    => $item->get_description(),
-				'file_type'      => $item->get_file_type(),
-				'folders'        => $item->get_folder_objects(),
 				'group_id'       => $item->get_group_id(),
 				'item_type'      => $item->get_item_type(),
 				'source_item_id' => $item->get_source_item_id(),
 				'title'          => $item->get_title(),
-				'topic_title'    => $item->get_topic_title(),
-				'topic_url'      => $item->get_topic_url(),
 				'url'            => $item->get_url(),
 				'user'           => $item->get_user(),
 			];
+
+			// Reduce payload size by only adding properties when necessary.
+			$topic_title = $item->get_topic_title();
+			if ( $topic_title ) {
+				$formatted_item['topic_title'] = $topic_title;
+			}
+
+			$topic_url = $item->get_topic_url();
+			if ( $topic_url ) {
+				$formatted_item['topic_url'] = $topic_url;
+			}
+
+			$description = $item->get_description();
+			if ( $description ) {
+				$formatted_item['description'] = $description;
+			}
+
+			$file_type = $item->get_file_type();
+			if ( $file_type ) {
+				$formatted_item['file_type'] = $file_type;
+			}
+
+			$folders = $item->get_folder_objects();
+			if ( $folders ) {
+				$formatted_item['folders'] = $folders;
+			}
+
+			$retval[ $item->get_id() ] = $formatted_item;
 		}
 
 		return $retval;
