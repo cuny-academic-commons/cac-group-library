@@ -28,7 +28,7 @@
 					{ code: 'bp_doc', label: 'Docs' },
 					{ code: 'cacsp_paper', label: 'Papers' },
 					{ code: 'forum_attachment', label: 'Forum Attachments' },
-					{ code: 'links', label: 'External Links' }
+					{ code: 'external_link', label: 'External Links' }
 				]
 			},
 		},
