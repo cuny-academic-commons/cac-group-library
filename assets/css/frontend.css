@@ -16,9 +16,15 @@ button.description-toggle:hover {
 	background: 0;
 	border: 0;
 	color: #2ca0c3;
+	line-height: 14px;
 }
 button.description-toggle:hover {
 	text-decoration: underline;
+}
+.description-toggle-image {
+	height: 12px;
+	margin-left: 2px;
+	vertical-align: middle;
 }
 
 
