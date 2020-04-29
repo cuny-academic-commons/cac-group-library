@@ -76,8 +76,6 @@
 						value: payload.code
 					}
 				)
-
-				this.$store.commit( 'refresh' )
 			}
 		}
 	}

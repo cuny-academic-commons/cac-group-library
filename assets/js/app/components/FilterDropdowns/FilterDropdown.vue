@@ -35,7 +35,12 @@
 				},
 
 				set: function( payload ) {
+					// Always reset pagination on refilter.
+					this.$store.commit( 'setCurrentPage', { value: 1 } )
+
 					this.setCurrentCallback( payload )
+
+					this.$store.commit( 'refresh' )
 				}
 			},
 		},
