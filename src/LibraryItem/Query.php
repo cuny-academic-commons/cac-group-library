@@ -13,6 +13,7 @@ class Query {
 
 		$args = array_merge(
 			[
+				'group_id'       => null,
 				'item_type'      => null,
 				'source_item_id' => null,
 				'orderby'        => 'name',

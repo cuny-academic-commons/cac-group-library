@@ -4,31 +4,8 @@ import fetch from 'isomorphic-fetch'
 
 Vue.use(Vuex)
 
-function initialState() {
-	const {
-		canCreateNew, foldersOfGroup,
-		libraryItemIds, libraryItems
-	} = window.CACGroupLibrary;
-
-	const currentItemType = 'any'
-	const currentFolder = 'any'
-	const currentSort = 'title'
-	const currentSortOrder = 'asc'
-
-	const currentSearchTerm = ''
-	const isSearchExpanded = false
-
-	const currentPage = 1
-	const perPage = 20
-
-	const filteredItemIds = libraryItemIds
-	const paginatedItemIds = libraryItemIds
-
-	const showDescriptions = false
-
-	const isLoading = false
-
-	const forms = {
+function defaultFormsState() {
+	return {
 		itemTypeSelector: '',
 		bpDoc: {
 			title: '',
@@ -47,6 +24,29 @@ function initialState() {
 			folder: '',
 		}
 	}
+}
+
+function initialState() {
+	const {
+		canCreateNew, foldersOfGroup
+	} = window.CACGroupLibrary;
+
+	const currentItemType = 'any'
+	const currentFolder = 'any'
+	const currentSort = 'title'
+	const currentSortOrder = 'asc'
+
+	const currentSearchTerm = ''
+	const isSearchExpanded = false
+
+	const currentPage = 1
+	const perPage = 20
+
+	const showDescriptions = false
+
+	const isLoading = false
+
+	const forms = defaultFormsState()
 
 	return {
 		canCreateNew,
@@ -56,14 +56,15 @@ function initialState() {
 		currentSearchTerm,
 		currentSort,
 		currentSortOrder,
-		filteredItemIds,
+		filteredItemIds: [],
 		foldersOfGroup,
 		forms,
+		initialLoadComplete: false,
 		isLoading,
 		isSearchExpanded,
-		libraryItemIds,
-		libraryItems,
-		paginatedItemIds,
+		libraryItemIds: [],
+		libraryItems: {},
+		paginatedItemIds: [],
 		perPage,
 		showDescriptions,
 		submitInProgress: false,
@@ -71,8 +72,6 @@ function initialState() {
 		visitedFields: {}
 	}
 }
-
-console.log(initialState())
 
 export default new Vuex.Store(
 	{
@@ -213,6 +212,15 @@ export default new Vuex.Store(
 				state.paginatedItemIds = newPaginatedItemIds
 			},
 
+			replaceItems( state, payload ) {
+				state.libraryItems = payload
+				state.libraryItemIds = Object.keys(payload)
+			},
+
+			resetForms( state ) {
+				state.forms = defaultFormsState()
+			},
+
 			resetValidationErrors( state ) {
 				state.validationErrors = {}
 			},
@@ -260,6 +268,10 @@ export default new Vuex.Store(
 				state.forms = newForms
 			},
 
+			setInitialLoadComplete( state ) {
+				state.initialLoadComplete = true
+			},
+
 			setItemTypeSelector( state, payload ) {
 				state.forms.itemTypeSelector = payload.value
 			},
@@ -290,6 +302,33 @@ export default new Vuex.Store(
 		},
 
 		actions: {
+			refetchItems( {commit} ) {
+				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
+
+				const endpoint = endpointBase + 'library-items?groupId=' + groupId
+
+				return fetch(
+					endpoint,
+					{
+						method: 'GET',
+						credentials: 'include',
+						headers: {
+							'Content-Type': 'application/json',
+							'X-WP-Nonce': nonce
+						}
+					}
+				)
+				.then( function( response ) {
+					return response.json()
+				} )
+				.then( function ( json )  {
+					if ( json.success ) {
+						commit( 'replaceItems', json.results )
+						commit( 'refreshFilteredItemIds' )
+					}
+				} )
+			},
+
 			submitAddNew( commit ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
@@ -299,7 +338,7 @@ export default new Vuex.Store(
 					groupId
 				} )
 
-				const endpoint = endpointBase + 'library-item'
+				const endpoint = endpointBase + 'library-items'
 
 				return fetch(
 					endpoint,

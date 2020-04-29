@@ -48,12 +48,25 @@
 				.then( function( response ) {
 					return response.json()
 				}).then( function( json ) {
-					app.submitInProgress = false
-					console.log(json)
 					if ( json.success ) {
-						app.$store.commit( 'goToPanel', {
-							panelIndex: 3
-						} )
+						app.$store.commit( 'resetForms' );
+
+						app.$store.dispatch( 'refetchItems' )
+						.then( function() {
+							app.$store.commit(
+								'setSort',
+								{
+									newSort: 'date',
+									newSortOrder: 'desc',
+								}
+							)
+
+							app.$store.commit( 'refreshFilteredItemIds' )
+
+							app.$router.push( { path: '/' } )
+						})
+
+						app.submitInProgress = false
 					}
 				}).catch( function( ex ) {
 					console.log( 'failed', ex )

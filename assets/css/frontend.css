@@ -152,6 +152,9 @@ button.description-toggle:hover {
 body.groups.single-item.library #item-header {
 	display: none;
 }
+.library-loading {
+	margin-top: 24px;
+}
 #cac-group-library-inner {
 	margin-top: 24px;
 }

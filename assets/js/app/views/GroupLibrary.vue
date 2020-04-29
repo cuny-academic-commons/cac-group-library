@@ -15,7 +15,7 @@
 		</div>
 
 		<transition name="fade">
-			<div v-if="! isLoading" class="group-library-refreshable">
+			<div v-if="! isLoading && initialLoadComplete" class="group-library-refreshable">
 				<div class="group-library-nav">
 					<div class="group-library-pagination">
 						<transition name="fade" mode="out-in">
@@ -59,6 +59,10 @@
 					</ul>
 				</div>
 			</div>
+
+			<div v-if="! initialLoadComplete" class="library-loading">
+				Loading...
+			</div>
 		</transition>
 	</div>
 </template>
@@ -100,6 +104,10 @@
 				return itemClasses.join( ' ' )
 			},
 
+			initialLoadComplete() {
+				return this.$store.state.initialLoadComplete
+			},
+
 			isSearchExpanded: {
 				get() {
 					return this.$store.state.isSearchExpanded
@@ -128,11 +136,15 @@
 		},
 
 		created() {
-			this.$store.commit( 'refreshFilteredItemIds' )
+			const vm = this
+			this.$store.dispatch( 'refetchItems' )
+				.then( function() {
+					vm.$store.commit( 'refreshFilteredItemIds' )
+					vm.$store.commit( 'setInitialLoadComplete' )
+				} )
 		},
 
 		methods: {
-
 			onAddNewClick() {
 				return
 			}
@@ -143,6 +155,10 @@
 <style>
 body.groups.single-item.library #item-header {
 	display: none;
+}
+
+.library-loading {
+	margin-top: 24px;
 }
 
 #cac-group-library-inner {

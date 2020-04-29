@@ -8,6 +8,7 @@ use \WP_REST_Request;
 use \WP_REST_Response;
 
 use \CAC\GroupLibrary\LibraryItem\Item;
+use \CAC\GroupLibrary\LibraryItem\Query;
 
 /**
  * library-item endpoint.
@@ -20,11 +21,20 @@ class LibraryItem extends WP_REST_Controller {
 		$version = '1';
 		$namespace = 'cacgl/v' . $version;
 
-		register_rest_route( $namespace, '/library-item', array(
+		register_rest_route( $namespace, '/library-items', array(
 			array(
 				'methods'         => WP_REST_Server::CREATABLE,
 				'callback'        => array( $this, 'create_item' ),
 				'permission_callback' => array( $this, 'create_item_permissions_check' ),
+				'args'            => $this->get_endpoint_args_for_item_schema( true ),
+			),
+		) );
+
+		register_rest_route( $namespace, '/library-items', array(
+			array(
+				'methods'         => WP_REST_Server::READABLE,
+				'callback'        => array( $this, 'get_items' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'            => $this->get_endpoint_args_for_item_schema( true ),
 			),
 		) );
@@ -109,5 +119,55 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		return rest_ensure_response( $retval );
+	}
+
+	/**
+	 * Permission check for getting item.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return bool
+	 */
+	public function get_items_permissions_check( $request ) {
+		$group_id = $request->get_param( 'groupId' );
+
+		// Only group-specific items for now.
+		if ( ! $group_id ) {
+			return false;
+		}
+
+		$group = groups_get_group( $group_id );
+
+		if ( ! $group->id ) {
+			return false;
+		}
+
+		if ( 'public' === $group->status ) {
+			return true;
+		}
+
+		return groups_is_user_member( get_current_user_id(), $group_id );
+	}
+
+	/**
+	 * Gets a list of library items.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function get_items( $request ) {
+		$params = $request->get_params();
+
+		$group_id = $params['groupId'];
+
+		$results = Query::get_for_endpoint(
+			[
+				'group_id' => $group_id,
+			]
+		);
+
+		return rest_ensure_response( [
+			'success' => true,
+			'results' => $results,
+		] );
 	}
 }

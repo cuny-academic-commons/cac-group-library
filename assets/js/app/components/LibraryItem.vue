@@ -134,9 +134,19 @@
 					case 'forum_attachment' :
 						fileName = this.getFileTypeBase() + '-attachment.png'
 					break
+
+					case 'external_link' :
+						fileName = this.getServiceFromUrl() + '.png'
+					break
 				}
 
 				return window.CACGroupLibrary.iconUrlBase + fileName
+			},
+
+			getServiceFromUrl() {
+				const url = this.url()
+
+				console.log( url )
 			},
 
 			itemType() {
