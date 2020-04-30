@@ -17,6 +17,7 @@ function defaultFormsState() {
 			title: '',
 			description: '',
 			folder: '',
+			file: '',
 		},
 		externalLink: {
 			title: '',
@@ -333,23 +334,44 @@ export default new Vuex.Store(
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
 				const itemType = commit.state.forms.itemTypeSelector
-				const body = Object.assign( {}, commit.state.forms[ itemType ], {
-					itemType,
-					groupId
-				} )
+
+				let body, contentType
+				if ( 'bpGroupDocument' === itemType ) {
+					body = new FormData()
+
+					for ( var fieldName in commit.state.forms[ itemType ] ) {
+						body.append( fieldName, commit.state.forms[ itemType ][ fieldName ] )
+					}
+
+					body.append( 'itemType', itemType )
+					body.append( 'groupId', groupId )
+					contentType = ''
+				} else {
+					body = Object.assign( {}, commit.state.forms[ itemType ], {
+						itemType,
+						groupId
+					} )
+					body = JSON.stringify( body )
+					contentType = 'application/json'
+				}
 
 				const endpoint = endpointBase + 'library-items'
+
+				let headers = {
+						'X-WP-Nonce': nonce
+				}
+
+				if ( contentType.length > 0 ) {
+					headers['Content-Type'] = contentType
+				}
 
 				return fetch(
 					endpoint,
 					{
 						method: 'POST',
 						credentials: 'include',
-						headers: {
-							'Content-Type': 'application/json',
-							'X-WP-Nonce': nonce
-						},
-						body: JSON.stringify( body )
+						headers,
+						body,
 					}
 				)
 			}

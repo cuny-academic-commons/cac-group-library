@@ -37,46 +37,48 @@
 					function( itemId ) {
 						const theItem = getItem( itemId )
 						for ( var i in theItem.folders ) {
+							folders.push( theItem.folders[ i ] )
+							/*
 							folders.push( {
 								code: theItem.folders[ i ],
-								label: vm.getFolderName( theItem.folders[ i ] )
+								value: theItem.folders[ i ],
 							} )
+							*/
 						}
 					}
 				)
 
-				let folderSlugs = []
 				let uniqueFolders = folders.filter(
-					function( folder ) {
-						if ( -1 === folderSlugs.indexOf( folder.code ) ) {
-							folderSlugs.push( folder.code )
-							return true
-						}
-
-						return false
+					function( value, index, self ) {
+						return self.indexOf( value ) === index
 					}
 				)
 
 				uniqueFolders.sort(
 					function( a, b ) {
-						return a.label.localeCompare( b.label )
+						return a.localeCompare( b )
+					}
+				)
+
+				let folderObjects = uniqueFolders.map(
+					function( folder ) {
+						return {
+							code: folder,
+							label: folder,
+						}
 					}
 				)
 
 				const anyFolder = { code: 'any', label: 'Any folder' }
 
-				uniqueFolders.unshift( anyFolder )
+				folderObjects.unshift( anyFolder )
 
-				return uniqueFolders
+				return folderObjects
 			},
 
 			getCurrentCallback() {
 				const { currentFolder } = this.$store.state
 				return this.folders().filter( folder => currentFolder === folder.code )
-			},
-
-			getFolderName( slug ) {
-				return this.foldersOfGroup[ slug ]
 			},
 
 			getItem( itemId ) {

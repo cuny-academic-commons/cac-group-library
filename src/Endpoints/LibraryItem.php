@@ -9,6 +9,10 @@ use \WP_REST_Response;
 
 use \CAC\GroupLibrary\LibraryItem\Item;
 use \CAC\GroupLibrary\LibraryItem\Query;
+use \CAC\GroupLibrary\Folder;
+use \CAC\GroupLibrary\Sync\BuddyPressGroupDocumentsSync;
+
+use \BP_Group_Documents;
 
 /**
  * library-item endpoint.
@@ -82,6 +86,11 @@ class LibraryItem extends WP_REST_Controller {
 			case 'externalLink' :
 				$retval = $this->create_external_link( $params );
 			break;
+
+			case 'bpGroupDocument' :
+				$file_params = $request->get_file_params();
+				$retval = $this->create_bp_group_document( $params, $file_params['file'] );
+			break;
 		}
 
 		return rest_ensure_response( $retval );
@@ -119,6 +128,94 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		return rest_ensure_response( $retval );
+	}
+
+	protected function create_bp_group_document( $params, $file_params ) {
+		$retval = [
+			'success' => false,
+		];
+
+		//if there was any upload errors, spit them out
+		$error_message = '';
+		if ( $file_params['error'] ) {
+			switch( $file_params['error'] ) {
+				case UPLOAD_ERR_INI_SIZE:
+					$error_message = 'There was a problem; your file is larger than is allowed by the site administrator.';
+				break;
+				case UPLOAD_ERR_PARTIAL:
+					$error_message = 'There was a problem; the file was only partially uploaded.';
+				break;
+				case UPLOAD_ERR_NO_FILE:
+					$error_message = 'There was a problem; no file was found for the upload.';
+				break;
+				case UPLOAD_ERR_NO_TMP_DIR:
+					$error_message = 'There was a problem; the temporary folder for the file is missing.';
+				break;
+				case UPLOAD_ERR_CANT_WRITE:
+					$error_message = 'There was a problem; the file could not be saved.';
+				break;
+			}
+		}
+
+		if ( $error_message ) {
+			$retval['message'] = $error_message;
+			return $retval;
+		}
+
+		//if the user didn't specify a display name, use the file name (before the timestamp)
+		if ( empty( $params['title'] ) ) {
+			$params['title'] = basename( $file_params['name'] );
+		}
+
+		$doc = new BP_Group_Documents();
+
+		$doc->user_id     = get_current_user_id();
+		$doc->group_id    = $params['groupId'];
+		$doc->name        = $params['title'];
+		$doc->description = $params['description'];
+		$doc->featured    = false;
+		$doc->file        = basename( $file_params['name'] );
+
+		$file_path = $doc->get_path( 0,1 );
+
+		if ( ! move_uploaded_file( $file_params['tmp_name'], $file_path ) ) {
+			$error_message = 'There was a problem saving your file, please try again.';
+		}
+
+		$saved = $doc->save( false );
+
+		// @todo This does nothing at the moment.
+		$silent = ! empty( $_POST['bp_group_documents_silent_add'] );
+		do_action( 'bp_group_documents_add_success', $doc, $silent );
+
+						// @todo
+						//self::update_categories($document);
+
+		// @todo New folders.
+		if ( ! empty( $params['folder'] ) ) {
+			// Must trim the group ID prefix.
+			$group_suffix = $params['groupId'] . '-';
+			if ( 0 === strpos( $params['folder'], $group_suffix ) ) {
+				$params['folder'] = substr( $params['folder'], strlen( $group_suffix ) );
+			}
+
+			$gd_category = get_term_by( 'slug', $params['folder'], 'group-documents-category' );
+			if ( ! $gd_category ) {
+				$term_info = wp_insert_term( $params['folder'], 'group-documents-category' );
+				$term_id   = $term_info['term_id'];
+			} else {
+				$term_id = $gd_category->term_id;
+			}
+
+			wp_set_object_terms( $doc->id, [ $term_id ], 'group-documents-category' );
+
+			// Resync.
+			BuddyPressGroupDocumentsSync::sync_to_library( $doc->id );
+		}
+
+		$retval['success'] = true;
+
+		return $retval;
 	}
 
 	/**

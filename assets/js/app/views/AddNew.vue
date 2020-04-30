@@ -84,26 +84,4 @@
 		margin-top: 20px;
 		max-width: 690px;
 	}
-
-	.add-new-field {
-		margin-bottom: 20px;
-	}
-
-	.add-new-field label {
-		display: block;
-		font-weight: bold;
-	}
-
-	.add-new-field-text input {
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 12px;
-		line-height: 35px;
-		padding: 0 8px;
-		width: calc(100% - 16px);
-	}
-
-	.add-new-field p.description {
-		font-style: italic;
-	}
 </style>

@@ -2,6 +2,8 @@
 
 namespace CAC\GroupLibrary\LibraryItem;
 
+use CAC\GroupLibrary\Folder;
+
 class Item {
 	protected $table_name;
 
@@ -105,8 +107,19 @@ class Item {
 		}
 
 		// Set folders no matter what, in case of deletion.
-		if ( $saved ) {
-			$set = wp_set_object_terms( $this->get_id(), $this->get_folders(), 'cacgl_folder' );
+		if ( $this->get_id() ) {
+			$folder_names = $this->get_folders();
+			$folder_ids   = [];
+			foreach ( $folder_names as $folder ) {
+				$term = Folder::get_group_folder_by_name( $this->get_group_id(), $folder );
+
+				$folder_ids[] = $term->term_id;
+			}
+			$set = wp_set_object_terms( $this->get_id(), $folder_ids, 'cacgl_folder' );
+
+			if ( $set ) {
+				$saved = true;
+			}
 		}
 
 		return $saved;
@@ -150,7 +163,7 @@ class Item {
 		$this->set_url( $row->url );
 
 		$folders = wp_get_object_terms( $this->get_id(), 'cacgl_folder' );
-		$this->set_folders( wp_list_pluck( $folders, 'slug' ) );
+		$this->set_folders( wp_list_pluck( $folders, 'name' ) );
 	}
 
 	/**
@@ -315,25 +328,6 @@ class Item {
 		}
 
 		return $folders;
-	}
-
-	/**
-	 * Get folder objects.
-	 *
-	 * @return array
-	 */
-	public function get_folder_objects() {
-		return array_map(
-			function( $folder_slug ) {
-				$term = get_term_by( 'slug', $folder_slug, 'cacgl_folder' );
-
-				return [
-					'name' => $term->name,
-					'slug' => $term->slug,
-				];
-			},
-			$this->get_folders()
-		);
 	}
 
 	/**

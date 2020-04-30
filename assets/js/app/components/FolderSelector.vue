@@ -28,8 +28,13 @@
 
 				let theFolder
 				const { foldersOfGroup } = this
-				for ( var groupFolderSlug in foldersOfGroup ) {
-					folders.push( { 'code': groupFolderSlug, label: foldersOfGroup[ groupFolderSlug ] } )
+				for ( var i in foldersOfGroup ) {
+					folders.push(
+						{
+							code: foldersOfGroup[ i ],
+							label: foldersOfGroup[ i ],
+						}
+					)
 				}
 
 				folders.push( { 'code': '_addNew', label: 'Add new folder' } )
@@ -46,8 +51,8 @@
 					}
 
 					const { foldersOfGroup } = this
-					if ( foldersOfGroup.hasOwnProperty( folder ) ) {
-						return { 'code': folder, label: foldersOfGroup[ folder ] }
+					if ( -1 !== foldersOfGroup.indexOf( folder ) ) {
+						return { 'code': folder, label: folder }
 					}
 
 					return folder

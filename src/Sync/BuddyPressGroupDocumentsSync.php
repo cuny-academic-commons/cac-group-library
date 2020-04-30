@@ -53,7 +53,7 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 
 		$document = new BP_Group_Documents( $document_id );
 
-		$group_id = $document->group_id;
+		$group_id = (int) $document->group_id;
 
 		$item = self::get_library_item_from_source_item_id( $document_id, $group_id );
 
@@ -62,8 +62,9 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 		$categories = wp_get_object_terms( $document->id, 'group-documents-category' );
 		$folders = array_map(
 			function( $category ) use ( $group_id ) {
+				// Ensures that folder exists.
 				$folder = Folder::get_group_folder_by_name( $group_id, $category->name );
-				return $folder->slug;
+				return $folder->name;
 			},
 			$categories
 		);
