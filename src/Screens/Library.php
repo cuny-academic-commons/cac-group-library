@@ -21,6 +21,9 @@ class Library {
 		wp_enqueue_script( 'cac-group-library-vendors', CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/js/vendors.js', [], CAC_GROUP_LIBRARY_VER, true );
 		wp_enqueue_script( 'cac-group-library', CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/js/frontend.js', [ 'cac-group-library-runtime', 'cac-group-library-vendors' ], CAC_GROUP_LIBRARY_VER, true );
 
+		if ( is_user_logged_in() ) {
+			wp_enqueue_editor();
+		}
 
 		$folders = Folder::get_folders_of_group( bp_get_current_group_id() );
 

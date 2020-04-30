@@ -340,6 +340,16 @@ a.add-new-item-button:hover {
 	padding-bottom: 100px;
 }
 
+/* Overriding BP styles */
+.mce-tinymce button:hover, .mce-tinymce a.button:hover, .mce-tinymce a.button:focus, .mce-tinymce input[type=submit]:hover, .mce-tinymce input[type=button]:hover, .mce-tinymce input[type=reset]:hover {
+	border: none;
+}
+
+
+.add-new-form {
+	padding-bottom: 100px;
+}
+
 
 .add-new-form {
 	padding-bottom: 100px;

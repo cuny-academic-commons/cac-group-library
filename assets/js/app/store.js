@@ -70,6 +70,7 @@ function initialState() {
 		libraryItems: {},
 		paginatedItemIds: [],
 		perPage,
+		potentialParentDocs: [],
 		showDescriptions,
 		submitInProgress: false,
 		validationErrors: {},
@@ -221,6 +222,10 @@ export default new Vuex.Store(
 				state.libraryItemIds = Object.keys(payload)
 			},
 
+			replacePotentialParentDocs( state, payload ) {
+				state.potentialParentDocs = payload
+			},
+
 			resetForms( state ) {
 				state.forms = defaultFormsState()
 			},
@@ -306,6 +311,32 @@ export default new Vuex.Store(
 		},
 
 		actions: {
+			fetchPotentialParentDocs( {commit} ) {
+				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
+
+				const endpoint = endpointBase + 'potential-parent-docs?groupId=' + groupId
+
+				return fetch(
+					endpoint,
+					{
+						method: 'GET',
+						credentials: 'include',
+						headers: {
+							'Content-Type': 'application/json',
+							'X-WP-Nonce': nonce
+						}
+					}
+				)
+				.then( function( response ) {
+					return response.json()
+				} )
+				.then( function ( json )  {
+					if ( json.success ) {
+						commit( 'replacePotentialParentDocs', json.results )
+					}
+				} )
+			},
+
 			refetchItems( {commit} ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
