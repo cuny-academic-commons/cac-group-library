@@ -11,18 +11,21 @@ function defaultFormsState() {
 			title: '',
 			content: '',
 			folder: '',
+			newFolderTitle: '',
 			parent: 0,
 		},
 		bpGroupDocument: {
 			title: '',
 			description: '',
 			folder: '',
+			newFolderTitle: '',
 			file: '',
 		},
 		externalLink: {
 			title: '',
 			url: '',
 			folder: '',
+			newFolderTitle: '',
 		}
 	}
 }

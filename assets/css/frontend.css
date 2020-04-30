@@ -270,6 +270,7 @@ a.add-new-item-button:hover {
 	display: block;
 	font-weight: bold;
 }
+.add-new-folder-container input,
 .add-new-field-text input {
 	border: 1px solid #ccc;
 	border-radius: 4px;
@@ -289,26 +290,49 @@ a.add-new-item-button:hover {
 	padding: 8px;
 	width: calc(100% - 16px);
 }
+.add-new-folder-container.has-error input,
 .add-new-field.has-error input {
 	border-color: #f00;
 }
+.add-new-folder-container.has-error .field-error,
 .add-new-field.has-error .field-error {
-	background: #db1717;
-	border: 1px solid #a71a1a;
 	border-radius: 2px;
-	color: #fff;
-	padding: 10px;
+	color: #f00;
+	padding: 5px 0;
 	margin-top: 7px;
 	width: 80%;
 }
 
 
-.folder-selector-dropdown .vs__dropdown-option:last-child {
+.folder-selector-dropdown .vs__dropdown-option {
+	padding: 0;
+}
+.folder-selector-dropdown .folder-selector-option-content {
+	padding: 3px 20px;
+}
+.folder-selector-dropdown .vs__dropdown-option .add-new-folder-option {
 	background: #f5f5f5;
 	margin-top: 10px;
 }
-.folder-selector-dropdown .vs__dropdown-option:last-child:hover {
+.folder-selector-dropdown .vs__dropdown-option:hover .add-new-folder-option {
 	background: #5897fb;
+}
+.add-new-folder-option {
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	width: 100%;
+}
+.add-new-folder-option .dashicons {
+	line-height: 30px;
+}
+.add-new-folder-container {
+	background: #f5f5f5;
+	margin-top: 10px;
+	padding: 8px 12px;
+}
+.add-new-folder-container input {
+	width: 50%;
 }
 
 

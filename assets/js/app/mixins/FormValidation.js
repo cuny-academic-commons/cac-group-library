@@ -16,11 +16,30 @@ module.exports = {
 			return -1 !== visitedFieldsOfForm.indexOf( fieldName )
 		},
 
+		addNewFolderIsInvalid( formName ) {
+			const form = this.$store.state.forms[ formName ]
+			const { folder, newFolderTitle } = form
+
+			if ( '_addNew' !== folder ) {
+				return false;
+			}
+
+			return newFolderTitle.length === 0
+		},
+
 		validateForm( formName, validateAll = false ) {
 			const invalidNodes = document.querySelectorAll( `.add-new-form-${formName} :invalid` )
 			const vm = this;
 
 			this.$store.commit( 'resetValidationErrors' )
+
+			// Special case: _addNew and corresponding field.
+			const showAddNewFolderError = this.addNewFolderIsInvalid( formName ) && this.fieldHasBeenVisited( formName, 'add-new-folder-input' )
+
+			// All valid.
+			if ( ! showAddNewFolderError && invalidNodes.length === 0 ) {
+				return true
+			}
 
 			if ( invalidNodes.length > 0 ) {
 				invalidNodes.forEach( node => {
@@ -36,12 +55,19 @@ module.exports = {
 						}
 					)
 				} )
-
-				return false
-			} else {
-				return true
 			}
 
+			if ( showAddNewFolderError ) {
+				vm.$store.commit(
+					'setValidationError',
+					{
+						nodeName: 'add-new-folder-input',
+						message: 'Please provide a name for the new folder',
+					}
+				)
+			}
+
+			return false
 		}
 	}
 }

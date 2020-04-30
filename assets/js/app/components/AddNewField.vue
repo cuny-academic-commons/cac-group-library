@@ -165,6 +165,7 @@
 		font-weight: bold;
 	}
 
+	.add-new-folder-container input,
 	.add-new-field-text input {
 		border: 1px solid #ccc;
 		border-radius: 4px;
@@ -187,16 +188,16 @@
 		width: calc(100% - 16px);
 	}
 
+	.add-new-folder-container.has-error input,
 	.add-new-field.has-error input {
 		border-color: #f00;
 	}
 
+	.add-new-folder-container.has-error .field-error,
 	.add-new-field.has-error .field-error {
-		background: #db1717;
-		border: 1px solid #a71a1a;
 		border-radius: 2px;
-		color: #fff;
-		padding: 10px;
+		color: #f00;
+		padding: 5px 0;
 		margin-top: 7px;
 		width: 80%;
 	}

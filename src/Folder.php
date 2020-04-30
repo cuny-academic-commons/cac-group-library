@@ -27,25 +27,31 @@ class Folder {
 		if ( $tq->terms ) {
 			$term = reset( $tq->terms );
 		} else {
-			$slug = $group_id . '-' . sanitize_title_with_dashes( $name );
-
 			// A new term is needed, so we create it.
-			$created = wp_insert_term(
-				$name,
-				self::get_taxonomy_name(),
-				[
-					'slug' => $slug,
-				]
-			);
+			$term_id = self::create_folder( $name, $group_id );
 
-			update_term_meta( $created['term_id'], 'group_id', $group_id );
-
-			$term = get_term( $created['term_id'], self::get_taxonomy_name() );
+			$term = get_term( $term_id, self::get_taxonomy_name() );
 		}
 
 		return $term;
 	}
 
+	public static function create_folder( $name, $group_id ) {
+		$slug = $group_id . '-' . sanitize_title_with_dashes( $name );
+
+		// A new term is needed, so we create it.
+		$created = wp_insert_term(
+			$name,
+			self::get_taxonomy_name(),
+			[
+				'slug' => $slug,
+			]
+		);
+
+		update_term_meta( $created['term_id'], 'group_id', $group_id );
+
+		return $created['term_id'];
+	}
 
 	public static function get_folders_of_group( $group_id ) {
 		$tq = new WP_Term_Query(
