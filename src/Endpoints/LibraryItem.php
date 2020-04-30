@@ -11,8 +11,10 @@ use \CAC\GroupLibrary\LibraryItem\Item;
 use \CAC\GroupLibrary\LibraryItem\Query;
 use \CAC\GroupLibrary\Folder;
 use \CAC\GroupLibrary\Sync\BuddyPressGroupDocumentsSync;
+use \CAC\GroupLibrary\Sync\BuddyPressDocsSync;
 
 use \BP_Group_Documents;
+use \BP_Docs_Query;
 
 /**
  * library-item endpoint.
@@ -90,6 +92,10 @@ class LibraryItem extends WP_REST_Controller {
 			case 'bpGroupDocument' :
 				$file_params = $request->get_file_params();
 				$retval = $this->create_bp_group_document( $params, $file_params['file'] );
+			break;
+
+			case 'bpDoc' :
+				$retval = $this->create_bp_doc( $params );
 			break;
 		}
 
@@ -217,6 +223,37 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		$retval['success'] = true;
+
+		return $retval;
+	}
+
+	protected function create_bp_doc( $params ) {
+		$create_args = [
+			'title' => $params['title'],
+			'content' => $params['content'],
+			'author_id' => get_current_user_id(),
+			'group_id' => $params['groupId'],
+			'parent_id' => isset( $params['parent']['code'] ) ? intval( $params['parent']['code'] ) : 0,
+		];
+
+		$docs_query = new BP_Docs_Query();
+		$created    = $docs_query->save( $create_args );
+
+		$retval = [
+			'success' => false,
+		];
+
+		if ( empty( $created['doc_id'] ) ) {
+			return $retval;
+		}
+
+		$retval['success'] = true;
+
+		if ( ! empty( $params['folder'] ) ) {
+			$library_item = BuddyPressDocsSync::get_library_item_from_source_item_id( $created['doc_id'], $params['groupId'] );
+			$library_item->set_folders( [ $params['folder'] ] );
+			$library_item->save();
+		}
 
 		return $retval;
 	}
