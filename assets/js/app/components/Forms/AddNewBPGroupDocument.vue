@@ -74,7 +74,6 @@
 			fileTooltip() {
 				const { maxUploadSizeFormatted, uploadFiletypes } = window.CACGroupLibrary
 				const types = uploadFiletypes.join( ' ')
-				console.log(types)
 
 				return 'Max file size: ' + maxUploadSizeFormatted + '. Supported file types: ' + types
 			},
