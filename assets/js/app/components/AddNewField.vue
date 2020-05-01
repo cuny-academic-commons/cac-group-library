@@ -25,6 +25,7 @@
 			:id="fieldId"
 			:name="fieldId"
 			:required="required"
+			:accept="acceptFiletypes"
 			type="file"
 			v-on:blur="setFieldVisited()"
 			v-on:change="setFile"
@@ -57,6 +58,11 @@
 
 	export default {
 		computed: {
+			acceptFiletypes() {
+				const { uploadFiletypes } = window.CACGroupLibrary
+				return uploadFiletypes.map( type => '.' + type ).join( ',' )
+			},
+
 			className() {
 				const { fieldType, validationError } = this
 
@@ -143,12 +149,14 @@
 			},
 
 			setFile(e) {
+				const theFile = e.target.files[0]
+
 				this.$store.commit(
 					'setFormFieldValue',
 					{
 						form: this.formName,
 						field: this.fieldName,
-						value: e.target.files[0]
+						value: theFile
 					}
 				)
 			}

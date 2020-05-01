@@ -36,8 +36,11 @@ module.exports = {
 			// Special case: _addNew and corresponding field.
 			const showAddNewFolderError = this.addNewFolderIsInvalid( formName ) && this.fieldHasBeenVisited( formName, 'add-new-folder-input' )
 
+			// Special case: file input
+			const showFileError = this.fileIsInvalid( formName )
+
 			// All valid.
-			if ( ! showAddNewFolderError && invalidNodes.length === 0 ) {
+			if ( ! showAddNewFolderError && invalidNodes.length === 0 && showFileError.length === 0 ) {
 				return true
 			}
 
@@ -67,8 +70,39 @@ module.exports = {
 				)
 			}
 
+			if ( showFileError ) {
+				vm.$store.commit(
+					'setValidationError',
+					{
+						nodeName: 'add-new-file-file',
+						message: showFileError,
+					}
+				)
+			}
+
 			return false
+		},
+
+		fileIsInvalid( formName ) {
+			const { maxUploadSize, maxUploadSizeFormatted, uploadFiletypes } = window.CACGroupLibrary
+			const form = this.$store.state.forms[ formName ]
+			const { file } = form
+
+			if ( ! file ) {
+				return ''
+			}
+
+			if ( file.size > maxUploadSize ) {
+				return 'Your file is too large. Max upload size: ' + maxUploadSizeFormatted
+			} 
+
+			const fileExtension = file.name.split('.').pop();
+			if ( -1 === uploadFiletypes.indexOf( fileExtension ) ) {
+				return 'File type not allowed.'
+			}
+
+			return ''
 		}
-	}
+	},
 }
 
