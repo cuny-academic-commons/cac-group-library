@@ -27,18 +27,24 @@ class Library {
 
 		$folders = Folder::get_folders_of_group( bp_get_current_group_id() );
 
+		$max_upload_size  = wp_max_upload_size();
+		$upload_filetypes = get_option( 'bp_group_documents_valid_file_formats' );
+
 		wp_localize_script(
 			'cac-group-library',
 			'CACGroupLibrary',
 			[
-				'appUrlBase'     => bp_get_group_permalink( groups_get_current_group() ) . '/library/',
-				'canCreateNew'   => groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() ),
-				'endpointBase'   => home_url() . '/wp-json/cacgl/v1/',
-				'foldersOfGroup' => $folders,
-				'groupId'        => bp_get_current_group_id(),
-				'imgUrlBase'     => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/',
-				'iconUrlBase'    => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/file-type-icons/',
-				'nonce'          => wp_create_nonce( 'wp_rest' ),
+				'appUrlBase'             => bp_get_group_permalink( groups_get_current_group() ) . '/library/',
+				'canCreateNew'           => groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() ),
+				'endpointBase'           => home_url() . '/wp-json/cacgl/v1/',
+				'foldersOfGroup'         => $folders,
+				'groupId'                => bp_get_current_group_id(),
+				'imgUrlBase'             => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/',
+				'iconUrlBase'            => CAC_GROUP_LIBRARY_PLUGIN_URL . '/assets/img/file-type-icons/',
+				'maxUploadSize'          => $max_upload_size,
+				'maxUploadSizeFormatted' => size_format( $max_upload_size ),
+				'nonce'                  => wp_create_nonce( 'wp_rest' ),
+				'uploadFiletypes'        => explode( ',', $upload_filetypes ),
 			]
 		);
 

@@ -1,7 +1,7 @@
 <template>
 	<div class="add-new-form">
-		<form 
-			class="add-new-form-externalLink" 
+		<form
+			class="add-new-form-externalLink"
 			enctype="multipart/form-data"
 			v-on:submit.prevent="isFormValidated"
 		>
@@ -32,7 +32,7 @@
 				formName="bpGroupDocument"
 				fieldName="file"
 				fieldType="file"
-				tooltip="Max file size XX. Supported file types: foo" 
+				:tooltip="fileTooltip"
 			/>
 
 			<div class="add-new-field add-new-field-dropdown">
@@ -71,6 +71,14 @@
 		},
 
 		computed: {
+			fileTooltip() {
+				const { maxUploadSizeFormatted, uploadFiletypes } = window.CACGroupLibrary
+				const types = uploadFiletypes.join( ' ')
+				console.log(types)
+
+				return 'Max file size: ' + maxUploadSizeFormatted + '. Supported file types: ' + types
+			},
+
 			isFormValidated() {
 				return this.validateForm( 'externalLink' )
 			},

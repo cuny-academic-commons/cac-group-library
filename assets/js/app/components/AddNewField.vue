@@ -1,8 +1,13 @@
 <template>
 	<div :class="className">
-		<label
-			:for="fieldId"
-		>{{fieldLabel}}</label>
+		<label :for="fieldId">
+			{{fieldLabel}}
+			<button
+				class="tooltip-button"
+				v-if="hasTooltip"
+				v-tooltip.right-start="tooltipText"
+			/>
+		</label>
 
 		<input
 			v-if="isInputTypeText"
@@ -67,6 +72,10 @@
 				return classes.join( ' ' )
 			},
 
+			hasTooltip() {
+				return this.tooltipText.length > 0
+			},
+
 			isInputTypeFile() {
 				return 'file' === this.fieldType
 			},
@@ -77,6 +86,12 @@
 
 			isInputTypeTextarea() {
 				return 'textarea' === this.fieldType
+			},
+
+			tooltipText() {
+				const { tooltip } = this
+
+				return 'undefined' === typeof tooltip ? '' : tooltip
 			},
 
 			validationError() {
@@ -200,5 +215,85 @@
 		padding: 5px 0;
 		margin-top: 7px;
 		width: 80%;
+	}
+
+	.tooltip-button {
+		background: none;
+		border: 0;
+		margin-left: 2px;
+		padding: 0;
+		vertical-align: middle;
+	}
+
+	.tooltip-button:hover {
+		border: 0;
+	}
+
+	.tooltip-button:after {
+		content: "\f348";
+		font-family: 'dashicons';
+		font-size: 16px;
+	}
+
+	.tooltip {
+	  display: block !important;
+	  z-index: 10000;
+	  width: 250px;
+	}
+
+	.tooltip .tooltip-inner {
+	  background: black;
+	  color: white;
+	  border-radius: 4px;
+	  padding: 5px 10px 4px;
+	}
+
+	.tooltip .tooltip-arrow {
+	  width: 0;
+	  height: 0;
+	  border-style: solid;
+	  position: absolute;
+	  margin: 5px;
+	  border-color: black;
+	  z-index: 1;
+	}
+
+	.tooltip[x-placement^="right"] {
+	  margin-left: 5px;
+	}
+
+	.tooltip[x-placement^="right"] .tooltip-arrow {
+	  border-width: 5px 5px 5px 0;
+	  border-left-color: transparent !important;
+	  border-top-color: transparent !important;
+	  border-bottom-color: transparent !important;
+	  left: -5px;
+	  top: calc(50% - 5px);
+	  margin-left: 0;
+	  margin-right: 0;
+	}
+
+	.tooltip.popover .popover-inner {
+	  background: #f9f9f9;
+	  color: black;
+	  padding: 24px;
+	  border-radius: 2px;
+	  box-shadow: 0 5px 30px rgba(black, .1);
+	}
+
+	.tooltip.popover .popover-arrow {
+	  border-color: #f9f9f9;
+	}
+
+	.tooltip[aria-hidden='true'] {
+	  visibility: hidden;
+	  opacity: 0;
+	  transition: opacity .15s, visibility .15s;
+	}
+
+	.tooltip[aria-hidden='false'] {
+	  visibility: visible;
+	  opacity: 1;
+	  transition: opacity .15s;
 	}
 </style>
