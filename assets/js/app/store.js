@@ -72,6 +72,7 @@ function initialState() {
 		perPage,
 		potentialParentDocs: [],
 		showDescriptions,
+		successMessage: '',
 		submitInProgress: false,
 		validationErrors: {},
 		visitedFields: {}
@@ -299,6 +300,10 @@ export default new Vuex.Store(
 
 			setSubmitInProgress( state, payload ) {
 				state.submitInProgress = payload.value
+			},
+
+			setSuccessMessage( state, payload ) {
+				state.successMessage = payload.value
 			},
 
 			setValidationError( state, payload ) {

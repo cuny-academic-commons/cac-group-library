@@ -15,6 +15,12 @@
 		</div>
 
 		<transition name="fade">
+			<div v-if="successMessage.length > 0" class="success-message">
+				{{ successMessage }}
+			</div>
+		</transition>
+
+		<transition name="fade">
 			<div v-if="! isLoading && initialLoadComplete" class="group-library-refreshable">
 				<div class="group-library-nav">
 					<div class="group-library-pagination">
@@ -133,6 +139,10 @@
 			isLoading() {
 				return this.$store.state.isLoading
 			},
+
+			successMessage() {
+				return this.$store.state.successMessage
+			}
 		},
 
 		created() {

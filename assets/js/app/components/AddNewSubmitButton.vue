@@ -60,6 +60,22 @@
 						app.$store.dispatch( 'refetchItems' )
 						.then( function() {
 							app.$store.commit(
+								'setSuccessMessage',
+								{
+									value: 'Creation successful!'
+								}
+							)
+
+							setTimeout( function() {
+								app.$store.commit(
+									'setSuccessMessage',
+									{
+										value: ''
+									}
+								)
+							}, 5000 )
+
+							app.$store.commit(
 								'setSort',
 								{
 									newSort: 'date',
@@ -120,6 +136,14 @@
 
 .add-new-submit-button.submit-in-progress {
 	padding-right: 30px;
+}
+
+.success-message {
+	background: #449621;
+	border-radius: 4px;
+	color: #fff;
+	margin-top: 10px;
+	padding: 8px 20px;
 }
 
 </style>

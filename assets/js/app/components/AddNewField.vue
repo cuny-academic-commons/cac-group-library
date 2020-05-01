@@ -28,7 +28,6 @@
 			:required="required"
 			:accept="acceptFiletypes"
 			type="file"
-			v-on:blur="validateThisField()"
 			v-on:focus="setFieldVisited()"
 			v-on:change="setFile"
 		/>
@@ -182,6 +181,8 @@
 						value: theFile
 					}
 				)
+
+				this.validateThisField()
 			},
 
 			validateThisField() {
