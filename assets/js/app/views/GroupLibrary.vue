@@ -137,6 +137,11 @@
 
 		created() {
 			const vm = this
+
+			if ( this.initialLoadComplete ) {
+				return;
+			}
+
 			this.$store.dispatch( 'refetchItems' )
 				.then( function() {
 					vm.$store.commit( 'refreshFilteredItemIds' )
