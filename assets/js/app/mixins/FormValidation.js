@@ -78,6 +78,9 @@ module.exports = {
 
 		validateField( formName, fieldName ) {
 			const key = formName + '-' + fieldName
+			const currentError = this.getFieldError( key )
+			let newError = ''
+
 			const vm = this
 
 			switch ( formName ) {
@@ -86,13 +89,9 @@ module.exports = {
 						case 'title' :
 						case 'file' :
 							if ( ! this.hasValue( formName, fieldName ) ) {
-								vm.$store.commit(
-									'setValidationError',
-									{
-										nodeName: key,
-										message: 'Please enter a value for this field.'
-									}
-								)
+								newError = 'Please enter a value for this field.'
+							} else {
+								newError = ''
 							}
 					}
 					break;
@@ -102,13 +101,9 @@ module.exports = {
 						case 'title' :
 						case 'file' :
 							if ( ! this.hasValue( formName, fieldName ) ) {
-								vm.$store.commit(
-									'setValidationError',
-									{
-										nodeName: key,
-										message: 'Please enter a value for this field.'
-									}
-								)
+								newError = 'Please enter a value for this field.'
+							} else {
+								newError = ''
 							}
 					}
 					break;
@@ -117,30 +112,33 @@ module.exports = {
 					switch ( fieldName ) {
 						case 'url' :
 							if ( ! this.fieldValueIsUrl( formName, fieldName ) ) {
-								vm.$store.commit(
-									'setValidationError',
-									{
-										nodeName: key,
-										message: 'Please enter a valid URL.'
-									}
-								)
+								newError = 'Please enter a valid URL'
+								break
+							} else {
+								newError = ''
 							}
 
 						// Fall through.
 						case 'title' :
 							if ( ! this.hasValue( formName, fieldName ) ) {
-								vm.$store.commit(
-									'setValidationError',
-									{
-										nodeName: key,
-										message: 'Please enter a value for this field.'
-									}
-								)
+								newError = 'Please enter a value for this field.'
+							} else {
+								newError = ''
 							}
 						break
 				}
 
 				break
+			}
+
+			if ( newError !== currentError ) {
+				vm.$store.commit(
+					'setValidationError',
+					{
+						nodeName: key,
+						message: newError
+					}
+				)
 			}
 		},
 

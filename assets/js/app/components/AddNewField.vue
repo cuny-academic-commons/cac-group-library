@@ -15,7 +15,8 @@
 			:name="fieldId"
 			:required="required"
 			:type="fieldValidationType"
-			v-on:blur="setFieldVisited()"
+			v-on:focus="setFieldVisited()"
+			v-on:blur="validateThisField()"
 			v-on:keyup="validateThisField()"
 			v-model="value"
 		/>
@@ -27,7 +28,8 @@
 			:required="required"
 			:accept="acceptFiletypes"
 			type="file"
-			v-on:blur="setFieldVisited()"
+			v-on:blur="validateThisField()"
+			v-on:focus="setFieldVisited()"
 			v-on:change="setFile"
 		/>
 
@@ -37,8 +39,9 @@
 			:name="fieldId"
 			:required="required"
 			:maxlength="theMaxlength"
-			v-on:blur="setFieldVisited()"
-			v-on:keyup="validateField()"
+			v-on:focus="setFieldVisited()"
+			v-on:keyup="validateThisField()"
+			v-on:blur="validateThisField()"
 			v-model="value"
 		/>
 
@@ -118,7 +121,7 @@
 			validationError() {
 				const fieldKey = this.formName + '-' + this.fieldName
 				const error = this.getFieldError( fieldKey )
-
+console.log(error)
 				if ( error.length > 0 ) {
 					return error
 				}
@@ -149,11 +152,20 @@
 		],
 
 		methods: {
+			hasBeenVisited() {
+				const formFields = this.$store.state.visitedFields[ this.formName ]
+				return 'array' === typeof formFields && -1 !== formFields.indexOf( this.fieldName )
+			},
+
 			setFieldVisited() {
+				if ( this.hasBeenVisited() ) {
+					return
+				}
+
 				this.$store.commit(
 					'setFieldHasBeenVisited',
 					{
-						fieldName: this.fieldId,
+						fieldName: this.fieldName,
 						formName: this.formName,
 					}
 				)
@@ -170,8 +182,6 @@
 						value: theFile
 					}
 				)
-
-				this.validateThisField()
 			},
 
 			validateThisField() {
