@@ -4,6 +4,7 @@
 
 		<div>
 			<v-select
+				:appendToBody="true"
 				id="selected-item-type"
 				v-bind:clearable="false"
 				v-model="selected"
