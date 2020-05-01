@@ -27,6 +27,7 @@ class Nav {
 	public function init() {
 		add_action( 'bp_setup_nav', array( $this, 'add_library_nav_item' ), 200 );
 		add_action( 'bp_actions', array( $this, 'remove_nav_items' ), 200 );
+		add_action( 'bp_actions', array( $this, 'redirect_from_legacy_panels' ) );
 	}
 
 	public function add_library_nav_item() {
@@ -62,5 +63,35 @@ class Nav {
 		buddypress()->groups->nav->delete_nav( BP_GROUP_DOCUMENTS_SLUG, $group->slug );
 		buddypress()->groups->nav->delete_nav( bp_docs_get_docs_slug(), $group->slug );
 		buddypress()->groups->nav->delete_nav( 'papers', $group->slug );
+	}
+
+	/**
+	 * Redirect away from legacy panels that are now controlled by Library.
+	 */
+	public function redirect_from_legacy_panels() {
+		$redirect    = false;
+		$redirect_to = bp_get_group_permalink( groups_get_current_group() ) . cac_group_library()->get_prop( 'nav_slug' );
+
+		// BP Group Documents
+		if ( bp_is_group() && bp_is_current_action( BP_GROUP_DOCUMENTS_SLUG ) ) {
+			$redirect = true;
+		}
+
+		// BuddyPress Docs
+		if ( bp_is_group() && bp_is_current_action( bp_docs_get_docs_slug() ) ) {
+			// Only when looking at the group listing or on Create.
+			if ( ! bp_action_variables() || bp_is_action_variable( BP_DOCS_CREATE_SLUG, 0 ) ) {
+				$redirect = true;
+			}
+		}
+
+		// Social Paper
+		if ( bp_is_group() && bp_is_current_action( 'papers' ) ) {
+			$redirect = true;
+		}
+
+		if ( $redirect ) {
+			bp_core_redirect( $redirect_to );
+		}
 	}
 }
