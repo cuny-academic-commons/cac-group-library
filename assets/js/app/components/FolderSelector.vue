@@ -16,6 +16,16 @@
 					{{ code }}
 				</div>
 			</template>
+
+			<template #selected-option="{code, value}">
+				<span v-if="'_addNew' === code" class="add-new-folder-option-selected">
+					<span class="dashicons dashicons-plus"></span> Add new folder
+				</span>
+
+				<span v-else>
+					{{ code }}
+				</span>
+			</template>
 		</v-select>
 
 		<div 
