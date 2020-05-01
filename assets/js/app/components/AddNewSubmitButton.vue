@@ -1,6 +1,7 @@
 <template>
 	<button
-		class="add-new-submit-button"
+		:class="{ 'add-new-submit-button': true, 'submit-in-progress': submitInProgress }"
+		v-bind:style="backgroundStyles"
 		:disabled="! formIsValid()"
 		@click.prevent="onSubmitClick()"
 	>{{ buttonText }}</button>
@@ -11,6 +12,20 @@
 
 	export default {
 		computed: {
+			backgroundStyles() {
+				const { imgUrlBase } = window.CACGroupLibrary;
+
+				if ( this.submitInProgress ) {
+					return {
+						'background-image': 'url( ' + imgUrlBase + 'spinner.gif )',
+						'background-position': 'center right 8px',
+						'background-repeat': 'no-repeat',
+					}
+				} else {
+					return {}
+				}
+			},
+
 			formData() {
 				return this.$store.state.forms[ this.formName ]
 			},
@@ -55,9 +70,9 @@
 							app.$store.commit( 'refreshFilteredItemIds' )
 
 							app.$router.push( { path: '/' } )
-						})
 
-						app.submitInProgress = false
+							app.submitInProgress = false
+						})
 					}
 				}).catch( function( ex ) {
 					console.log( 'failed', ex )
@@ -101,6 +116,10 @@
 
 .add-new-submit-button:disabled:hover {
 	background: #1C576C;
+}
+
+.add-new-submit-button.submit-in-progress {
+	padding-right: 30px;
 }
 
 </style>

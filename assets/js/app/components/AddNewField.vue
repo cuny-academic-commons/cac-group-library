@@ -121,7 +121,7 @@
 			validationError() {
 				const fieldKey = this.formName + '-' + this.fieldName
 				const error = this.getFieldError( fieldKey )
-console.log(error)
+
 				if ( error.length > 0 ) {
 					return error
 				}

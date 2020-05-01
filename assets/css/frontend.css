@@ -421,6 +421,9 @@ a.add-new-item-button:hover {
 .add-new-submit-button:disabled:hover {
 	background: #1C576C;
 }
+.add-new-submit-button.submit-in-progress {
+	padding-right: 30px;
+}
 
 
 
