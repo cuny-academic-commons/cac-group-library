@@ -60,4 +60,10 @@
 	display: inline-block;
 	width: 200px;
 }
+
+@media screen and (max-width:600px) {
+	.v-select {
+		width: 49%;
+	}
+}
 </style>

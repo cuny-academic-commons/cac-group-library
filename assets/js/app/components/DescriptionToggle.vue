@@ -61,5 +61,4 @@ button.description-toggle:hover {
 	margin-left: 2px;
 	vertical-align: middle;
 }
-
 </style>

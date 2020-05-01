@@ -287,4 +287,32 @@ a.add-new-item-button:hover {
 	right: 0;
 	top: 0;
 }
+
+@media screen and (max-width:600px) {
+	.group-library-header h2 {
+		font-size: 24px;
+	}
+
+	.group-library-header .header-actions {
+		margin-left: 0;
+	}
+
+	.library-search {
+		width: auto;
+	}
+
+	.group-library-filters {
+		padding-right: 0;
+	}
+
+	.description-toggle {
+		display: block;
+		margin-top: 8px;
+		position: relative;
+		right: auto;
+		text-align: right;
+		top: auto;
+		width: 100%;
+	}
+}
 </style>
