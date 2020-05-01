@@ -79,7 +79,7 @@
 			},
 
 			isFormValidated() {
-				return this.validateForm( 'externalLink' )
+				return this.isFormValid( 'externalLink' )
 			},
 
 			title: {

@@ -27,61 +27,121 @@ module.exports = {
 			return newFolderTitle.length === 0
 		},
 
-		validateForm( formName, validateAll = false ) {
-			const invalidNodes = document.querySelectorAll( `.add-new-form-${formName} :invalid` )
-			const vm = this;
+		isFormValid( formName ) {
+			// Validate by looking at state rather than using browser validation.
+			switch ( formName ) {
+				case 'bpGroupDocument' :
+					return this.hasValue( formName, 'title'	) && this.hasValue( formName, 'file' )
+				break;
 
-			this.$store.commit( 'resetValidationErrors' )
+				case 'bpDoc' :
+					return this.hasValue( formName, 'title'	) && this.hasValue( formName, 'content' )
+				break;
 
-			// Special case: _addNew and corresponding field.
-			const showAddNewFolderError = this.addNewFolderIsInvalid( formName ) && this.fieldHasBeenVisited( formName, 'add-new-folder-input' )
+				case 'externalLink' :
+					return this.hasValue( formName, 'title'	) && this.hasValue( formName, 'url' ) && this.fieldValueIsUrl( formName, 'url' )
+				break;
+			}
+		},
 
-			// Special case: file input
-			const showFileError = this.fileIsInvalid( formName )
+		fieldValueIsUrl( formName, fieldName ) {
+			const value = this.$store.state.forms[ formName ][ fieldName ]
 
-			// All valid.
-			if ( ! showAddNewFolderError && invalidNodes.length === 0 && showFileError.length === 0 ) {
-				return true
+			if ( 'string' !== typeof value ) {
+				return false
 			}
 
-			if ( invalidNodes.length > 0 ) {
-				invalidNodes.forEach( node => {
-					if ( ! validateAll && ! vm.fieldHasBeenVisited( formName, node.name ) ) {
-						return;
+			const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+				'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+				'((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+				'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+				'(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+				'(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+
+			return !!pattern.test( value );
+		},
+
+		hasValue( formName, fieldName ) {
+			const value = this.$store.state.forms[ formName ][ fieldName ]
+
+			switch ( typeof value ) {
+				case 'object' :
+					return true
+
+				case 'string' :
+					return value.length > 0
+
+				default :
+					return false
+			}
+		},
+
+		validateField( formName, fieldName ) {
+			const key = formName + '-' + fieldName
+			const vm = this
+
+			switch ( formName ) {
+				case 'bpGroupDocument' :
+					switch ( fieldName ) {
+						case 'title' :
+						case 'file' :
+							if ( ! this.hasValue( formName, fieldName ) ) {
+								vm.$store.commit(
+									'setValidationError',
+									{
+										nodeName: key,
+										message: 'Please enter a value for this field.'
+									}
+								)
+							}
 					}
+					break;
 
-					vm.$store.commit(
-						'setValidationError',
-						{
-							nodeName: node.name,
-							message: node.validationMessage
-						}
-					)
-				} )
-			}
-
-			if ( showAddNewFolderError ) {
-				vm.$store.commit(
-					'setValidationError',
-					{
-						nodeName: 'add-new-folder-input',
-						message: 'Please provide a name for the new folder',
+				case 'bpDoc' :
+					switch ( fieldName ) {
+						case 'title' :
+						case 'file' :
+							if ( ! this.hasValue( formName, fieldName ) ) {
+								vm.$store.commit(
+									'setValidationError',
+									{
+										nodeName: key,
+										message: 'Please enter a value for this field.'
+									}
+								)
+							}
 					}
-				)
-			}
+					break;
 
-			if ( showFileError ) {
-				vm.$store.commit(
-					'setValidationError',
-					{
-						// Warning, warning, this is hardcoded
-						nodeName: 'add-new-file-file',
-						message: showFileError,
-					}
-				)
-			}
+				case 'externalLink' :
+					switch ( fieldName ) {
+						case 'url' :
+							if ( ! this.fieldValueIsUrl( formName, fieldName ) ) {
+								vm.$store.commit(
+									'setValidationError',
+									{
+										nodeName: key,
+										message: 'Please enter a valid URL.'
+									}
+								)
+							}
 
-			return false
+						// Fall through.
+						case 'title' :
+							if ( ! this.hasValue( formName, fieldName ) ) {
+								vm.$store.commit(
+									'setValidationError',
+									{
+										nodeName: key,
+										message: 'Please enter a value for this field.'
+									}
+								)
+							}
+						break
+				}
+
+				break
+			}
 		},
 
 		fileIsInvalid( formName ) {
@@ -95,7 +155,7 @@ module.exports = {
 
 			if ( file.size > maxUploadSize ) {
 				return 'Your file is too large. Max upload size: ' + maxUploadSizeFormatted
-			} 
+			}
 
 			const fileExtension = file.name.split('.').pop();
 			if ( -1 === uploadFiletypes.indexOf( fileExtension ) ) {

@@ -1,7 +1,7 @@
 <template>
 	<button
 		class="add-new-submit-button"
-		:disabled="! validated"
+		:disabled="! formIsValid()"
 		@click.prevent="onSubmitClick()"
 	>{{ buttonText }}</button>
 </template>
@@ -24,10 +24,6 @@
 					this.$store.commit( 'setSubmitInProgress', { value } )
 				}
 			},
-
-			validated() {
-				return this.validateForm( this.formName )
-			}
 		},
 
 		methods: {
@@ -67,6 +63,10 @@
 					console.log( 'failed', ex )
 				})
 			},
+
+			formIsValid() {
+				return this.isFormValid( this.formName )
+			}
 		},
 
 		mixins: [
@@ -79,3 +79,28 @@
 		}
 	}
 </script>
+
+<style>
+.add-new-submit-button {
+	background: #1C576C;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	padding: 9px 15px;
+}
+
+.add-new-submit-button:hover {
+	background: #022d3c;
+	border: none;
+	color: #fff;
+}
+
+.add-new-submit-button:disabled {
+	opacity: .7;
+}
+
+.add-new-submit-button:disabled:hover {
+	background: #1C576C;
+}
+
+</style>

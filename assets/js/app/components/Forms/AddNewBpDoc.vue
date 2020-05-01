@@ -48,7 +48,7 @@
 
 			<div class="add-new-submit">
 				<AddNewSubmitButton
-					buttonText="Add link"
+					buttonText="Create"
 					:formName="formName"
 				/>
 			</div>
@@ -99,7 +99,7 @@
 			},
 
 			isFormValidated() {
-				return this.validateForm( this.formName )
+				return this.isFormValid( this.formName )
 			},
 
 			mceInit() {

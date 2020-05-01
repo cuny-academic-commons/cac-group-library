@@ -16,7 +16,7 @@
 			:required="required"
 			:type="fieldValidationType"
 			v-on:blur="setFieldVisited()"
-			v-on:keyup="doValidateForm()"
+			v-on:keyup="validateThisField()"
 			v-model="value"
 		/>
 
@@ -38,7 +38,7 @@
 			:required="required"
 			:maxlength="theMaxlength"
 			v-on:blur="setFieldVisited()"
-			v-on:keyup="doValidateForm()"
+			v-on:keyup="validateField()"
 			v-model="value"
 		/>
 
@@ -116,7 +116,8 @@
 			},
 
 			validationError() {
-				const error = this.getFieldError( this.fieldId )
+				const fieldKey = this.formName + '-' + this.fieldName
+				const error = this.getFieldError( fieldKey )
 
 				if ( error.length > 0 ) {
 					return error
@@ -148,11 +149,6 @@
 		],
 
 		methods: {
-			// Too lazy to refactor for targeted revalidation.
-			doValidateForm() {
-				this.validateForm( this.formName )
-			},
-
 			setFieldVisited() {
 				this.$store.commit(
 					'setFieldHasBeenVisited',
@@ -174,6 +170,12 @@
 						value: theFile
 					}
 				)
+
+				this.validateThisField()
+			},
+
+			validateThisField() {
+				return this.validateField( this.formName, this.fieldName )
 			}
 		},
 
