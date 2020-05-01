@@ -36,10 +36,16 @@
 			:id="fieldId"
 			:name="fieldId"
 			:required="required"
+			:maxlength="theMaxlength"
 			v-on:blur="setFieldVisited()"
 			v-on:keyup="doValidateForm()"
 			v-model="value"
 		/>
+
+		<div
+			class="character-limit-gloss"
+			v-if="isInputTypeTextarea && maxlength"
+		>{{ characterLimitGloss }}</div>
 
 		<p
 			class="description"
@@ -61,6 +67,10 @@
 			acceptFiletypes() {
 				const { uploadFiletypes } = window.CACGroupLibrary
 				return uploadFiletypes.map( type => '.' + type ).join( ',' )
+			},
+
+			characterLimitGloss() {
+				return this.theMaxlength + ' characters maximum.'
 			},
 
 			className() {
@@ -92,6 +102,11 @@
 
 			isInputTypeTextarea() {
 				return 'textarea' === this.fieldType
+			},
+
+			theMaxlength() {
+				const { maxlength } = this
+				return 'undefined' === typeof maxlength ? '' : maxlength
 			},
 
 			tooltipText() {
@@ -303,5 +318,10 @@
 	  visibility: visible;
 	  opacity: 1;
 	  transition: opacity .15s;
+	}
+
+	.character-limit-gloss {
+		font-style: italic;
+		text-align: right;
 	}
 </style>

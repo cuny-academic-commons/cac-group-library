@@ -370,6 +370,10 @@ a.add-new-item-button:hover {
   opacity: 1;
   transition: opacity .15s;
 }
+.character-limit-gloss {
+	font-style: italic;
+	text-align: right;
+}
 
 
 .folder-selector-dropdown .vs__dropdown-menu {
