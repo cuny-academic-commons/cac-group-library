@@ -1,6 +1,7 @@
 <template>
 	<div class="folder-selector-dropdown">
 		<v-select
+			:appendToBody="true"
 			:id="inputId"
 			v-model="selected"
 			placeholder="Select folder"
@@ -170,6 +171,10 @@
 </script>
 
 <style>
+.folder-selector-dropdown .vs__dropdown-menu {
+	z-index: 999;
+}
+
 .folder-selector-dropdown .vs__dropdown-option {
 	padding: 0;
 }
@@ -207,4 +212,5 @@
 .add-new-folder-container input {
 	width: 50%;
 }
+
 </style>

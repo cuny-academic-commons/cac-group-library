@@ -372,6 +372,9 @@ a.add-new-item-button:hover {
 }
 
 
+.folder-selector-dropdown .vs__dropdown-menu {
+	z-index: 999;
+}
 .folder-selector-dropdown .vs__dropdown-option {
 	padding: 0;
 }
@@ -402,6 +405,7 @@ a.add-new-item-button:hover {
 .add-new-folder-container input {
 	width: 50%;
 }
+
 
 
 .add-new-form {

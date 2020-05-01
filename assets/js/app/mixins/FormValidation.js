@@ -74,6 +74,7 @@ module.exports = {
 				vm.$store.commit(
 					'setValidationError',
 					{
+						// Warning, warning, this is hardcoded
 						nodeName: 'add-new-file-file',
 						message: showFileError,
 					}
