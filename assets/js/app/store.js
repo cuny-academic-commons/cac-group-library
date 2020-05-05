@@ -154,9 +154,11 @@ export default new Vuex.Store(
 					newFilteredItemIds = newFilteredItemIds.filter(
 						function( itemId ) {
 							var theLibraryItem = state.libraryItems[ itemId ]
+							var theItemTitle = theLibraryItem.hasOwnProperty( 'title' ) ? theLibraryItem.title : ''
+							var theItemDescription = theLibraryItem.hasOwnProperty( 'description' ) ? theLibraryItem.description : ''
 
-							var matchTitle = -1 !== theLibraryItem.title.toLowerCase().indexOf( theCurrentSearchTerm )
-							var matchDescription = -1 !== theLibraryItem.description.toLowerCase().indexOf( theCurrentSearchTerm )
+							var matchTitle = -1 !== theItemTitle.toLowerCase().indexOf( theCurrentSearchTerm )
+							var matchDescription = -1 !== theItemDescription.toLowerCase().indexOf( theCurrentSearchTerm )
 
 							return matchTitle || matchDescription
 						}

@@ -81,8 +81,12 @@ button.description-toggle:hover {
 .pagination-links li a:hover {
 	text-decoration: none;
 }
-.pagination-links li.disabled {
+.pagination-links li.pagination-next.disabled,
+.pagination-links li.pagination-prev.disabled {
 	display: none;
+}
+.pagination-links li.pagination-break a {
+	text-decoration: none;
 }
 .pagination-links li.active a {
 	color: #000;

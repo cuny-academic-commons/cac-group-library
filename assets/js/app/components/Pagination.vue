@@ -11,8 +11,11 @@
 			<Paginate
 				:clickHandler="clickHandler"
 				:pageCount="pageCount()"
+				breakViewClass="pagination-break"
 				nextText="&raquo;"
+				prevClass="pagination-prev"
 				prevText="&laquo;"
+				nextClass="pagination-next"
 				v-model="page">
 			</Paginate>
 
@@ -111,8 +114,13 @@
 	text-decoration: none;
 }
 
-.pagination-links li.disabled {
+.pagination-links li.pagination-next.disabled,
+.pagination-links li.pagination-prev.disabled {
 	display: none;
+}
+
+.pagination-links li.pagination-break a {
+	text-decoration: none;
 }
 
 .pagination-links li.active a {
