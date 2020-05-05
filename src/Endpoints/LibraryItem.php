@@ -197,20 +197,17 @@ class LibraryItem extends WP_REST_Controller {
 		$silent = ! empty( $_POST['bp_group_documents_silent_add'] );
 		do_action( 'bp_group_documents_add_success', $doc, $silent );
 
-						// @todo
-						//self::update_categories($document);
-
-		// @todo New folders.
 		if ( ! empty( $params['folder'] ) ) {
-			// Must trim the group ID prefix.
-			$group_suffix = $params['groupId'] . '-';
-			if ( 0 === strpos( $params['folder'], $group_suffix ) ) {
-				$params['folder'] = substr( $params['folder'], strlen( $group_suffix ) );
+			if ( '_addNew' === $params['folder'] ) {
+				$folder_name = $params['newFolderTitle'];
+			} else {
+				$folder_name = $params['folder'];
 			}
 
-			$gd_category = get_term_by( 'slug', $params['folder'], 'group-documents-category' );
+			$gd_category = get_term_by( 'name', $folder_name, 'group-documents-category' );
+
 			if ( ! $gd_category ) {
-				$term_info = wp_insert_term( $params['folder'], 'group-documents-category' );
+				$term_info = wp_insert_term( $folder_name, 'group-documents-category' );
 				$term_id   = $term_info['term_id'];
 			} else {
 				$term_id = $gd_category->term_id;
@@ -250,8 +247,14 @@ class LibraryItem extends WP_REST_Controller {
 		$retval['success'] = true;
 
 		if ( ! empty( $params['folder'] ) ) {
+			if ( '_addNew' === $params['folder'] ) {
+				$folder_name = $params['newFolderTitle'];
+			} else {
+				$folder_name = $params['folder'];
+			}
+
 			$library_item = BuddyPressDocsSync::get_library_item_from_source_item_id( $created['doc_id'], $params['groupId'] );
-			$library_item->set_folders( [ $params['folder'] ] );
+			$library_item->set_folders( [ $folder_name ] );
 			$library_item->save();
 		}
 
