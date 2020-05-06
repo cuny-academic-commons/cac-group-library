@@ -1,7 +1,7 @@
 <template>
 	<div class="add-new-form">
 		<form
-			class="add-new-form-externalLink"
+			:class="'add-new-form-' + formName"
 			enctype="multipart/form-data"
 			v-on:submit.prevent="isFormValidated"
 		>
@@ -26,6 +26,7 @@
 
 			<AddNewField
 				buttonText="Select file"
+				:disabled="isEditMode"
 				fieldLabel="Select your file"
 				fieldId="add-new-file-file"
 				:required="true"
@@ -48,7 +49,7 @@
 
 			<div class="add-new-submit">
 				<AddNewSubmitButton
-					buttonText="Upload"
+					:buttonText="submitButtonText"
 					formName="bpGroupDocument"
 				/>
 			</div>
@@ -78,19 +79,33 @@
 				return 'Max file size: ' + maxUploadSizeFormatted + '. Supported file types: ' + types
 			},
 
+			isEditMode() {
+				return this.itemId > 0
+			},
+
 			isFormValidated() {
-				return this.isFormValid( 'externalLink' )
+				return this.isFormValid( this.formName )
+			},
+
+			submitButtonText() {
+				return this.isEditMode ? 'Save Changes' : 'Upload'
+			},
+
+			itemId: {
+				get() {
+					return this.$store.state.forms[ this.formName ].itemId
+				}
 			},
 
 			title: {
 				get() {
-					return this.$store.state.forms.externalLink.title
+					return this.$store.state.forms[ this.formName ].url
 				},
 				set( value ) {
 					this.$store.commit(
 						'setFormFieldValue',
 						{
-							form: 'externalLink',
+							form: this.formName,
 							field: 'title',
 							value
 						}
@@ -100,13 +115,13 @@
 
 			url: {
 				get() {
-					return this.$store.state.forms.externalLink.url
+					return this.$store.state.forms[ this.formName ].url
 				},
 				set( value ) {
 					this.$store.commit(
 						'setFormFieldValue',
 						{
-							form: 'externalLink',
+							form: this.formName,
 							field: 'url',
 							value
 						}
@@ -114,6 +129,16 @@
 				}
 			},
 		},
+
+		data() {
+			return {
+				formName: 'bpGroupDocument'
+			}
+		},
+
+		params: {
+			itemId: Number
+		}
 	}
 </script>
 

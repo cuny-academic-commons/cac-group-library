@@ -5,8 +5,8 @@ import VTooltip from 'v-tooltip'
 import fetch from 'isomorphic-fetch'
 
 import App from './App.vue'
-import router from './router.js'
 import store from './store.js'
+import router from './router.js'
 
 Vue.use(VTooltip)
 

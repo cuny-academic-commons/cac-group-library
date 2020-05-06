@@ -56,6 +56,14 @@ button.description-toggle:hover {
 .library-item-description {
 	margin-top: 6px;
 }
+.group-library-edit {
+	display: none;
+	position: absolute;
+	right: 10px;
+}
+.group-library-row:hover .group-library-edit {
+	display: block;
+}
 
 
 .group-library-pagination {
@@ -237,7 +245,8 @@ a.add-new-item-button:hover {
 .group-library-row {
 	display: flex;
 	padding-left: 10px;
-	padding-right: 10px;
+	padding-right: 30px;
+	position: relative;
 }
 .group-library-item-title {
 	flex-basis: 70%;
@@ -514,7 +523,7 @@ a.add-new-item-button:hover {
 	font-size: 14px;
 	line-height: 20px;
 }
-.add-new-content {
+.add-edit-content {
 	border-top: 1px solid #ccc;
 	margin-top: 20px;
 	padding-top: 20px;
@@ -522,5 +531,17 @@ a.add-new-item-button:hover {
 .add-new-form {
 	margin-top: 20px;
 	max-width: 690px;
+}
+
+
+.back-to-library {
+	font-size: 12px;
+	line-height: 20px;
+	margin-bottom: 18px;
+}
+.back-to-library .dashicons {
+	color: #1c576c;
+	font-size: 14px;
+	line-height: 20px;
 }
 

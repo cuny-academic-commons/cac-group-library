@@ -36,6 +36,15 @@ class LibraryItem extends WP_REST_Controller {
 			),
 		) );
 
+		register_rest_route( $namespace, '/library-items/(?P<item_id>[\d]+)', array(
+			array(
+				'methods'         => WP_REST_Server::EDITABLE,
+				'callback'        => array( $this, 'edit_item' ),
+				'permission_callback' => array( $this, 'edit_item_permissions_check' ),
+				'args'            => $this->get_endpoint_args_for_item_schema( true ),
+			),
+		) );
+
 		register_rest_route( $namespace, '/library-items', array(
 			array(
 				'methods'         => WP_REST_Server::READABLE,
@@ -67,7 +76,7 @@ class LibraryItem extends WP_REST_Controller {
 	}
 
 	/**
-	 * Creates an invitation event.
+	 * Creates a library item.
 	 *
 	 * @param WP_REST_Request $request
 	 * @return WP_REST_Response
@@ -92,7 +101,7 @@ class LibraryItem extends WP_REST_Controller {
 
 			case 'bpGroupDocument' :
 				$file_params = $request->get_file_params();
-				$retval = $this->create_bp_group_document( $params, $file_params['file'] );
+				$retval = $this->save_bp_group_document( $params, $file_params['file'] );
 			break;
 
 			case 'bpDoc' :
@@ -102,6 +111,61 @@ class LibraryItem extends WP_REST_Controller {
 
 		return rest_ensure_response( $retval );
 	}
+
+	/**
+	 * Permission check for editing item.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return bool
+	 */
+	public function edit_item_permissions_check( $request ) {
+		$item_id = $request->get_param( 'item_id' );
+		$item    = new Item( $item_id );
+
+		if ( ! $item->exists() ) {
+			return false;
+		}
+
+		return $item->get_can_edit( get_current_user_id() );
+	}
+
+	/**
+	 * Edits a library item.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function edit_item( $request ) {
+		$params = $request->get_params();
+
+		$retval = [
+			'success' => false,
+			'message' => '',
+		];
+
+		$item_type = isset( $params['itemType'] ) ? $params['itemType'] : '';
+		if ( ! $item_type ) {
+			return rest_ensure_response( $retval );
+		}
+
+		switch ( $item_type ) {
+			case 'externalLink' :
+				$retval = $this->create_external_link( $params );
+			break;
+
+			case 'bpGroupDocument' :
+				$file_params = $request->get_file_params();
+				$retval = $this->save_bp_group_document( $params, $file_params['file'] );
+			break;
+
+			case 'bpDoc' :
+				$retval = $this->create_bp_doc( $params );
+			break;
+		}
+
+		return rest_ensure_response( $retval );
+	}
+
 
 	protected function create_external_link( $params ) {
 		$retval = [
@@ -142,14 +206,13 @@ class LibraryItem extends WP_REST_Controller {
 		return rest_ensure_response( $retval );
 	}
 
-	protected function create_bp_group_document( $params, $file_params ) {
+	protected function save_bp_group_document( $params, $file_params ) {
 		$retval = [
 			'success' => false,
 		];
 
-		//if there was any upload errors, spit them out
 		$error_message = '';
-		if ( $file_params['error'] ) {
+		if ( ! empty( $file_params['error'] ) ) {
 			switch( $file_params['error'] ) {
 				case UPLOAD_ERR_INI_SIZE:
 					$error_message = 'There was a problem; your file is larger than is allowed by the site administrator.';
@@ -174,27 +237,42 @@ class LibraryItem extends WP_REST_Controller {
 			return $retval;
 		}
 
-		//if the user didn't specify a display name, use the file name (before the timestamp)
+		// If the user didn't specify a display name, use the file name (before the timestamp).
 		if ( empty( $params['title'] ) ) {
 			$params['title'] = basename( $file_params['name'] );
 		}
 
-		$doc = new BP_Group_Documents();
+		$doc_id  = null;
+		$item_id = ! empty( $params['itemId'] ) ? (int) $params['itemId'] : null;
+		if ( $item_id ) {
+			$item   = new Item( $item_id );
+			$doc_id = $item->get_source_item_id();
+		}
+
+		$doc = new BP_Group_Documents( $doc_id );
 
 		$doc->user_id     = get_current_user_id();
 		$doc->group_id    = $params['groupId'];
 		$doc->name        = $params['title'];
 		$doc->description = $params['description'];
 		$doc->featured    = false;
-		$doc->file        = basename( $file_params['name'] );
 
-		$file_path = $doc->get_path( 0,1 );
+		// Only provide file info on creation.
+		if ( ! $item_id ) {
+			$doc->file = basename( $file_params['name'] );
 
-		if ( ! move_uploaded_file( $file_params['tmp_name'], $file_path ) ) {
-			$error_message = 'There was a problem saving your file, please try again.';
+			$file_path = $doc->get_path( 0,1 );
+
+			if ( ! move_uploaded_file( $file_params['tmp_name'], $file_path ) ) {
+				$error_message = 'There was a problem saving your file, please try again.';
+			}
 		}
 
 		$saved = $doc->save( false );
+
+		if ( ! $saved ) {
+			return $retval;
+		}
 
 		// @todo This does nothing at the moment.
 		$silent = ! empty( $_POST['bp_group_documents_silent_add'] );
@@ -223,7 +301,12 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		$retval['success'] = true;
-		$retval['message'] = 'Your file was uploaded successfully';
+
+		if ( $item_id ) {
+			$retval['message'] = 'Your update was successful.';
+		} else {
+			$retval['message'] = 'Your file was uploaded successfully.';
+		}
 
 		return $retval;
 	}

@@ -331,6 +331,32 @@ class Item {
 	}
 
 	/**
+	 * Determine whether a user can edit the item.
+	 */
+	public function get_can_edit( $user_id ) {
+		if ( ! is_int( $user_id ) || 0 === $user_id ) {
+			return false;
+		}
+
+		$user_id = intval( $user_id );
+
+		if ( user_can( $user_id, 'bp_moderate' ) ) {
+			return true;
+		}
+
+		if ( $this->get_user_id() === $user_id ) {
+			return true;
+		}
+
+		// @todo This may need to be more fine-grained for some item types.
+		if ( groups_is_user_mod( $user_id, $this->get_group_id() ) || groups_is_user_admin( $user_id, $this->get_group_id() ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Set date modified.
 	 *
 	 * @param string

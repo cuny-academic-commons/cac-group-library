@@ -34,6 +34,15 @@
 		<div class="group-library-item-date">
 			{{ date() }}
 		</div>
+
+		<div
+			class="group-library-edit"
+			v-if="canEdit()"
+		>
+			<router-link
+				:to="'/edit/' + itemId"
+			>Edit</router-link>
+		</div>
 	</div>
 </template>
 
@@ -46,6 +55,11 @@
 
 			addedByUrl() {
 				return this.getItem().user.url
+			},
+
+			canEdit() {
+				const { can_edit } = this.getItem()
+				return !! can_edit
 			},
 
 			date() {
@@ -169,6 +183,10 @@
 			},
 
 			itemType() {
+				return this.getItem().id
+			},
+
+			itemType() {
 				return this.getItem().item_type
 			},
 
@@ -217,5 +235,15 @@
 
 .library-item-description {
 	margin-top: 6px;
+}
+
+.group-library-edit {
+	display: none;
+	position: absolute;
+	right: 10px;
+}
+
+.group-library-row:hover .group-library-edit {
+	display: block;
 }
 </style>

@@ -11,6 +11,7 @@
 
 		<input
 			v-if="isInputTypeText"
+			:disabled="disabled"
 			:id="fieldId"
 			:name="fieldId"
 			:required="required"
@@ -23,6 +24,7 @@
 
 		<input
 			v-if="isInputTypeFile"
+			:disabled="disabled"
 			:id="fieldId"
 			:name="fieldId"
 			:required="required"
@@ -34,6 +36,7 @@
 
 		<textarea
 			v-if="isInputTypeTextarea"
+			:disabled="disabled"
 			:id="fieldId"
 			:name="fieldId"
 			:required="required"
@@ -199,6 +202,7 @@
 		props: {
 			buttonText: String,
 			description: String,
+			disabled: { type: Boolean, default: false },
 			fieldId: String,
 			fieldLabel: String,
 			fieldName: String,

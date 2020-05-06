@@ -31,7 +31,8 @@ module.exports = {
 			// Validate by looking at state rather than using browser validation.
 			switch ( formName ) {
 				case 'bpGroupDocument' :
-					return this.hasValue( formName, 'title'	) && this.hasValue( formName, 'file' )
+					// Don't require a file if editing.
+					return this.hasValue( formName, 'title'	) && ( this.$store.state.forms[ formName ].itemId > 0 || this.hasValue( formName, 'file' ) )
 				break;
 
 				case 'bpDoc' :

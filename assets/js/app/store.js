@@ -8,6 +8,7 @@ function defaultFormsState() {
 	return {
 		itemTypeSelector: '',
 		bpDoc: {
+			itemId: 0,
 			title: '',
 			content: '',
 			folder: '',
@@ -15,6 +16,7 @@ function defaultFormsState() {
 			parent: 0,
 		},
 		bpGroupDocument: {
+			itemId: 0,
 			title: '',
 			description: '',
 			folder: '',
@@ -22,6 +24,7 @@ function defaultFormsState() {
 			file: '',
 		},
 		externalLink: {
+			itemId: 0,
 			title: '',
 			url: '',
 			folder: '',
@@ -314,7 +317,7 @@ export default new Vuex.Store(
 				state.validationErrors = Object.assign( {}, state.validationErrors, {
 					[nodeName]: message
 				} )
-			}
+			},
 		},
 
 		actions: {
@@ -371,10 +374,12 @@ export default new Vuex.Store(
 				} )
 			},
 
-			submitAddNew( commit ) {
+			submitItem( commit ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
 				const itemType = commit.state.forms.itemTypeSelector
+				const { itemId } = commit.state.forms[ itemType ]
+				const isEdit = itemId > 0
 
 				let body, contentType
 				if ( 'bpGroupDocument' === itemType ) {
@@ -396,7 +401,12 @@ export default new Vuex.Store(
 					contentType = 'application/json'
 				}
 
-				const endpoint = endpointBase + 'library-items'
+				let endpoint
+				if ( isEdit ) {
+					endpoint = endpointBase + 'library-items/' + itemId + '/'
+				} else {
+					endpoint = endpointBase + 'library-items'
+				}
 
 				let headers = {
 						'X-WP-Nonce': nonce

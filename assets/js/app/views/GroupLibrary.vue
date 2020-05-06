@@ -37,7 +37,10 @@
 					</div>
 				</div>
 
-				<div class="group-library-items" id="group-library-items">
+				<div
+					:class="{ 'group-library-items': true, 'has-edit-column': showEditColumn }"
+					id="group-library-items"
+				>
 					<div class="group-library-column-headers group-library-row">
 						<SortableColumnHeader
 							label="Title"
@@ -53,6 +56,10 @@
 							label="Date"
 							name="date"
 							defaultSortOrder="desc"
+						/>
+						<div
+							class="group-library-column group-library-edit"
+							v-if="showEditColumn"
 						/>
 					</div>
 
@@ -140,6 +147,16 @@
 				return this.$store.state.isLoading
 			},
 
+			showEditColumn() {
+				for ( var itemId of this.paginatedItemIds ) {
+					if ( this.canEdit( itemId ) ) {
+						return true
+					}
+				}
+
+				return false
+			},
+
 			successMessage() {
 				return this.$store.state.successMessage
 			}
@@ -160,6 +177,11 @@
 		},
 
 		methods: {
+			canEdit( itemId ) {
+				const { can_edit } = this.$store.state.libraryItems[ itemId ]
+				return !! can_edit
+			},
+
 			onAddNewClick() {
 				return
 			}
@@ -256,7 +278,8 @@ a.add-new-item-button:hover {
 .group-library-row {
 	display: flex;
 	padding-left: 10px;
-	padding-right: 10px;
+	padding-right: 30px;
+	position: relative;
 }
 
 .group-library-item-title {

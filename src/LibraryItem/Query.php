@@ -108,6 +108,11 @@ class Query {
 				$formatted_item['folders'] = $folders;
 			}
 
+			$can_edit = $item->get_can_edit( get_current_user_id() );
+			if ( $can_edit ) {
+				$formatted_item['can_edit'] = true;
+			}
+
 			$retval[ $item->get_id() ] = $formatted_item;
 		}
 

@@ -48,7 +48,7 @@
 				this.submitInProgress = true
 
 				this.$store.dispatch(
-					'submitAddNew',
+					'submitItem',
 					this.formData
 				)
 				.then( function( response ) {

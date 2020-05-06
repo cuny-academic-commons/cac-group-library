@@ -8,7 +8,7 @@
 			<h2>New Library Item</h2>
 		</div>
 
-		<div class="add-new-content">
+		<div class="add-edit-content add-new-content">
 			<p class="add-new-content-intro">
 				You can select three different types of items to add to your Library. Files are standalone uploads from your desktop like images, PDFs or Word Docs (similar to an email attachment). Docs are editable documents you can create and edit via your Library later. External Links point to an item hosted elsewhere on the web, like Google, Dropbox, or Microsoft OneDrive.
 			</p>
@@ -22,7 +22,6 @@
 					<AddNewExternalLink v-if="isExternalLink" />
 				</transition>
 			</div>
-
 		</div>
 	</div>
 </template>
@@ -74,7 +73,7 @@
 		line-height: 20px;
 	}
 
-	.add-new-content {
+	.add-edit-content {
 		border-top: 1px solid #ccc;
 		margin-top: 20px;
 		padding-top: 20px;
