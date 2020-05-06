@@ -77,6 +77,7 @@ class LibraryItem extends WP_REST_Controller {
 
 		$retval = [
 			'success' => false,
+			'message' => '',
 		];
 
 		$item_type = isset( $params['itemType'] ) ? $params['itemType'] : '';
@@ -220,6 +221,7 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		$retval['success'] = true;
+		$retval['message'] = 'Your file was uploaded successfully';
 
 		return $retval;
 	}
@@ -238,6 +240,7 @@ class LibraryItem extends WP_REST_Controller {
 
 		$retval = [
 			'success' => false,
+			'message' => '',
 		];
 
 		if ( empty( $created['doc_id'] ) ) {
@@ -245,6 +248,7 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		$retval['success'] = true;
+		$retval['message'] = 'Your doc was created successfully';
 
 		if ( ! empty( $params['folder'] ) ) {
 			if ( '_addNew' === $params['folder'] ) {

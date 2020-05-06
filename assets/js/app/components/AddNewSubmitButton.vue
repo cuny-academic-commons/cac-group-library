@@ -62,7 +62,7 @@
 							app.$store.commit(
 								'setSuccessMessage',
 								{
-									value: 'Creation successful!'
+									value: json.message
 								}
 							)
 
