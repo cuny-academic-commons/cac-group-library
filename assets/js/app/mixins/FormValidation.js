@@ -86,15 +86,23 @@ module.exports = {
 			switch ( formName ) {
 				case 'bpGroupDocument' :
 					switch ( fieldName ) {
-						case 'title' :
 						case 'file' :
+							newError = this.fileIsInvalid( formName )
+							if ( newError.length === 0 && ! this.hasValue( formName, fieldName ) ) {
+								newError = 'Please enter a value for this field.'
+							}
+
+						break
+
+						case 'title' :
 							if ( ! this.hasValue( formName, fieldName ) ) {
 								newError = 'Please enter a value for this field.'
 							} else {
 								newError = ''
 							}
+						break
 					}
-					break;
+					break
 
 				case 'bpDoc' :
 					switch ( fieldName ) {
