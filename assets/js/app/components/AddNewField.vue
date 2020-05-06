@@ -47,7 +47,7 @@
 		<div
 			class="character-limit-gloss"
 			v-if="isInputTypeTextarea && maxlength"
-		>{{ characterLimitGloss }}</div>
+		>{{ characterLimitGloss() }}</div>
 
 		<p
 			class="description"
@@ -69,10 +69,6 @@
 			acceptFiletypes() {
 				const { uploadFiletypes } = window.CACGroupLibrary
 				return uploadFiletypes.map( type => '.' + type ).join( ',' )
-			},
-
-			characterLimitGloss() {
-				return this.theMaxlength + ' characters maximum.'
 			},
 
 			className() {
@@ -151,6 +147,16 @@
 		],
 
 		methods: {
+			characterLimitGloss() {
+				const currentLength = this.value.length
+
+				if ( currentLength == 0 ) {
+					return this.theMaxlength + ' characters maximum.'
+				} else {
+					return ( this.theMaxlength - currentLength ) + ' characters remaining.'
+				}
+			},
+
 			hasBeenVisited() {
 				const formFields = this.$store.state.visitedFields[ this.formName ]
 				return 'array' === typeof formFields && -1 !== formFields.indexOf( this.fieldName )
