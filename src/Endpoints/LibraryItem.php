@@ -106,6 +106,7 @@ class LibraryItem extends WP_REST_Controller {
 	protected function create_external_link( $params ) {
 		$retval = [
 			'success' => false,
+			'message' => '',
 		];
 
 		$group_id = $params['groupId'];
@@ -135,6 +136,7 @@ class LibraryItem extends WP_REST_Controller {
 
 		if ( $saved ) {
 			$retval['success'] = true;
+			$retval['message'] = 'Your external link was added successfully';
 		}
 
 		return rest_ensure_response( $retval );
