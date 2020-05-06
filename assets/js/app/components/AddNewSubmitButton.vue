@@ -55,10 +55,10 @@
 					return response.json()
 				}).then( function( json ) {
 					if ( json.success ) {
-						app.$store.commit( 'resetForms' );
-
 						app.$store.dispatch( 'refetchItems' )
 						.then( function() {
+							app.$store.commit( 'resetForms' );
+
 							app.$store.commit(
 								'setSuccessMessage',
 								{
