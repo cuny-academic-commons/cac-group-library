@@ -11,6 +11,7 @@
 
 <script>
 	import AjaxTools from '../mixins/AjaxTools.js'
+	import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 	export default {
 		computed: {
@@ -37,26 +38,39 @@
 			onClick: function() {
 				const app = this
 
-				this.deleteInProgress = true
+				app.deleteInProgress = true
 
-				this.$store.dispatch(
-					'deleteItem',
-					this.itemId
-				)
-				.then( function( response ) {
-					return response.json()
-				}).then( function( json ) {
-					if ( json.success ) {
-						app.$store.dispatch( 'refetchItems' )
-						.then( function() {
-							app.postAjaxFormActions( {
-								message: json.message
-							} )
+				const dialogOptions = {
+					cancelText: 'Cancel',
+					customClass: 'delete-item-dialog',
+					okText: 'Delete',
+				}
+
+				app.$dialog
+					.confirm( 'Item will be permanently deleted. Are you sure you want to continue?', dialogOptions )
+					.then( function( dialog ) {
+						app.$store.dispatch(
+							'deleteItem',
+							app.itemId
+						)
+						.then( function( response ) {
+							return response.json()
+						}).then( function( json ) {
+							if ( json.success ) {
+								app.$store.dispatch( 'refetchItems' )
+								.then( function() {
+									app.postAjaxFormActions( {
+										message: json.message
+									} )
+								})
+							}
+						}).catch( function( ex ) {
+							console.log( 'failed', ex )
 						})
-					}
-				}).catch( function( ex ) {
-					console.log( 'failed', ex )
-				})
+					})
+					.catch( function( dialog ) {
+						app.deleteInProgress = false
+					})
 			},
 		},
 
@@ -95,5 +109,20 @@
 
 .delete-button.delete-in-progress {
 	padding-right: 30px;
+}
+
+.delete-item-dialog button {
+	background: #1C576C;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 9px 15px;
+}
+
+.delete-item-dialog button:hover {
+	background: #022d3c;
+	border: none;
+	color: #fff;
 }
 </style>

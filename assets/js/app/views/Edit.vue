@@ -12,11 +12,6 @@
 			<div class="add-new-content-form">
 				<h3 class="edit-item-title">{{ getTitle() }}</h3>
 
-				<AddNewBpDoc
-					:itemId="getItemId()"
-					v-if="'bp_doc' === getItemType()"
-				/>
-
 				<AddNewBpGroupDocument
 					:itemId="getItemId()"
 					v-if="'bp_group_document' === getItemType()"
@@ -32,14 +27,12 @@
 </template>
 
 <script>
-	import AddNewBpDoc from '../components/Forms/AddNewBpDoc.vue'
 	import AddNewBpGroupDocument from '../components/Forms/AddNewBPGroupDocument.vue'
 	import AddNewExternalLink from '../components/Forms/AddNewExternalLink.vue'
 	import ItemTypeDropdown from '../components/ItemTypeDropdown.vue'
 
 	export default {
 		components: {
-			AddNewBpDoc,
 			AddNewBpGroupDocument,
 			AddNewExternalLink,
 			ItemTypeDropdown
@@ -108,6 +101,48 @@
 							)
 						}
 					break;
+
+					case 'external_link' :
+						itemTypeSelectorValue = 'externalLink'
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'itemId',
+								value: item.id
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'title',
+								value: item.title
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'url',
+								value: item.url
+							}
+						)
+
+						if ( item.hasOwnProperty( 'folders' ) && item.folders.length > 0 ) {
+							this.$store.commit(
+								'setFormFieldValue',
+								{
+									form: 'externalLink',
+									field: 'folder',
+									value: { code: item.folders[0], label: item.folders[0] }
+								}
+							)
+						}
+					break;
 				}
 
 				this.$store.commit(
@@ -145,9 +180,10 @@
 
 			setUpItem() {
 				const item = this.getItem()
-				const { can_edit } = item
+				const { can_edit, id } = item
 
-				if ( ! can_edit ) {
+				// No id means that the item doesn't exist.
+				if ( ! id || ! can_edit ) {
 					this.$router.push( { path: '/' } )
 					return
 				}
