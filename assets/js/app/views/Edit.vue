@@ -53,9 +53,9 @@
 
 		created() {
 			if ( this.initialLoadComplete ) {
-				this.fillForm()
+				this.setUpItem()
 			} else {
-				this.$store.dispatch( 'refetchItems' ).then( () => this.fillForm() )
+				this.$store.dispatch( 'refetchItems' ).then( () => this.setUpItem() )
 			}
 		},
 
@@ -141,6 +141,18 @@
 			getTitle() {
 				const { title } = this.getItem()
 				return title
+			},
+
+			setUpItem() {
+				const item = this.getItem()
+				const { can_edit } = item
+
+				if ( ! can_edit ) {
+					this.$router.push( { path: '/' } )
+					return
+				}
+				
+				this.fillForm()	
 			},
 		}
 	}
