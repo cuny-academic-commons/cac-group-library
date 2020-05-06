@@ -446,7 +446,6 @@ a.add-new-item-button:hover {
 }
 
 
-
 .folder-selector-dropdown .vs__dropdown-menu {
 	z-index: 999;
 }
@@ -490,6 +489,29 @@ a.add-new-item-button:hover {
 /* Overriding BP styles */
 .mce-tinymce button:hover, .mce-tinymce a.button:hover, .mce-tinymce a.button:focus, .mce-tinymce input[type=submit]:hover, .mce-tinymce input[type=button]:hover, .mce-tinymce input[type=reset]:hover {
 	border: none;
+}
+
+
+.delete-button {
+	background: #1C576C;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	padding: 9px 15px;
+}
+.delete-button:hover {
+	background: #022d3c;
+	border: none;
+	color: #fff;
+}
+.delete-button:disabled {
+	opacity: .7;
+}
+.delete-button:disabled:hover {
+	background: #1C576C;
+}
+.delete-button.delete-in-progress {
+	padding-right: 30px;
 }
 
 

@@ -97,7 +97,7 @@
 							}
 						)
 
-						if ( item.folders.length > 0 ) {
+						if ( item.hasOwnProperty( 'folders' ) && item.folders.length > 0 ) {
 							this.$store.commit(
 								'setFormFieldValue',
 								{
@@ -151,8 +151,8 @@
 					this.$router.push( { path: '/' } )
 					return
 				}
-				
-				this.fillForm()	
+
+				this.fillForm()
 			},
 		}
 	}

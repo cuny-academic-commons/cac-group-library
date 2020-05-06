@@ -63,6 +63,7 @@ function initialState() {
 		currentSearchTerm,
 		currentSort,
 		currentSortOrder,
+		deleteInProgress: false,
 		filteredItemIds: [],
 		foldersOfGroup,
 		forms,
@@ -256,6 +257,10 @@ export default new Vuex.Store(
 				state.currentSearchTerm = payload.value
 			},
 
+			setDeleteInProgress( state, payload ) {
+				state.deleteInProgress = payload.value
+			},
+
 			setFieldHasBeenVisited( state, payload ) {
 				const { formName, fieldName } = payload
 
@@ -321,6 +326,26 @@ export default new Vuex.Store(
 		},
 
 		actions: {
+			deleteItem( commit, itemIdToDelete ) {
+				const { endpointBase, nonce } = window.CACGroupLibrary
+
+				const endpoint = endpointBase + 'library-items/' + itemIdToDelete + '/'
+
+				const headers = {
+						'X-WP-Nonce': nonce,
+						'Content-Type': 'application/json',
+				}
+
+				return fetch(
+					endpoint,
+					{
+						method: 'DELETE',
+						credentials: 'include',
+						headers,
+					}
+				)
+			},
+
 			fetchPotentialParentDocs( {commit} ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 

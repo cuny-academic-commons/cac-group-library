@@ -45,6 +45,15 @@ class LibraryItem extends WP_REST_Controller {
 			),
 		) );
 
+		register_rest_route( $namespace, '/library-items/(?P<item_id>[\d]+)', array(
+			array(
+				'methods'         => WP_REST_Server::DELETABLE,
+				'callback'        => array( $this, 'delete_item' ),
+				'permission_callback' => array( $this, 'delete_item_permissions_check' ),
+				'args'            => $this->get_endpoint_args_for_item_schema( true ),
+			),
+		) );
+
 		register_rest_route( $namespace, '/library-items', array(
 			array(
 				'methods'         => WP_REST_Server::READABLE,
@@ -166,6 +175,54 @@ class LibraryItem extends WP_REST_Controller {
 		return rest_ensure_response( $retval );
 	}
 
+	/**
+	 * Permission check for deleting item.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return bool
+	 */
+	public function delete_item_permissions_check( $request ) {
+		$item_id = $request->get_param( 'item_id' );
+		$item    = new Item( $item_id );
+
+		if ( ! $item->exists() ) {
+			return false;
+		}
+
+		return $item->get_can_edit( get_current_user_id() );
+	}
+
+	/**
+	 * Deletes a library item.
+	 *
+	 * @param WP_REST_Request $request
+	 * @return WP_REST_Response
+	 */
+	public function delete_item( $request ) {
+		$item_id = $request->get_param( 'item_id' );
+
+		$retval = [
+			'success' => false,
+			'message' => '',
+		];
+
+		$item = new Item( $item_id );
+		if ( ! $item->exists() ) {
+			return $retval;
+		}
+
+		switch ( $item->get_item_type() ) {
+			case 'external_link' :
+				$retval = $this->create_external_link( $params );
+			break;
+
+			case 'bp_group_document' :
+				$retval = $this->delete_bp_group_document( $item_id );
+			break;
+		}
+
+		return rest_ensure_response( $retval );
+	}
 
 	protected function create_external_link( $params ) {
 		$retval = [
@@ -306,6 +363,35 @@ class LibraryItem extends WP_REST_Controller {
 			$retval['message'] = 'Your update was successful.';
 		} else {
 			$retval['message'] = 'Your file was uploaded successfully.';
+		}
+
+		return $retval;
+	}
+
+	protected function delete_bp_group_document( $item_id ) {
+		global $wpdb, $bp;
+
+		$retval = [
+			'success' => false,
+			'message' => '',
+		];
+
+		$item   = new Item( $item_id );
+		$doc_id = $item->get_source_item_id();
+
+		// Reproduce logic here because in the plugin there's a hardcoded permission check.
+		$doc = new BP_Group_Documents( $doc_id );
+		do_action( 'bp_group_documents_data_before_delete', $doc );
+		if ( $doc->file && file_exists( $doc->get_path(1) ) ) {
+			@unlink( $doc->get_path(1) );
+		}
+
+		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->group_documents->table_name} WHERE id = %d", $doc_id ) );
+		_b( $deleted );
+
+		if ( $deleted ) {
+			$retval['success'] = true;
+			$retval['message'] = 'Your file has been successfully deleted.';
 		}
 
 		return $retval;

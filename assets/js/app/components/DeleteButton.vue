@@ -1,22 +1,23 @@
 <template>
 	<button
-		:class="{ 'add-new-submit-button': true, 'submit-in-progress': submitInProgress }"
-		v-bind:style="backgroundStyles"
+		:class="{ 'delete-button': true, 'delete-in-progress': deleteInProgress }"
 		:disabled="disabled()"
-		@click.prevent="onSubmitClick()"
-	>{{ buttonText }}</button>
+		v-bind:style="backgroundStyles"
+		@click.prevent="onClick()"
+	>
+		Delete
+	</button>
 </template>
 
 <script>
-	import AjaxTools from '../mixins/AjaxTools'
-	import FormValidation from '../mixins/FormValidation'
+	import AjaxTools from '../mixins/AjaxTools.js'
 
 	export default {
 		computed: {
 			backgroundStyles() {
 				const { imgUrlBase } = window.CACGroupLibrary;
 
-				if ( this.submitInProgress ) {
+				if ( this.deleteInProgress ) {
 					return {
 						'background-image': 'url( ' + imgUrlBase + 'spinner.gif )',
 						'background-position': 'center right 8px',
@@ -26,25 +27,21 @@
 					return {}
 				}
 			},
-
-			formData() {
-				return this.$store.state.forms[ this.formName ]
-			},
 		},
 
 		methods: {
 			disabled() {
-				return ! this.formIsValid() || this.submitInProgress || this.$store.state.deleteInProgress
+				return this.deleteInProgress || this.$store.state.submitInProgress
 			},
 
-			onSubmitClick: function() {
+			onClick: function() {
 				const app = this
 
-				this.submitInProgress = true
+				this.deleteInProgress = true
 
 				this.$store.dispatch(
-					'submitItem',
-					this.formData
+					'deleteItem',
+					this.itemId
 				)
 				.then( function( response ) {
 					return response.json()
@@ -61,26 +58,20 @@
 					console.log( 'failed', ex )
 				})
 			},
-
-			formIsValid() {
-				return this.isFormValid( this.formName )
-			}
 		},
 
 		mixins: [
 			AjaxTools,
-			FormValidation,
 		],
 
 		props: {
-			buttonText: String,
-			formName: String
+			itemId: Number
 		}
 	}
 </script>
 
 <style>
-.add-new-submit-button {
+.delete-button {
 	background: #1C576C;
 	border: none;
 	color: #fff;
@@ -88,29 +79,21 @@
 	padding: 9px 15px;
 }
 
-.add-new-submit-button:hover {
+.delete-button:hover {
 	background: #022d3c;
 	border: none;
 	color: #fff;
 }
 
-.add-new-submit-button:disabled {
+.delete-button:disabled {
 	opacity: .7;
 }
 
-.add-new-submit-button:disabled:hover {
+.delete-button:disabled:hover {
 	background: #1C576C;
 }
 
-.add-new-submit-button.submit-in-progress {
+.delete-button.delete-in-progress {
 	padding-right: 30px;
-}
-
-.success-message {
-	background: #449621;
-	border-radius: 4px;
-	color: #fff;
-	margin-top: 10px;
-	padding: 8px 20px;
 }
 </style>

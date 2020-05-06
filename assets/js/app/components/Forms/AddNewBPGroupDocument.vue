@@ -52,6 +52,11 @@
 					:buttonText="submitButtonText"
 					formName="bpGroupDocument"
 				/>
+
+				<DeleteButton 
+					:itemId="itemId"
+					v-if="isEditMode"
+				/>
 			</div>
 		</form>
 	</div>
@@ -60,6 +65,7 @@
 <script>
 	import AddNewField from '../AddNewField.vue'
 	import AddNewSubmitButton from '../AddNewSubmitButton.vue'
+	import DeleteButton from '../DeleteButton.vue'
 	import FolderSelector from '../FolderSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
 
@@ -67,6 +73,7 @@
 		components: {
 			AddNewField,
 			AddNewSubmitButton,
+			DeleteButton,
 			FolderSelector,
 			FormValidation
 		},
