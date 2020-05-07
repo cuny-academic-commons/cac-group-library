@@ -35,7 +35,7 @@
 
 		methods: {
 			getCurrentCallback() {
-				const { currentItemType } = this.$store.state
+				const currentItemType = this.$store.state.route.query.hasOwnProperty( 'itemType' ) ? decodeURIComponent( this.$store.state.route.query.itemType ) : 'any'
 				return this.itemTypes.filter( itemType => currentItemType === itemType.code )
 			},
 
@@ -70,12 +70,15 @@
 			},
 
 			setCurrentCallback( payload ) {
-				this.$store.commit(
-					'setCurrentItemType',
-					{
-						value: payload.code
-					}
-				)
+				const newQuery = Object.assign( {}, this.$route.query, {
+					itemType: encodeURIComponent( payload.code ),
+					page: 1
+				} )
+
+				this.$router.push( {
+					path: '/',
+					query: newQuery
+				} )
 			}
 		}
 	}

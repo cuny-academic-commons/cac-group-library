@@ -39,7 +39,6 @@ function initialState() {
 		canCreateNew, foldersOfGroup
 	} = window.CACGroupLibrary;
 
-	const currentItemType = 'any'
 	const currentSort = 'title'
 	const currentSortOrder = 'asc'
 
@@ -58,13 +57,13 @@ function initialState() {
 		path: '/',
 		query: {
 			folder: 'any',
+			itemType: 'any',
 			page: 1,
 		}
 	}
 
 	return {
 		canCreateNew,
-		currentItemType,
 		currentSearchTerm,
 		currentSort,
 		currentSortOrder,
@@ -136,7 +135,7 @@ export default new Vuex.Store(
 				let newFilteredItemIds = [...state.libraryItemIds]
 
 				// Item type dropdown.
-				const theCurrentItemType = state.currentItemType
+				const theCurrentItemType = state.route.query.hasOwnProperty( 'itemType' ) ? decodeURIComponent( state.route.query.itemType ) : 'any'
 				if ( 'any' !== theCurrentItemType ) {
 					newFilteredItemIds = newFilteredItemIds.filter(
 						itemId => theCurrentItemType === state.libraryItems[ itemId ].item_type
@@ -218,7 +217,7 @@ export default new Vuex.Store(
 
 				// Paginate.
 				const { perPage, isSearchExpanded } = state
-				const currentPage = Number( state.route.query.page )
+				const currentPage = state.route.query.hasOwnProperty( 'page' ) ? Number( state.route.query.page ) : 1
 				const startNumber = ( perPage * ( currentPage - 1 ) )
 
 				let newPaginatedItemIds = [...newFilteredItemIds]

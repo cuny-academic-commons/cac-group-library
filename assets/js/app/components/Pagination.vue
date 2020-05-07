@@ -56,7 +56,7 @@
 			},
 
 			currentPage() {
-				return Number( this.$store.state.route.query.page )
+				return this.$store.state.route.query.hasOwnProperty( 'page' ) ? Number( this.$store.state.route.query.page ) : 1
 			},
 
 			endNumber() {
