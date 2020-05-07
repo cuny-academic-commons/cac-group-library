@@ -237,10 +237,6 @@ export default new Vuex.Store(
 				state.forms = defaultFormsState()
 			},
 
-			resetValidationErrors( state ) {
-				state.validationErrors = {}
-			},
-
 			setCurrentFolder( state, payload ) {
 				state.currentFolder = payload.value
 			},
