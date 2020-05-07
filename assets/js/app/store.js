@@ -40,7 +40,6 @@ function initialState() {
 	} = window.CACGroupLibrary;
 
 	const currentItemType = 'any'
-	const currentFolder = 'any'
 	const currentSort = 'title'
 	const currentSortOrder = 'asc'
 
@@ -58,13 +57,13 @@ function initialState() {
 	const route = {
 		path: '/',
 		query: {
+			folder: 'any',
 			page: 1,
 		}
 	}
 
 	return {
 		canCreateNew,
-		currentFolder,
 		currentItemType,
 		currentSearchTerm,
 		currentSort,
@@ -145,7 +144,7 @@ export default new Vuex.Store(
 				}
 
 				// Folder dropdown.
-				const theCurrentFolder = state.currentFolder
+				const theCurrentFolder = state.route.query.hasOwnProperty( 'folder' ) ? decodeURIComponent( state.route.query.folder ) : 'any'
 				if ( 'any' !== theCurrentFolder ) {
 					newFilteredItemIds = newFilteredItemIds.filter(
 						function( itemId ) {

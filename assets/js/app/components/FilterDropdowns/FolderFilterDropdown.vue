@@ -77,7 +77,7 @@
 			},
 
 			getCurrentCallback() {
-				const { currentFolder } = this.$store.state
+				const currentFolder = decodeURIComponent( this.$store.state.route.query.folder )
 				return this.folders().filter( folder => currentFolder === folder.code )
 			},
 
@@ -86,6 +86,17 @@
 			},
 
 			setCurrentCallback( payload ) {
+				const newQuery = Object.assign( {}, this.$route.query, {
+					folder: encodeURIComponent( payload.code ),
+					page: 1
+				} )
+
+				this.$router.push( {
+					path: '/',
+					query: newQuery
+				} )
+
+				return
 				this.$store.commit(
 					'setCurrentFolder',
 					{
