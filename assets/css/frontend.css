@@ -416,36 +416,6 @@ a.add-new-item-button:hover {
 }
 
 
-.add-new-submit-button {
-	background: #1C576C;
-	border: none;
-	color: #fff;
-	font-size: 16px;
-	padding: 9px 15px;
-}
-.add-new-submit-button:hover {
-	background: #022d3c;
-	border: none;
-	color: #fff;
-}
-.add-new-submit-button:disabled {
-	opacity: .7;
-}
-.add-new-submit-button:disabled:hover {
-	background: #1C576C;
-}
-.add-new-submit-button.submit-in-progress {
-	padding-right: 30px;
-}
-.success-message {
-	background: #449621;
-	border-radius: 4px;
-	color: #fff;
-	margin-top: 10px;
-	padding: 8px 20px;
-}
-
-
 .folder-selector-dropdown .vs__dropdown-menu {
 	z-index: 999;
 }
@@ -480,6 +450,36 @@ a.add-new-item-button:hover {
 	width: 50%;
 }
 
+
+
+.add-new-submit-button {
+	background: #1C576C;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	padding: 9px 15px;
+}
+.add-new-submit-button:hover {
+	background: #022d3c;
+	border: none;
+	color: #fff;
+}
+.add-new-submit-button:disabled {
+	opacity: .7;
+}
+.add-new-submit-button:disabled:hover {
+	background: #1C576C;
+}
+.add-new-submit-button.submit-in-progress {
+	padding-right: 30px;
+}
+.success-message {
+	background: #449621;
+	border-radius: 4px;
+	color: #fff;
+	margin-top: 10px;
+	padding: 8px 20px;
+}
 
 
 .add-new-form {

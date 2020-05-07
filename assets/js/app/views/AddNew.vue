@@ -17,9 +17,9 @@
 
 			<div class="add-new-content-form">
 				<transition name="fade" mode="out-in">
-					<AddNewBpDoc v-if="isBpDoc" />
-					<AddNewBpGroupDocument v-if="isBpGroupDocument" />
-					<AddNewExternalLink v-if="isExternalLink" />
+					<BpDocForm v-if="isBpDoc" />
+					<BpGroupDocumentForm v-if="isBpGroupDocument" />
+					<ExternalLinkForm v-if="isExternalLink" />
 				</transition>
 			</div>
 		</div>
@@ -27,16 +27,16 @@
 </template>
 
 <script>
-	import AddNewBpDoc from '../components/Forms/AddNewBpDoc.vue'
-	import AddNewBpGroupDocument from '../components/Forms/AddNewBPGroupDocument.vue'
-	import AddNewExternalLink from '../components/Forms/AddNewExternalLink.vue'
+	import BpDocForm from '../components/Forms/BpDocForm.vue'
+	import BpGroupDocumentForm from '../components/Forms/BpGroupDocumentForm.vue'
+	import ExternalLinkForm from '../components/Forms/ExternalLinkForm.vue'
 	import ItemTypeDropdown from '../components/ItemTypeDropdown.vue'
 
 	export default {
 		components: {
-			AddNewBpDoc,
-			AddNewBpGroupDocument,
-			AddNewExternalLink,
+			BpDocForm,
+			BpGroupDocumentForm,
+			ExternalLinkForm,
 			ItemTypeDropdown
 		},
 

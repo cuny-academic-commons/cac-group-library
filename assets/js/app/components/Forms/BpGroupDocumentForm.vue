@@ -5,7 +5,7 @@
 			enctype="multipart/form-data"
 			v-on:submit.prevent="isFormValidated"
 		>
-			<AddNewField
+			<FormField
 				fieldLabel="Title (required)"
 				fieldId="add-new-file-title"
 				:required="true"
@@ -14,7 +14,7 @@
 				fieldType="text"
 			/>
 
-			<AddNewField
+			<FormField
 				fieldLabel="Description"
 				fieldId="add-new-file-description"
 				:required="false"
@@ -24,7 +24,7 @@
 				:maxlength="350"
 			/>
 
-			<AddNewField
+			<FormField
 				buttonText="Select file"
 				:disabled="isEditMode"
 				fieldLabel="Select your file"
@@ -48,7 +48,7 @@
 			</div>
 
 			<div class="add-new-submit">
-				<AddNewSubmitButton
+				<SubmitButton
 					:buttonText="submitButtonText"
 					formName="bpGroupDocument"
 				/>
@@ -63,19 +63,19 @@
 </template>
 
 <script>
-	import AddNewField from '../AddNewField.vue'
-	import AddNewSubmitButton from '../AddNewSubmitButton.vue'
 	import DeleteButton from '../DeleteButton.vue'
+	import FormField from '../FormField.vue'
 	import FolderSelector from '../FolderSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
+	import SubmitButton from '../SubmitButton.vue'
 
 	export default {
 		components: {
-			AddNewField,
-			AddNewSubmitButton,
 			DeleteButton,
+			FormField,
+			FormValidation,
 			FolderSelector,
-			FormValidation
+			SubmitButton,
 		},
 
 		computed: {

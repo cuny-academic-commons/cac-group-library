@@ -1,7 +1,7 @@
 <template>
 	<div class="add-new-form">
 		<form class="add-new-form-bpDoc" v-on:submit.prevent="isFormValidated">
-			<AddNewField
+			<FormField
 				fieldLabel="Title (required)"
 				:fieldId="'add-new-bp-doc-title'"
 				:required="true"
@@ -47,7 +47,7 @@
 			</div>
 
 			<div class="add-new-submit">
-				<AddNewSubmitButton
+				<SubmitButton
 					buttonText="Create"
 					:formName="formName"
 				/>
@@ -62,19 +62,19 @@
 	import vSelect from 'vue-select'
 	import 'vue-select/dist/vue-select.css';
 
-	import AddNewField from '../AddNewField.vue'
-	import AddNewSubmitButton from '../AddNewSubmitButton.vue'
+	import FormField from '../FormField.vue'
 	import FolderSelector from '../FolderSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
+	import SubmitButton from '../SubmitButton.vue'
 
 	export default {
 		components: {
-			AddNewField,
-			AddNewSubmitButton,
 			Editor,
+			FormField,
 			FolderSelector,
 			FormValidation,
-			vSelect
+			vSelect,
+			SubmitButton,
 		},
 
 		computed: {

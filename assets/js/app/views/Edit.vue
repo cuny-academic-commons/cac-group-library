@@ -12,12 +12,12 @@
 			<div class="add-new-content-form">
 				<h3 class="edit-item-title">{{ getTitle() }}</h3>
 
-				<AddNewBpGroupDocument
+				<BpGroupDocumentForm
 					:itemId="getItemId()"
 					v-if="'bp_group_document' === getItemType()"
 				/>
 
-				<AddNewExternalLink
+				<ExternalLinkForm
 					:itemId="getItemId()"
 					v-if="'external_link' === getItemType()"
 				/>
@@ -27,14 +27,14 @@
 </template>
 
 <script>
-	import AddNewBpGroupDocument from '../components/Forms/AddNewBPGroupDocument.vue'
-	import AddNewExternalLink from '../components/Forms/AddNewExternalLink.vue'
+	import BpGroupDocumentForm from '../components/Forms/BpGroupDocumentForm.vue'
+	import ExternalLinkForm from '../components/Forms/ExternalLinkForm.vue'
 	import ItemTypeDropdown from '../components/ItemTypeDropdown.vue'
 
 	export default {
 		components: {
-			AddNewBpGroupDocument,
-			AddNewExternalLink,
+			BpGroupDocumentForm,
+			ExternalLinkForm,
 			ItemTypeDropdown
 		},
 
