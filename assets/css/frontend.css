@@ -994,6 +994,9 @@ body.dg-open {
 .add-new-form {
 	padding-bottom: 100px;
 }
+.static-file-label {
+	font-weight: bold;
+}
 
 
 .add-new-form {

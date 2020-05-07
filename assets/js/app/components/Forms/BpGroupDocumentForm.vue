@@ -26,7 +26,6 @@
 
 			<FormField
 				buttonText="Select file"
-				:disabled="isEditMode"
 				fieldLabel="Select your file"
 				fieldId="add-new-file-file"
 				:required="true"
@@ -34,7 +33,17 @@
 				fieldName="file"
 				fieldType="file"
 				:tooltip="fileTooltip"
+				v-if="! isEditMode"
 			/>
+
+			<div
+				class="add-new-field add-new-field-static-file"
+				v-if="isEditMode"
+			>
+				<div class="static-file-label">Attached file</div>
+
+				<a :href="existingFileUrl">{{ existingFileUrl }}</a>
+			</div>
 
 			<div class="add-new-field add-new-field-dropdown">
 				<label
@@ -88,6 +97,11 @@
 		},
 
 		computed: {
+			existingFileUrl() {
+				const item = this.$store.state.libraryItems[ this.itemId ]
+				return item.url
+			},
+
 			fileTooltip() {
 				const { maxUploadSizeFormatted, uploadFiletypes } = window.CACGroupLibrary
 				const types = uploadFiletypes.join( ' ')
@@ -170,5 +184,9 @@
 <style>
 .add-new-form {
 	padding-bottom: 100px;
+}
+
+.static-file-label {
+	font-weight: bold;
 }
 </style>
