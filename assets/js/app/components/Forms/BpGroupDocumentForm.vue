@@ -47,13 +47,20 @@
 				/>
 			</div>
 
+			<div class="add-edit-silent-toggle">
+				<SilentToggle
+					:defaultValue="isSilentChecked()"
+					:label="silentToggleLabel"
+				/>
+			</div>
+
 			<div class="add-new-submit">
 				<SubmitButton
 					:buttonText="submitButtonText"
 					formName="bpGroupDocument"
 				/>
 
-				<DeleteButton 
+				<DeleteButton
 					:itemId="itemId"
 					v-if="isEditMode"
 				/>
@@ -67,6 +74,7 @@
 	import FormField from '../FormField.vue'
 	import FolderSelector from '../FolderSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
+	import SilentToggle from '../SilentToggle.vue'
 	import SubmitButton from '../SubmitButton.vue'
 
 	export default {
@@ -75,6 +83,7 @@
 			FormField,
 			FormValidation,
 			FolderSelector,
+			SilentToggle,
 			SubmitButton,
 		},
 
@@ -94,14 +103,17 @@
 				return this.isFormValid( this.formName )
 			},
 
+			silentToggleLabel() {
+				return this.isEditMode ? 'Silent edit' : 'Silent upload'
+			},
+
 			submitButtonText() {
 				return this.isEditMode ? 'Save Changes' : 'Upload'
 			},
 
-			itemId: {
-				get() {
-					return this.$store.state.forms[ this.formName ].itemId
-				}
+			itemId() {
+				const { params } = this.$route
+				return params.hasOwnProperty( 'itemId' ) ? Number( params.itemId ) : 0
 			},
 
 			title: {
@@ -140,6 +152,12 @@
 		data() {
 			return {
 				formName: 'bpGroupDocument'
+			}
+		},
+
+		methods: {
+			isSilentChecked() {
+				return this.isEditMode
 			}
 		},
 

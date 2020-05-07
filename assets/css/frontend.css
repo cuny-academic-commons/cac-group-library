@@ -460,6 +460,14 @@ a.add-new-item-button:hover {
 
 
 
+.silent-toggle-wrapper {
+	margin-bottom: 10px;
+}
+.silent-toggle-label {
+	font-weight: bold;
+}
+
+
 .add-new-submit-button {
 	background: #1C576C;
 	border: none;

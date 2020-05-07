@@ -411,7 +411,7 @@ export default new Vuex.Store(
 
 					body.append( 'itemType', itemType )
 					body.append( 'groupId', groupId )
-					body.append( 'silentUpdate', silentUpdate )
+					body.append( 'silentUpdate', silentUpdate ? 1 : 0 )
 					contentType = ''
 				} else {
 					body = Object.assign( {}, commit.state.forms[ itemType ], {

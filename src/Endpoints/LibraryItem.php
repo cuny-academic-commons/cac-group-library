@@ -103,6 +103,10 @@ class LibraryItem extends WP_REST_Controller {
 			return rest_ensure_response( $retval );
 		}
 
+		if ( ! empty( $params['silentUpdate'] ) ) {
+			$this->silence_update();
+		}
+
 		switch ( $item_type ) {
 			case 'externalLink' :
 				$retval = $this->save_external_link( $params );
@@ -420,10 +424,6 @@ class LibraryItem extends WP_REST_Controller {
 			'parent_id' => isset( $params['parent']['code'] ) ? intval( $params['parent']['code'] ) : 0,
 		];
 
-		if ( ! empty( $params['silentUpdate'] ) ) {
-			BuddyPressDocsSync::silence_update();
-		}
-
 		$docs_query = new BP_Docs_Query();
 		$created    = $docs_query->save( $create_args );
 
@@ -502,5 +502,10 @@ class LibraryItem extends WP_REST_Controller {
 			'success' => true,
 			'results' => $results,
 		] );
+	}
+
+	protected function silence_update() {
+		add_action( 'bp_ass_send_activity_notification_for_user', '__return_false', 100 );
+		add_action( 'bp_ges_add_to_digest_queue_for_user', '__return_false', 100 );
 	}
 }

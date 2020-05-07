@@ -81,12 +81,13 @@
 							}
 						)
 
+						const description = item.hasOwnProperty( 'description' ) ? item.description : ''
 						this.$store.commit(
 							'setFormFieldValue',
 							{
 								form: 'bpGroupDocument',
 								field: 'description',
-								value: item.description
+								value: description
 							}
 						)
 

@@ -129,7 +129,9 @@
 
 			value: {
 				get() {
-					return this.$store.state.forms[ this.formName ][ this.fieldName ]
+					const { formName, fieldName } = this
+					const form = this.$store.state.forms[ formName ]
+					return form.hasOwnProperty( fieldName ) ? form[ fieldName ] : ''
 				},
 
 				set( value ) {
@@ -151,7 +153,7 @@
 
 		methods: {
 			characterLimitGloss() {
-				const currentLength = this.value.length
+				const currentLength = 'string' === typeof this.value ? this.value.length : 0
 
 				if ( currentLength == 0 ) {
 					return this.theMaxlength + ' characters maximum.'
