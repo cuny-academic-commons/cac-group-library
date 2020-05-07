@@ -36,7 +36,7 @@
 
 			<div class="add-new-submit">
 				<SubmitButton
-					buttonText="Add link"
+					:buttonText="submitButtonText"
 					formName="externalLink"
 				/>
 			</div>
@@ -61,6 +61,14 @@
 		computed: {
 			isFormValidated() {
 				return this.isFormValid( 'externalLink' )
+			},
+
+			itemId() {
+				return this.$store.state.forms.externalLink.itemId
+			},
+
+			submitButtonText() {
+				return this.itemId > 0 ? 'Update link' : 'Add link'
 			},
 
 			title: {

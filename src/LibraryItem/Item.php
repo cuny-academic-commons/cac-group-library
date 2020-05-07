@@ -122,7 +122,7 @@ class Item {
 			}
 		}
 
-		return $saved;
+		return (bool) $saved;
 	}
 
 	public function delete() {

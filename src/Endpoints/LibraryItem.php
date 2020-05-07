@@ -105,7 +105,7 @@ class LibraryItem extends WP_REST_Controller {
 
 		switch ( $item_type ) {
 			case 'externalLink' :
-				$retval = $this->create_external_link( $params );
+				$retval = $this->save_external_link( $params );
 			break;
 
 			case 'bpGroupDocument' :
@@ -145,30 +145,27 @@ class LibraryItem extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function edit_item( $request ) {
-		$params = $request->get_params();
+		$params  = $request->get_params();
+		$item_id = $request->get_param( 'item_id' );
 
 		$retval = [
 			'success' => false,
 			'message' => '',
 		];
 
-		$item_type = isset( $params['itemType'] ) ? $params['itemType'] : '';
-		if ( ! $item_type ) {
-			return rest_ensure_response( $retval );
+		$item = new Item( $item_id );
+		if ( ! $item->exists() ) {
+			return $retval;
 		}
 
-		switch ( $item_type ) {
-			case 'externalLink' :
-				$retval = $this->create_external_link( $params );
+		switch ( $item->get_item_type() ) {
+			case 'external_link' :
+				$retval = $this->save_external_link( $params );
 			break;
 
-			case 'bpGroupDocument' :
+			case 'bp_group_document' :
 				$file_params = $request->get_file_params();
 				$retval = $this->save_bp_group_document( $params, $file_params['file'] );
-			break;
-
-			case 'bpDoc' :
-				$retval = $this->create_bp_doc( $params );
 			break;
 		}
 
@@ -213,7 +210,7 @@ class LibraryItem extends WP_REST_Controller {
 
 		switch ( $item->get_item_type() ) {
 			case 'external_link' :
-				$retval = $this->create_external_link( $params );
+				$retval = $this->save_external_link( $params );
 			break;
 
 			case 'bp_group_document' :
@@ -224,7 +221,7 @@ class LibraryItem extends WP_REST_Controller {
 		return rest_ensure_response( $retval );
 	}
 
-	protected function create_external_link( $params ) {
+	protected function save_external_link( $params ) {
 		$retval = [
 			'success' => false,
 			'message' => '',
@@ -237,7 +234,9 @@ class LibraryItem extends WP_REST_Controller {
 			return $retval;
 		}
 
-		$library_item = new Item();
+		$item_id = ! empty( $params['item_id'] ) ? (int) $params['item_id'] : null;
+
+		$library_item = new Item( $item_id );
 		$library_item->set_date_modified( date( 'Y-m-d H:i:s' ) );
 		$library_item->set_group_id( $group_id );
 		$library_item->set_item_type( 'external_link' );
@@ -257,7 +256,7 @@ class LibraryItem extends WP_REST_Controller {
 
 		if ( $saved ) {
 			$retval['success'] = true;
-			$retval['message'] = 'Your external link was added successfully';
+			$retval['message'] = $item_id ? 'Your external link was updated successfully.' : 'Your external link was added successfully';
 		}
 
 		return rest_ensure_response( $retval );
