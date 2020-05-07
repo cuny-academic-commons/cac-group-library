@@ -111,6 +111,11 @@ class Query {
 			$can_edit = $item->get_can_edit( get_current_user_id() );
 			if ( $can_edit ) {
 				$formatted_item['can_edit'] = true;
+
+				$edit_url = $item->get_edit_url();
+				if ( $edit_url ) {
+					$formatted_item['edit_url'] = $edit_url;
+				}
 			}
 
 			$retval[ $item->get_id() ] = $formatted_item;

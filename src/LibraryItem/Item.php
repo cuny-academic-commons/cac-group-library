@@ -357,6 +357,28 @@ class Item {
 	}
 
 	/**
+	 * Get Edit URL.
+	 *
+	 * @return string
+	 */
+	public function get_edit_url() {
+		switch ( $this->get_item_type() ) {
+			case 'cacsp_paper' :
+				// Editing happens at the regular URL.
+				return get_permalink( $this->get_source_item_id() );
+
+			case 'bp_doc' :
+				return bp_docs_get_doc_edit_link( $this->get_source_item_id() );
+
+			case 'forum_attachment' :
+				return 'pending';
+
+			default :
+				return '';
+		}
+	}
+
+	/**
 	 * Set date modified.
 	 *
 	 * @param string

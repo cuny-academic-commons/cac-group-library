@@ -39,8 +39,14 @@
 			class="group-library-edit"
 			v-if="canEdit()"
 		>
+			<a
+				:href="editUrl()"
+				v-if="editLinkIsStatic()"
+			>Edit</a>
+
 			<router-link
 				:to="'/edit/' + itemId"
+				v-else
 			>Edit</router-link>
 		</div>
 	</div>
@@ -71,6 +77,15 @@
 			description() {
 				const item = this.getItem()
 				return item.hasOwnProperty( 'description' ) ? item.description : ''
+			},
+
+			editLinkIsStatic() {
+				return this.editUrl().length > 0
+			},
+
+			editUrl() {
+				const item = this.getItem()
+				return item.hasOwnProperty( 'edit_url' ) ? item.edit_url : ''
 			},
 
 			fileType() {
