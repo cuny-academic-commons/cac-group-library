@@ -278,6 +278,14 @@ a.add-new-item-button:hover {
 	right: 0;
 	top: 0;
 }
+.library-load-more-button {
+	background: #fff;
+	border: 1px solid #1c576c;
+	color: #1C576C;
+	font-size: 16px;
+	padding: 9px 15px;
+	width: 100%;
+}
 @media screen and (max-width:600px) {
 .group-library-header h2 {
 		font-size: 24px;

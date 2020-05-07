@@ -23,7 +23,10 @@
 		<transition name="fade">
 			<div v-if="! isLoading && initialLoadComplete" class="group-library-refreshable">
 				<div class="group-library-nav">
-					<div class="group-library-pagination">
+					<div
+						class="group-library-pagination"
+						v-if="$mq === 'desktop'"
+					>
 						<transition name="fade" mode="out-in">
 							<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
 							<Pagination v-else key="pagination" />
@@ -72,6 +75,12 @@
 							/>
 						</li>
 					</ul>
+
+					<button
+						class="library-load-more-button"
+						v-if="showLoadMore"
+						v-on:click="doLoadMore()"
+					>Load More</button>
 				</div>
 			</div>
 
@@ -169,6 +178,10 @@
 				return false
 			},
 
+			showLoadMore() {
+				return this.$mq === 'mobile' && this.paginatedItemIds.length < this.$store.state.libraryItemIds.length
+			},
+
 			successMessage() {
 				return this.$store.state.successMessage
 			}
@@ -192,6 +205,19 @@
 			canEdit( itemId ) {
 				const { can_edit } = this.$store.state.libraryItems[ itemId ]
 				return !! can_edit
+			},
+
+			doLoadMore() {
+				const { perPage } = this.$store.state
+
+				this.$store.commit(
+					'setPerPage',
+					{
+						value: perPage + 20,
+					}
+				)
+
+				this.$store.commit( 'refreshFilteredItemIds' )
 			},
 
 			hasDescription( itemId ) {
@@ -337,6 +363,15 @@ a.add-new-item-button:hover {
 	position: absolute;
 	right: 0;
 	top: 0;
+}
+
+.library-load-more-button {
+	background: #fff;
+	border: 1px solid #1c576c;
+	color: #1C576C;
+	font-size: 16px;
+	padding: 9px 15px;
+	width: 100%;
 }
 
 @media screen and (max-width:600px) {

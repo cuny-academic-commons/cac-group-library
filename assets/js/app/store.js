@@ -300,6 +300,10 @@ export default new Vuex.Store(
 				state.isSearchExpanded = payload.value
 			},
 
+			setPerPage( state, payload ) {
+				state.perPage = payload.value
+			},
+
 			setShowDescriptions( state, payload ) {
 				state.showDescriptions = payload.value
 			},

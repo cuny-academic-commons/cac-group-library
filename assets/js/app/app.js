@@ -7,12 +7,18 @@ import App from './App.vue'
 import store from './store.js'
 import router from './router.js'
 
-//import VuejsDialogMixin from 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js';
-import VuejsDialog from 'vuejs-dialog';
+import VuejsDialog from 'vuejs-dialog'
 import VTooltip from 'v-tooltip'
+import VueMq from 'vue-mq'
 
 Vue.use(VuejsDialog);
 Vue.use(VTooltip)
+Vue.use(VueMq, {
+	breakpoints: {
+		mobile: 600,
+		desktop: Infinity
+	}
+})
 
 window.cacGroupLibrary = new Vue(
 	{
