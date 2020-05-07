@@ -346,12 +346,18 @@ class Item {
 			return true;
 		}
 
-		// @todo This may need to be more fine-grained for some item types.
-		if ( groups_is_user_mod( $user_id, $this->get_group_id() ) || groups_is_user_admin( $user_id, $this->get_group_id() ) ) {
-			return true;
+		$can_edit = false;
+		switch ( $this->get_item_type() ) {
+			case 'bp_doc' :
+				$can_edit = current_user_can( 'bp_docs_edit', $this->get_source_item_id() );
+			break;
+
+			default :
+				$can_edit = groups_is_user_mod( $user_id, $this->get_group_id() ) || groups_is_user_admin( $user_id, $this->get_group_id() );
+			break;
 		}
 
-		return false;
+		return $can_edit;
 	}
 
 	/**
