@@ -33,7 +33,9 @@
 					<div class="group-library-filters">
 						<FolderFilterDropdown />
 						<ItemTypeFilterDropdown />
-						<DescriptionToggle />
+						<DescriptionToggle
+							v-if="showDescriptionToggle"
+						/>
 					</div>
 				</div>
 
@@ -147,6 +149,16 @@
 				return this.$store.state.isLoading
 			},
 
+			showDescriptionToggle() {
+				for ( var itemId of this.paginatedItemIds ) {
+					if ( this.hasDescription( itemId ) ) {
+						return true
+					}
+				}
+
+				return false
+			},
+
 			showEditColumn() {
 				for ( var itemId of this.paginatedItemIds ) {
 					if ( this.canEdit( itemId ) ) {
@@ -180,6 +192,12 @@
 			canEdit( itemId ) {
 				const { can_edit } = this.$store.state.libraryItems[ itemId ]
 				return !! can_edit
+			},
+
+			hasDescription( itemId ) {
+				const { description, item_type } = this.$store.state.libraryItems[ itemId ]
+				console.log(item_type)
+				return 'forum_attachment' === item_type || ( 'string' === typeof description && description.length > 0 )
 			},
 
 			onAddNewClick() {
