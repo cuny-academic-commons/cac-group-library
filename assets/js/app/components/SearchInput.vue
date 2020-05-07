@@ -90,20 +90,8 @@
 			},
 
 			onCloseClick( event ) {
-				this.$store.commit(
-					'setCurrentSearchTerm',
-					{ value: '' }
-				)
-
-				this.$store.commit(
-					'setIsSearchExpanded',
-					{ value: false }
-				)
-
-				this.$store.commit(
-					'setShowDescriptions',
-					{ value: false }
-				)
+				this.currentSearchTerm = ''
+				this.isSearchExpanded = ''
 
 				this.$store.commit( 'refreshFilteredItemIds' )
 
@@ -111,8 +99,16 @@
 			},
 
 			onFocus() {
-				this.$store.commit( 'setCurrentItemType', { value: 'any' } )
-				this.$store.commit( 'setCurrentFolder', { value: 'any' } )
+				// Don't re-clear filters if already expanded or if there's search text.
+				if ( this.isSearchExpanded || this.currentSearchTerm.length > 0 ) {
+					return
+				}
+
+				this.$router.push({
+					path: '/',
+					query: {}
+				})
+
 				this.isSearchExpanded = true
 			}
 		}
