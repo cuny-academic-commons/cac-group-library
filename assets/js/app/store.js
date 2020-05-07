@@ -42,7 +42,6 @@ function initialState() {
 	const currentSort = 'title'
 	const currentSortOrder = 'asc'
 
-	const currentSearchTerm = ''
 	const isSearchExpanded = false
 
 	const perPage = 20
@@ -59,12 +58,12 @@ function initialState() {
 			folder: 'any',
 			itemType: 'any',
 			page: 1,
+			searchTerm: '',
 		}
 	}
 
 	return {
 		canCreateNew,
-		currentSearchTerm,
 		currentSort,
 		currentSortOrder,
 		deleteInProgress: false,
@@ -158,7 +157,7 @@ export default new Vuex.Store(
 				}
 
 				// Search.
-				const theCurrentSearchTerm = state.currentSearchTerm.toLowerCase()
+				const theCurrentSearchTerm = state.route.query.hasOwnProperty( 'searchTerm' ) ? decodeURIComponent( state.route.query.searchTerm ) : ''
 				if ( '' !== theCurrentSearchTerm ) {
 					newFilteredItemIds = newFilteredItemIds.filter(
 						function( itemId ) {
@@ -241,22 +240,6 @@ export default new Vuex.Store(
 
 			resetForms( state ) {
 				state.forms = defaultFormsState()
-			},
-
-			setCurrentFolder( state, payload ) {
-				state.currentFolder = payload.value
-			},
-
-			setCurrentItemType( state, payload ) {
-				state.currentItemType = payload.value
-			},
-
-			setCurrentPage( state, payload ) {
-				state.currentPage = payload.value
-			},
-
-			setCurrentSearchTerm( state, payload ) {
-				state.currentSearchTerm = payload.value
 			},
 
 			setDeleteInProgress( state, payload ) {

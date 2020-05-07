@@ -21,14 +21,17 @@
 		computed: {
 			currentSearchTerm: {
 				get() {
-					return this.$store.state.currentSearchTerm
+					return this.$store.state.route.query.hasOwnProperty( 'searchTerm' ) ? decodeURIComponent( this.$store.state.route.query.searchTerm ) : ''
 				},
 
 				set( value ) {
-					this.$store.commit(
-						'setCurrentSearchTerm',
-						{ value }
-					)
+					const newQuery = Object.assign( {}, this.$router.query, {
+						searchTerm: value
+					} )
+					this.$router.push({
+						path: '/',
+						query: newQuery
+					})
 
 					this.$store.commit( 'refreshFilteredItemIds' )
 				}
@@ -53,6 +56,12 @@
 					// Required to trigger pagination.
 					this.$store.commit( 'refreshFilteredItemIds' )
 				}
+			}
+		},
+
+		created() {
+			if ( this.currentSearchTerm.length > 0 ) {
+				this.isSearchExpanded = true
 			}
 		},
 
