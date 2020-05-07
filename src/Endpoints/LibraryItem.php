@@ -210,7 +210,7 @@ class LibraryItem extends WP_REST_Controller {
 
 		switch ( $item->get_item_type() ) {
 			case 'external_link' :
-				$retval = $this->save_external_link( $params );
+				$retval = $this->delete_external_link( $item_id );
 			break;
 
 			case 'bp_group_document' :
@@ -260,6 +260,22 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		return rest_ensure_response( $retval );
+	}
+
+	protected function delete_external_link( $item_id ) {
+		$item = new Item( $item_id );
+
+		$retval = [
+			'success' => false,
+			'message' => '',
+		];
+
+		if ( $item->delete() ) {
+			$retval['success'] = true;
+			$retval['message'] = 'Your external link was deleted successfully.';
+		}
+
+		return $retval;
 	}
 
 	protected function save_bp_group_document( $params, $file_params ) {

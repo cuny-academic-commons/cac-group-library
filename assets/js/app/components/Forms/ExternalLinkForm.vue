@@ -39,12 +39,18 @@
 					:buttonText="submitButtonText"
 					formName="externalLink"
 				/>
+
+				<DeleteButton
+					:itemId="itemId"
+					v-if="isEditMode"
+				/>
 			</div>
 		</form>
 	</div>
 </template>
 
 <script>
+	import DeleteButton from '../DeleteButton.vue'
 	import FormField from '../FormField.vue'
 	import FormValidation from '../../mixins/FormValidation'
 	import FolderSelector from '../FolderSelector.vue'
@@ -52,6 +58,7 @@
 
 	export default {
 		components: {
+			DeleteButton,
 			FormField,
 			FormValidation,
 			FolderSelector,
@@ -61,6 +68,10 @@
 		computed: {
 			isFormValidated() {
 				return this.isFormValid( 'externalLink' )
+			},
+
+			isEditMode() {
+				return this.itemId > 0
 			},
 
 			itemId() {
