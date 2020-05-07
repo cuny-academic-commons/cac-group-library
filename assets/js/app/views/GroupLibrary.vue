@@ -222,7 +222,6 @@
 
 			hasDescription( itemId ) {
 				const { description, item_type } = this.$store.state.libraryItems[ itemId ]
-				console.log(item_type)
 				return 'forum_attachment' === item_type || ( 'string' === typeof description && description.length > 0 )
 			},
 

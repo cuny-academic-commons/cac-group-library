@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import fetch from 'isomorphic-fetch'
+import router from './router'
 
 Vue.use(Vuex)
 
@@ -46,7 +47,6 @@ function initialState() {
 	const currentSearchTerm = ''
 	const isSearchExpanded = false
 
-	const currentPage = 1
 	const perPage = 20
 
 	const showDescriptions = false
@@ -55,11 +55,17 @@ function initialState() {
 
 	const forms = defaultFormsState()
 
+	const route = {
+		path: '/',
+		query: {
+			page: 1,
+		}
+	}
+
 	return {
 		canCreateNew,
 		currentFolder,
 		currentItemType,
-		currentPage,
 		currentSearchTerm,
 		currentSort,
 		currentSortOrder,
@@ -75,6 +81,7 @@ function initialState() {
 		paginatedItemIds: [],
 		perPage,
 		potentialParentDocs: [],
+		route,
 		showDescriptions,
 		successMessage: '',
 		submitInProgress: false,
@@ -211,7 +218,8 @@ export default new Vuex.Store(
 				state.filteredItemIds = newFilteredItemIds
 
 				// Paginate.
-				const { perPage, currentPage, isSearchExpanded } = state
+				const { perPage, isSearchExpanded } = state
+				const currentPage = Number( state.route.query.page )
 				const startNumber = ( perPage * ( currentPage - 1 ) )
 
 				let newPaginatedItemIds = [...newFilteredItemIds]

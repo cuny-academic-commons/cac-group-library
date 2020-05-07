@@ -6,6 +6,9 @@ import fetch from 'isomorphic-fetch'
 import App from './App.vue'
 import store from './store.js'
 import router from './router.js'
+import { sync } from 'vuex-router-sync'
+
+const unsync = sync(store, router)
 
 import VuejsDialog from 'vuejs-dialog'
 import VTooltip from 'v-tooltip'

@@ -4,7 +4,7 @@
 			Viewing {{startNumber()}} to {{endNumber()}} (of {{totalNumber()}} items)
 		</div>
 
-		<div 
+		<div
 			class="pagination-links"
 			v-if="hasMoreThanOnePage()"
 		>
@@ -45,18 +45,18 @@
 
 		methods: {
 			clickHandler( pageNum ) {
-				this.$store.commit(
-					'setCurrentPage',
-					{
-						value: pageNum
+				this.$router.push({
+					path: '/',
+					query: {
+						page: pageNum
 					}
-				)
+				})
 
 				this.$store.commit( 'refresh' )
 			},
 
 			currentPage() {
-				return this.$store.state.currentPage
+				return Number( this.$store.state.route.query.page )
 			},
 
 			endNumber() {
@@ -64,9 +64,13 @@
 
 				return ( pagEnd > this.totalNumber() ) ? this.totalNumber() : pagEnd
 			},
-			
+
 			hasMoreThanOnePage() {
 				return this.pageCount() > 1
+			},
+
+			onChange(e ) {
+				console.log(e)
 			},
 
 			pageCount() {
