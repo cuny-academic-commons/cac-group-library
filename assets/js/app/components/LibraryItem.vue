@@ -102,7 +102,7 @@
 			},
 
 			showDescription() {
-				return this.$store.state.showDescriptions
+				return this.description().length > 0 && this.$store.state.showDescriptions
 			},
 
 			getFileTypeBase() {
