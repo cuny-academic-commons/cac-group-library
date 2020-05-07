@@ -80,6 +80,7 @@ function initialState() {
 		potentialParentDocs: [],
 		route,
 		showDescriptions,
+		silentUpdate: false,
 		successMessage: '',
 		submitInProgress: false,
 		validationErrors: {},
@@ -297,6 +298,10 @@ export default new Vuex.Store(
 				state.showDescriptions = payload.value
 			},
 
+			setSilentUpdate( state, payload ) {
+				state.silentUpdate = payload.value
+			},
+
 			setSubmitInProgress( state, payload ) {
 				state.submitInProgress = payload.value
 			},
@@ -392,6 +397,7 @@ export default new Vuex.Store(
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
 				const itemType = commit.state.forms.itemTypeSelector
+				const { silentUpdate } = commit.state
 				const { itemId } = commit.state.forms[ itemType ]
 				const isEdit = itemId > 0
 
@@ -405,11 +411,13 @@ export default new Vuex.Store(
 
 					body.append( 'itemType', itemType )
 					body.append( 'groupId', groupId )
+					body.append( 'silentUpdate', silentUpdate )
 					contentType = ''
 				} else {
 					body = Object.assign( {}, commit.state.forms[ itemType ], {
 						itemType,
-						groupId
+						groupId,
+						silentUpdate
 					} )
 					body = JSON.stringify( body )
 					contentType = 'application/json'

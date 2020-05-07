@@ -95,4 +95,9 @@ class BuddyPressDocsSync implements SyncInterface {
 
 		return $item->delete();
 	}
+
+	public static function silence_update() {
+		add_action( 'bp_ass_send_activity_notification_for_user', '__return_false', 100 );
+		add_action( 'bp_ges_add_to_digest_queue_for_user', '__return_false', 100 );
+	}
 }

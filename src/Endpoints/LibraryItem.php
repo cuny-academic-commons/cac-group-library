@@ -402,7 +402,6 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->group_documents->table_name} WHERE id = %d", $doc_id ) );
-		_b( $deleted );
 
 		if ( $deleted ) {
 			$retval['success'] = true;
@@ -414,12 +413,16 @@ class LibraryItem extends WP_REST_Controller {
 
 	protected function create_bp_doc( $params ) {
 		$create_args = [
-			'title' => $params['title'],
-			'content' => $params['content'],
+			'title'     => $params['title'],
+			'content'   => $params['content'],
 			'author_id' => get_current_user_id(),
-			'group_id' => $params['groupId'],
+			'group_id'  => $params['groupId'],
 			'parent_id' => isset( $params['parent']['code'] ) ? intval( $params['parent']['code'] ) : 0,
 		];
+
+		if ( ! empty( $params['silentUpdate'] ) ) {
+			BuddyPressDocsSync::silence_update();
+		}
 
 		$docs_query = new BP_Docs_Query();
 		$created    = $docs_query->save( $create_args );
