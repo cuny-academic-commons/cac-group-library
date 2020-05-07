@@ -102,6 +102,8 @@
 			},
 
 			onFocus() {
+				this.$store.commit( 'setCurrentItemType', { value: 'any' } )
+				this.$store.commit( 'setCurrentFolder', { value: 'any' } )
 				this.isSearchExpanded = true
 			}
 		}
