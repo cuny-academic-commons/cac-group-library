@@ -212,8 +212,6 @@ class Item {
 	 * Get topic URL.
 	 *
 	 * Only relevant for attachments. Otherwise returns empty.
-	 *
-	 * For replies, gives the permalink to the specific reply.
 	 */
 	public function get_topic_url() {
 		if ( 'forum_attachment' !== $this->get_item_type() ) {
@@ -223,7 +221,7 @@ class Item {
 		$attachment = get_post( $this->get_source_item_id() );
 		$parent     = get_post( $attachment->post_parent );
 
-		return get_permalink( $parent );
+		return 'reply' === $parent->post_type ? bbp_get_reply_permalink( $parent->ID ) : bbp_get_topic_permalink( $parent->ID );
 	}
 
 	/**
@@ -371,7 +369,8 @@ class Item {
 				return bp_docs_get_doc_edit_link( $this->get_source_item_id() );
 
 			case 'forum_attachment' :
-				return 'pending';
+				$attachment = get_post( $this->get_source_item_id() );
+				return bbp_get_reply_edit_url( $attachment->post_parent );
 
 			default :
 				return '';
