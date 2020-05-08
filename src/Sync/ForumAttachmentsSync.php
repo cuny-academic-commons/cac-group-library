@@ -126,9 +126,13 @@ class ForumAttachmentsSync implements SyncInterface {
 
 		$forum_id = bbp_get_topic_forum_id( $topic_id );
 
-		global $wpdb, $bp;
-		$group_id = $wpdb->get_var( $wpdb->prepare( "SELECT group_id FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = 'forum_id' AND meta_value = %s", $forum_id ) );
+		$group_ids = get_post_meta( $forum_id, '_bbp_group_ids', true );
+		if ( $group_ids ) {
+			$group_id = intval( reset( $group_ids ) );
+		} else {
+			$group_id = 0;
+		}
 
-		return intval( $group_id );
+		return $group_id;
 	}
 }
