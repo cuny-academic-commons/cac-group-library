@@ -55,7 +55,14 @@ class Query {
 
 		$query = $sql['select'] . $sql['where'] . $sql['order'] . $sql['limits'];
 
-		$results = $wpdb->get_col( $query );
+		$last_changed = wp_cache_get_last_changed( 'cac_group_library' );
+		$cache_key    = md5( $query ) . $last_changed;
+		$cached       = wp_cache_get( $cache_key, 'cac_group_library' );
+		if ( false === $cached ) {
+			$results = $wpdb->get_col( $query );
+			wp_cache_set( $cache_key, $results, 'cac_group_library' );
+		}
+
 		$retval = array();
 
 		foreach ( $results as $found_id ) {

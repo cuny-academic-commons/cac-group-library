@@ -122,6 +122,8 @@ class Item {
 			}
 		}
 
+		wp_cache_delete( 'last_changed', 'cac_group_library' );
+
 		return (bool) $saved;
 	}
 
