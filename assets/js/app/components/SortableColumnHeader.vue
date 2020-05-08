@@ -49,14 +49,6 @@
 					newSortOrder = this.defaultSortOrder
 				}
 
-				// Go back to page 1.
-				this.$store.commit(
-					'setCurrentPage',
-					{
-						value: 1
-					}
-				)
-
 				this.$store.commit(
 					'setSort',
 					{
@@ -64,6 +56,14 @@
 						newSortOrder
 					}
 				)
+
+				const { query } = this.$store.state.route
+				if ( query.hasOwnProperty( 'page' ) && query.page > 1 ) {
+					this.$router.push( {
+						path: '/',
+						query: Object.assign( {}, query, { page: 1 } ),
+					} )
+				}
 
 				this.$store.commit( 'refreshFilteredItemIds' )
 			},
