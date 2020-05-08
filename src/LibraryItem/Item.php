@@ -384,7 +384,18 @@ class Item {
 
 			case 'forum_attachment' :
 				$attachment = get_post( $this->get_source_item_id() );
-				return bbp_get_reply_edit_url( $attachment->post_parent );
+				$parent     = get_post( $attachment->post_parent );
+
+				$url = '';
+				if ( $parent ) {
+					if ( 'reply' === $parent->post_type ) {
+						$url = bbp_get_reply_edit_url( $parent->ID );
+					} else {
+						$url = bbp_get_topic_edit_url( $parent->ID );
+					}
+				}
+
+				return $url;
 
 			default :
 				return '';
