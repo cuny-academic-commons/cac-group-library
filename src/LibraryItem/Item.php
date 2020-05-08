@@ -123,6 +123,7 @@ class Item {
 		}
 
 		wp_cache_delete( 'last_changed', 'cac_group_library' );
+		wp_cache_delete( $this->get_id(), 'cac_group_library_items' );
 
 		return (bool) $saved;
 	}
@@ -146,9 +147,14 @@ class Item {
 	public function populate( $id ) {
 		global $wpdb;
 
-		$prefix = $wpdb->get_blog_prefix( get_main_site_id() );
+		$cached = wp_cache_get( $id, 'cac_group_library_items' );
+		if ( false === $cached ) {
+			$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			wp_cache_set( $id, $row, 'cac_group_library_items' );
+		} else {
+			$row = $cached;
+		}
 
-		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table_name} WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( ! $row ) {
 			return;
 		}

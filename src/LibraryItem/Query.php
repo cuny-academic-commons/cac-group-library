@@ -61,6 +61,8 @@ class Query {
 		if ( false === $cached ) {
 			$results = $wpdb->get_col( $query );
 			wp_cache_set( $cache_key, $results, 'cac_group_library' );
+		} else {
+			$results = $cached;
 		}
 
 		$retval = array();
