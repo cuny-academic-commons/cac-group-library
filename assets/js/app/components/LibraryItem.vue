@@ -10,6 +10,7 @@
 			<div class="group-library-item-title-details">
 				<a
 					:href="url()"
+					class="group-library-item-title-title"
 				>{{ title() }}</a>
 
 				<p
@@ -247,6 +248,10 @@
 .group-library-item-title,
 .group-library-item-added-by {
 	margin-right: 16px;
+}
+
+.group-library-item-title-title {
+	font-weight: 700;
 }
 
 .group-library-item-title-details {
