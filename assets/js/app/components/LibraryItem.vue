@@ -186,7 +186,7 @@
 					return 'dropbox'
 				}
 
-				if ( 'docs.google.com' === el.hostname ) {
+				if ( 'docs.google.com' === el.hostname || 'drive.google.com' === el.hostname ) {
 					return 'drive'
 				}
 
