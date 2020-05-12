@@ -258,6 +258,14 @@
 	right: 10px;
 }
 
+.group-library-items > ul > li {
+	border-bottom: 1px solid #ddd;
+}
+
+.group-library-items > ul > li:last-child {
+	border-bottom: none;
+}
+
 .group-library-row:hover .group-library-edit {
 	display: block;
 }
