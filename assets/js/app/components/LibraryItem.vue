@@ -244,6 +244,11 @@
 	width: 16px;
 }
 
+.group-library-item-title,
+.group-library-item-added-by {
+	margin-right: 16px;
+}
+
 .group-library-item-title-details {
 	margin-left: calc(12px + 16px);
 }
