@@ -45,6 +45,7 @@
 				<div
 					:class="{ 'group-library-items': true, 'has-edit-column': showEditColumn }"
 					id="group-library-items"
+					v-if="showItemList"
 				>
 					<div class="group-library-column-headers group-library-row">
 						<SortableColumnHeader
@@ -82,6 +83,24 @@
 						v-on:click="doLoadMore()"
 					>Load More</button>
 				</div>
+
+				<div
+					class="group-library-error-notice"
+					v-if="libraryIsEmpty"
+				>
+					The library is empty.
+					<router-link
+						v-if='canCreateNew'
+						to='/new'
+					>Add an item</router-link>
+				</div>
+
+				<div
+					class="group-library-error-notice"
+					v-if="filteredListIsEmpty"
+				>
+					No items found. Try a different filter option or search query.
+				</div>
 			</div>
 
 			<div v-if="! initialLoadComplete" class="library-loading">
@@ -118,6 +137,14 @@
 				return this.$store.state.canCreateNew
 			},
 
+			errorNotice() {
+				return
+			},
+
+			filteredListIsEmpty() {
+				return ! this.libraryIsEmpty && this.paginatedItemIds.length === 0
+			},
+
 			headerClass() {
 				let itemClasses = [ 'group-library-header' ]
 
@@ -150,6 +177,10 @@
 				}
 			},
 
+			libraryIsEmpty() {
+				return this.$store.state.libraryItemIds.length === 0
+			},
+
 			paginatedItemIds() {
 				return this.$store.state.paginatedItemIds
 			},
@@ -176,6 +207,10 @@
 				}
 
 				return false
+			},
+
+			showItemList() {
+				return this.paginatedItemIds.length > 0
 			},
 
 			showLoadMore() {
