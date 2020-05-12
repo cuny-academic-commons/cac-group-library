@@ -300,13 +300,18 @@ a.add-new-item-button:hover {
 	width: 100%;
 }
 @media screen and (max-width:600px) {
+.group-library-header {
+		align-items: flex-start;
+}
 .group-library-header h2 {
 		font-size: 24px;
 }
 .group-library-header .header-actions {
 		margin-left: 0;
+		padding-top: 40px;
 }
-.library-search {
+.group-library-header .library-search {
+		position: relative;
 		width: auto;
 }
 .group-library-filters {
