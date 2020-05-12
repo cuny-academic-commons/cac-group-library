@@ -141,6 +141,9 @@ class Item {
 			]
 		);
 
+		wp_cache_delete( 'last_changed', 'cac_group_library' );
+		wp_cache_delete( $this->get_id(), 'cac_group_library_items' );
+
 		return $deleted > 0;
 	}
 
