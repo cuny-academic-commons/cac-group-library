@@ -2,7 +2,7 @@
 	<div class="library-search">
 		<input
 			class="library-search-input"
-			placeholder="Enter text to search library"
+			:placeholder="placeholderText"
 			v-bind:style="backgroundStyles()"
 			v-on:focus="onFocus()"
 			v-model="currentSearchTerm"
@@ -56,6 +56,10 @@
 					// Required to trigger pagination.
 					this.$store.commit( 'refreshFilteredItemIds' )
 				}
+			},
+
+			placeholderText() {
+				return this.$mq === 'mobile' ? '' : 'Enter text to search library'
 			}
 		},
 
@@ -145,5 +149,15 @@
 	right: 0;
 	top: 8px;
 	z-index: 50;
+}
+
+@media screen and (max-width:600px) {
+	.group-library-header .library-search {
+		width: 20px;
+	}
+
+	.search-is-expanded .library-search {
+		width: calc(100% - 28px);
+	}
 }
 </style>

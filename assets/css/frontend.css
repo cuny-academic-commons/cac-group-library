@@ -141,6 +141,14 @@ button.description-toggle:hover {
 	top: 8px;
 	z-index: 50;
 }
+@media screen and (max-width:600px) {
+.group-library-header .library-search {
+		width: 20px;
+}
+.search-is-expanded .library-search {
+		width: calc(100% - 28px);
+}
+}
 
 
 .search-results-count {
@@ -309,10 +317,6 @@ a.add-new-item-button:hover {
 .group-library-header .header-actions {
 		margin-left: 0;
 		padding-top: 40px;
-}
-.group-library-header .library-search {
-		position: relative;
-		width: auto;
 }
 .group-library-filters {
 		padding-right: 0;

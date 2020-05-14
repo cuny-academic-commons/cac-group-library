@@ -412,6 +412,7 @@ a.add-new-item-button:hover {
 	.group-library-header {
 		align-items: flex-start;
 	}
+
 	.group-library-header h2 {
 		font-size: 24px;
 	}
@@ -419,11 +420,6 @@ a.add-new-item-button:hover {
 	.group-library-header .header-actions {
 		margin-left: 0;
 		padding-top: 40px;
-	}
-
-	.group-library-header .library-search {
-		position: relative;
-		width: auto;
 	}
 
 	.group-library-filters {
