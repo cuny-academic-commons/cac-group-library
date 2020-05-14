@@ -71,7 +71,9 @@
 
 			date() {
 				const d = new Date( this.getItem().date_modified )
+				console.log(d)
 				const dtf = new Intl.DateTimeFormat('en-US').format( d )
+				console.log(dtf)
 				return dtf
 			},
 
