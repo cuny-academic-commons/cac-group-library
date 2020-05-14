@@ -250,6 +250,7 @@
 }
 
 .group-library-item-title,
+.group-library-item-date,
 .group-library-item-added-by {
 	margin-right: 16px;
 }
@@ -267,7 +268,6 @@
 }
 
 .group-library-edit {
-	display: none;
 	position: absolute;
 	right: 10px;
 }
@@ -278,9 +278,5 @@
 
 .group-library-items > ul > li:last-child {
 	border-bottom: none;
-}
-
-.group-library-row:hover .group-library-edit {
-	display: block;
 }
 </style>
