@@ -70,7 +70,11 @@
 			},
 
 			date() {
-				const d = new Date( this.getItem().date_modified )
+				const { date_modified } = this.getItem()
+
+				// JS format.
+				const dateString = date_modified.replace( ' ', 'T' )
+				const d = new Date( dateString )
 				console.log(d)
 				const dtf = new Intl.DateTimeFormat('en-US').format( d )
 				console.log(dtf)
