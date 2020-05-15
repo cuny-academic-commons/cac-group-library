@@ -214,7 +214,11 @@
 			},
 
 			showLoadMore() {
-				return this.$mq === 'mobile' && this.paginatedItemIds.length < this.$store.state.libraryItemIds.length
+				if ( this.$mq !== 'mobile' ) {
+					return false
+				}
+
+				return this.paginatedItemIds.length < this.$store.state.filteredItemIds.length
 			},
 
 			successMessage() {
