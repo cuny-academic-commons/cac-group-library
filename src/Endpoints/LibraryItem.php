@@ -118,7 +118,7 @@ class LibraryItem extends WP_REST_Controller {
 			break;
 
 			case 'bpDoc' :
-				$retval = $this->create_bp_doc( $params );
+				$retval = $this->save_bp_doc( $params );
 			break;
 		}
 
@@ -165,6 +165,11 @@ class LibraryItem extends WP_REST_Controller {
 		switch ( $item->get_item_type() ) {
 			case 'external_link' :
 				$retval = $this->save_external_link( $params );
+			break;
+
+			case 'bp_doc' :
+				$file_params = $request->get_file_params();
+				$retval = $this->save_bp_doc( $params );
 			break;
 
 			case 'bp_group_document' :
@@ -415,7 +420,7 @@ class LibraryItem extends WP_REST_Controller {
 		return $retval;
 	}
 
-	protected function create_bp_doc( $params ) {
+	protected function save_bp_doc( $params ) {
 		$create_args = [
 			'title'     => $params['title'],
 			'content'   => $params['content'],
@@ -423,6 +428,17 @@ class LibraryItem extends WP_REST_Controller {
 			'group_id'  => $params['groupId'],
 			'parent_id' => isset( $params['parent']['code'] ) ? intval( $params['parent']['code'] ) : 0,
 		];
+
+		$item_id = ! empty( $params['itemId'] ) ? (int) $params['itemId'] : null;
+		$doc_id  = null;
+		if ( $item_id ) {
+			$item   = new Item( $item_id );
+			$doc_id = $item->get_source_item_id();
+		}
+
+		if ( $doc_id ) {
+			$create_args['doc_id'] = $doc_id;
+		}
 
 		$docs_query = new BP_Docs_Query();
 		$created    = $docs_query->save( $create_args );
@@ -437,7 +453,7 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		$retval['success'] = true;
-		$retval['message'] = 'Your doc was created successfully';
+		$retval['message'] = $doc_id ? 'Your doc was edited successfully' : 'Your doc was created successfully';
 
 		if ( ! empty( $params['folder'] ) ) {
 			if ( '_addNew' === $params['folder'] ) {
@@ -446,10 +462,14 @@ class LibraryItem extends WP_REST_Controller {
 				$folder_name = $params['folder'];
 			}
 
-			$library_item = BuddyPressDocsSync::get_library_item_from_source_item_id( $created['doc_id'], $params['groupId'] );
-			$library_item->set_folders( [ $folder_name ] );
-			$library_item->save();
+			$folders = [ $folder_name ];
+		} else {
+			$folders = [];
 		}
+
+		$library_item = BuddyPressDocsSync::get_library_item_from_source_item_id( $created['doc_id'], $params['groupId'] );
+		$library_item->set_folders( [ $folder_name ] );
+		$library_item->save();
 
 		return $retval;
 	}

@@ -127,6 +127,17 @@ class Query {
 				}
 			}
 
+			$content = $item->get_content();
+			if ( $content ) {
+				$formatted_item['content'] = $content;
+			}
+
+			// This is not ideal but the parents are loaded asynchronously.
+			$parent_doc = $item->get_parent_doc();
+			if ( $parent_doc ) {
+				$formatted_item['parent_doc'] = $parent_doc;
+			}
+
 			$retval[ $item->get_id() ] = $formatted_item;
 		}
 

@@ -382,9 +382,6 @@ class Item {
 				// Editing happens at the regular URL.
 				return get_permalink( $this->get_source_item_id() );
 
-			case 'bp_doc' :
-				return bp_docs_get_doc_edit_link( $this->get_source_item_id() );
-
 			case 'forum_attachment' :
 				$attachment = get_post( $this->get_source_item_id() );
 				$parent     = get_post( $attachment->post_parent );
@@ -400,6 +397,44 @@ class Item {
 
 				return $url;
 
+			default :
+				return '';
+		}
+	}
+
+	/**
+	 * Get content.
+	 */
+	public function get_content() {
+		switch ( $this->get_item_type() ) {
+			case 'bp_doc' :
+				$post = get_post( $this->get_source_item_id() );
+				return ( $post instanceof \WP_Post ) ? $post->post_content : '';
+
+			default :
+				return '';
+		}
+	}
+
+	/**
+	 * Get parent doc.
+	 */
+	public function get_parent_doc() {
+		switch ( $this->get_item_type() ) {
+			case 'bp_doc' :
+				$post = get_post( $this->get_source_item_id() );
+
+				if ( $post instanceof \WP_Post ) {
+					$parent = get_post( $post->post_parent );
+					if ( $parent instanceof \WP_Post ) {
+						return [
+							'code'  => $post->post_parent,
+							'label' => $parent->post_title,
+						];
+					}
+				}
+
+				return '';
 			default :
 				return '';
 		}

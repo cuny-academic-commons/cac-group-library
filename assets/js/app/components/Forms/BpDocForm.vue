@@ -48,7 +48,7 @@
 
 			<div class="add-edit-silent-toggle">
 				<SilentToggle
-					:defaultValue="false"
+					:defaultValue="isSilentChecked()"
 					label="Silent add"
 				/>
 			</div>
@@ -107,6 +107,10 @@
 				return 'add-new-' + this.formNameHyphens + '-folder'
 			},
 
+			isEditMode() {
+				return this.itemId > 0
+			},
+
 			isFormValidated() {
 				return this.isFormValid( this.formName )
 			},
@@ -148,6 +152,10 @@
 				return this.$store.state.potentialParentDocs
 			},
 
+			silentToggleLabel() {
+				return this.isEditMode ? 'Silent edit' : 'Silent add'
+			},
+
 			title: {
 				get() {
 					return this.$store.state.forms[ this.formName ].title
@@ -174,6 +182,16 @@
 				formName: 'bpDoc',
 				formNameHyphens: 'bp-doc'
 			}
+		},
+
+		methods: {
+			isSilentChecked() {
+				return this.isEditMode
+			}
+		},
+
+		params: {
+			itemId: Number
 		}
 	}
 </script>

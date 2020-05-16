@@ -21,18 +21,25 @@
 					:itemId="getItemId()"
 					v-if="'external_link' === getItemType()"
 				/>
+
+				<BpDocForm
+					:itemId="getItemId()"
+					v-if="'bp_doc' === getItemType()"
+				/>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import BpDocForm from '../components/Forms/BpDocForm.vue'
 	import BpGroupDocumentForm from '../components/Forms/BpGroupDocumentForm.vue'
 	import ExternalLinkForm from '../components/Forms/ExternalLinkForm.vue'
 	import ItemTypeDropdown from '../components/ItemTypeDropdown.vue'
 
 	export default {
 		components: {
+			BpDocForm,
 			BpGroupDocumentForm,
 			ExternalLinkForm,
 			ItemTypeDropdown
@@ -96,6 +103,57 @@
 								'setFormFieldValue',
 								{
 									form: 'bpGroupDocument',
+									field: 'folder',
+									value: { code: item.folders[0], label: item.folders[0] }
+								}
+							)
+						}
+					break;
+
+					case 'bp_doc' :
+						itemTypeSelectorValue = 'bpDoc'
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'bpDoc',
+								field: 'itemId',
+								value: item.id
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'bpDoc',
+								field: 'title',
+								value: item.title
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'bpDoc',
+								field: 'content',
+								value: item.content
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'bpDoc',
+								field: 'parent',
+								value: item.parent_doc
+							}
+						)
+
+						if ( item.hasOwnProperty( 'folders' ) && item.folders.length > 0 ) {
+							this.$store.commit(
+								'setFormFieldValue',
+								{
+									form: 'bpDoc',
 									field: 'folder',
 									value: { code: item.folders[0], label: item.folders[0] }
 								}
