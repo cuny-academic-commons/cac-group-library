@@ -13,7 +13,7 @@
 			/>
 
 			<FormField
-				description="E.g. https://docs.google.com/document/&hellip; Review your sharing options for the source file, so it is accessible to group members."
+				description="E.g. https://docs.google.com/document/... Review your sharing options for the source file, so it is accessible to group members."
 				fieldLabel="Link (required)"
 				fieldId="add-new-external-link-url"
 				:required="true"
