@@ -19,10 +19,8 @@ router.beforeEach( function(to, from, next) {
 				next( { path: '/' } )
 				return
 			}
-		break
 
-		// @todo Not easy to do this because data is asynchronous. Will protect on server for now.
-		case 'edit' :
+			store.commit( 'resetForms' )
 		break
 	}
 
