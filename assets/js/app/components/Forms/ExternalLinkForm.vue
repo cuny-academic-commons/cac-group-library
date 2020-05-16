@@ -26,7 +26,7 @@
 			<div class="add-new-field add-new-field-dropdown">
 				<label
 					for="add-new-external-link-folder"
-				>Add to folder (optional)</label>
+				>Folder (optional)</label>
 
 				<FolderSelector
 					form="externalLink"

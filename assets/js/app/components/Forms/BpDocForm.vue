@@ -23,7 +23,7 @@
 			<div class="add-new-field add-new-field-dropdown">
 				<label
 					:for="folderInputName"
-				>Add to folder (optional)</label>
+				>Folder (optional)</label>
 
 				<FolderSelector
 					:form="formName"
