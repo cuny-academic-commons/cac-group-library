@@ -174,7 +174,8 @@ class LibraryItem extends WP_REST_Controller {
 
 			case 'bp_group_document' :
 				$file_params = $request->get_file_params();
-				$retval = $this->save_bp_group_document( $params, $file_params['file'] );
+				$file_param  = $file_params ? $file_params['file'] : [];
+				$retval = $this->save_bp_group_document( $params, $file_param );
 			break;
 		}
 
