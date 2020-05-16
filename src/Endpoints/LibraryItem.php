@@ -259,6 +259,8 @@ class LibraryItem extends WP_REST_Controller {
 			} else {
 				$library_item->set_folders( [ $params['folder'] ] );
 			}
+		} else {
+			$library_item->set_folders( [] );
 		}
 
 		$saved = $library_item->save();
@@ -355,10 +357,6 @@ class LibraryItem extends WP_REST_Controller {
 			return $retval;
 		}
 
-		// @todo This does nothing at the moment.
-		$silent = ! empty( $_POST['bp_group_documents_silent_add'] );
-		do_action( 'bp_group_documents_add_success', $doc, $silent );
-
 		if ( ! empty( $params['folder'] ) ) {
 			if ( '_addNew' === $params['folder'] ) {
 				$folder_name = $params['newFolderTitle'];
@@ -376,10 +374,12 @@ class LibraryItem extends WP_REST_Controller {
 			}
 
 			wp_set_object_terms( $doc->id, [ $term_id ], 'group-documents-category' );
-
-			// Resync.
-			BuddyPressGroupDocumentsSync::sync_to_library( $doc->id );
+		} else {
+			wp_set_object_terms( $doc->id, [], 'group-documents-category' );
 		}
+
+		// Resync.
+		BuddyPressGroupDocumentsSync::sync_to_library( $doc->id );
 
 		$retval['success'] = true;
 
