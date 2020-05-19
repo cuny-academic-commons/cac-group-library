@@ -3,7 +3,7 @@
 		<div class="group-library-item-title">
 			<div class="group-library-item-icon">
 				<img
-					class="group-library-item-icon-img"
+					:class="iconClass()"
 					:src="iconSrc()" />
 			</div>
 
@@ -155,6 +155,16 @@
 				return fileName
 			},
 
+			iconClass() {
+				let classes = [ 'group-library-item-icon-img' ]
+
+				if ( this.itemType() === 'external_link' ) {
+					classes.push( 'group-library-item-icon-img-' + this.getServiceFromUrl() )
+				}
+
+				return classes.join( ' ' )
+			},
+
 			iconSrc() {
 				let fileName
 
@@ -189,6 +199,10 @@
 
 				if ( el.hostname.endsWith( '.dropbox.com' ) ) {
 					return 'dropbox'
+				}
+
+				if ( el.hostname.endsWith( '.zoom.com' ) || el.hostname.endsWith( '.zoom.us' ) ) {
+					return 'zoom'
 				}
 
 				if ( 'docs.google.com' === el.hostname || 'drive.google.com' === el.hostname ) {
@@ -247,6 +261,12 @@
 .group-library-item-icon-img {
 	height: 16px;
 	width: 16px;
+}
+
+.group-library-item-icon-img.group-library-item-icon-img-zoom {
+	height: 20px;
+	margin-left: -2px;
+	width: 20px;
 }
 
 .group-library-item-title,
