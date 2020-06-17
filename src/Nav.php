@@ -27,9 +27,15 @@ class Nav {
 	}
 
 	public function init() {
+		add_action( 'bp_setup_nav', array( $this, 'remove_group_documents_admin_nav' ), 1 );
 		add_action( 'bp_setup_nav', array( $this, 'add_library_nav_item' ), 200 );
 		add_action( 'bp_actions', array( $this, 'remove_nav_items' ), 200 );
 		add_action( 'bp_actions', array( $this, 'redirect_from_legacy_panels' ) );
+	}
+
+	public function remove_group_documents_admin_nav() {
+		remove_action( 'bp_setup_nav', 'bp_group_documents_group_admin_nav', 2 );
+		remove_action( 'wp', 'bp_group_documents_group_admin_settings', 4 );
 	}
 
 	public function add_library_nav_item() {
