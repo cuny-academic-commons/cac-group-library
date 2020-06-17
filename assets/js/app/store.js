@@ -158,18 +158,20 @@ export default new Vuex.Store(
 				}
 
 				// Search.
-				const theCurrentSearchTerm = state.route.query.hasOwnProperty( 'searchTerm' ) ? decodeURIComponent( state.route.query.searchTerm ) : ''
+				const theCurrentSearchTerm = state.route.query.hasOwnProperty( 'searchTerm' ) ? decodeURIComponent( state.route.query.searchTerm ).toLowerCase() : ''
 				if ( '' !== theCurrentSearchTerm ) {
 					newFilteredItemIds = newFilteredItemIds.filter(
 						function( itemId ) {
 							var theLibraryItem = state.libraryItems[ itemId ]
 							var theItemTitle = theLibraryItem.hasOwnProperty( 'title' ) ? theLibraryItem.title : ''
 							var theItemDescription = theLibraryItem.hasOwnProperty( 'description' ) ? theLibraryItem.description : ''
+							var theItemAuthorName = theLibraryItem.hasOwnProperty( 'user' ) ? theLibraryItem.user.name : ''
 
 							var matchTitle = -1 !== theItemTitle.toLowerCase().indexOf( theCurrentSearchTerm )
 							var matchDescription = -1 !== theItemDescription.toLowerCase().indexOf( theCurrentSearchTerm )
+							var matchAuthorName = -1 !== theItemAuthorName.toLowerCase().indexOf( theCurrentSearchTerm )
 
-							return matchTitle || matchDescription
+							return matchTitle || matchDescription || matchAuthorName
 						}
 					)
 				}
