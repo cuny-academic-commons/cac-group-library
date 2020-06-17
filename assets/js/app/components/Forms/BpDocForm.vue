@@ -55,7 +55,7 @@
 
 			<div class="add-new-submit">
 				<SubmitButton
-					buttonText="Create"
+					:buttonText="submitButtonText"
 					:formName="formName"
 				/>
 			</div>
@@ -154,6 +154,10 @@
 
 			silentToggleLabel() {
 				return this.isEditMode ? 'Silent edit' : 'Silent add'
+			},
+
+			submitButtonText() {
+				return this.itemId > 0 ? 'Create' : 'Save Changes'
 			},
 
 			title: {
