@@ -13,6 +13,16 @@
 			/>
 
 			<FormField
+				fieldLabel="Description"
+				fieldId="add-new-file-description"
+				:required="false"
+				formName="externalLink"
+				fieldName="description"
+				fieldType="textarea"
+				:maxlength="350"
+			/>
+
+			<FormField
 				description="E.g. https://docs.google.com/document/... Review your sharing options for the source file, so it is accessible to group members."
 				fieldLabel="Link (required)"
 				fieldId="add-new-external-link-url"

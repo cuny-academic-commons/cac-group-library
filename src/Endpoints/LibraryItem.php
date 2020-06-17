@@ -254,6 +254,10 @@ class LibraryItem extends WP_REST_Controller {
 		$library_item->set_title( $params['title'] );
 		$library_item->set_url( $params['url'] );
 
+		if ( ! empty( $params['description'] ) ) {
+			$library_item->set_description( $params['description'] );
+		}
+
 		if ( ! empty( $params['folder'] ) ) {
 			if ( '_addNew' === $params['folder'] ) {
 				$library_item->set_folders( [ $params['newFolderTitle'] ] );

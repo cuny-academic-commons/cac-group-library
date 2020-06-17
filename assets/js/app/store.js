@@ -28,6 +28,7 @@ function defaultFormsState() {
 			itemId: 0,
 			title: '',
 			url: '',
+			description: '',
 			folder: '',
 			newFolderTitle: '',
 		}

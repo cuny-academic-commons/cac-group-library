@@ -191,6 +191,16 @@
 							}
 						)
 
+						const linkDescription = item.hasOwnProperty( 'description' ) ? item.description : ''
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'description',
+								value: linkDescription
+							}
+						)
+
 						if ( item.hasOwnProperty( 'folders' ) && item.folders.length > 0 ) {
 							this.$store.commit(
 								'setFormFieldValue',
