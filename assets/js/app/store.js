@@ -39,8 +39,8 @@ function initialState() {
 		canCreateNew, foldersOfGroup
 	} = window.CACGroupLibrary;
 
-	const currentSort = 'title'
-	const currentSortOrder = 'asc'
+	const currentSort = 'date'
+	const currentSortOrder = 'desc'
 
 	const isSearchExpanded = false
 
