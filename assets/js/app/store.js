@@ -233,6 +233,10 @@ export default new Vuex.Store(
 				state.paginatedItemIds = newPaginatedItemIds
 			},
 
+			replaceFoldersOfGroup( state, payload ) {
+				state.foldersOfGroup = payload
+			},
+
 			replaceItems( state, payload ) {
 				state.libraryItems = payload
 				state.libraryItemIds = Object.keys(payload)
@@ -341,6 +345,32 @@ export default new Vuex.Store(
 						headers,
 					}
 				)
+			},
+
+			fetchFoldersOfGroup( {commit} ) {
+				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
+
+				const endpoint = endpointBase + 'folders-of-group?groupId=' + groupId
+
+				return fetch(
+					endpoint,
+					{
+						method: 'GET',
+						credentials: 'include',
+						headers: {
+							'Content-Type': 'application/json',
+							'X-WP-Nonce': nonce
+						}
+					}
+				)
+				.then( function( response ) {
+					return response.json()
+				} )
+				.then( function ( json )  {
+					if ( json.success ) {
+						commit( 'replaceFoldersOfGroup', json.results )
+					}
+				} )
 			},
 
 			fetchPotentialParentDocs( {commit} ) {

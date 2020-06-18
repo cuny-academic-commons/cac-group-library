@@ -24,6 +24,7 @@ class API {
 	public function init_endpoints() {
 		$this->endpoints['library-item'] = new Endpoints\LibraryItem();
 		$this->endpoints['potential-parent-docs'] = new Endpoints\PotentialParentDocs();
+		$this->endpoints['folders-of-group'] = new Endpoints\FoldersOfGroup();
 
 		foreach ( $this->endpoints as $endpoint ) {
 			$endpoint->register_routes();

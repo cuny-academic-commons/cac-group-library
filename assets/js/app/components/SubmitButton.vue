@@ -56,6 +56,8 @@
 								message: json.message
 							} )
 						})
+
+						app.$store.dispatch( 'fetchFoldersOfGroup' )
 					}
 				}).catch( function( ex ) {
 					console.log( 'failed', ex )
