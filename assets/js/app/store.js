@@ -207,12 +207,15 @@ export default new Vuex.Store(
 						case 'date' :
 							const dateA = new Date( itemA.date_modified ).getTime()
 							const dateB = new Date( itemB.date_modified ).getTime()
+							console.log(itemA.date_modified)
+/*
 							console.log(dateA)
 							console.log(dateB)
 							console.log(currentSortOrder)
 
 							console.log(dateA - dateB)
 							console.log(dateB - dateA)
+							*/
 
 							if ( 'asc' === currentSortOrder ) {
 								return dateA - dateB
