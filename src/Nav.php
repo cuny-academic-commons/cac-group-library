@@ -45,6 +45,8 @@ class Nav {
 
 		$group = groups_get_current_group();
 
+		$user_has_access = current_user_can( 'bp_moderate' ) || 'public' === $group->status || groups_is_user_member( bp_loggedin_user_id(), $group->id );
+
 		bp_core_new_subnav_item(
 			array(
 				'slug'            => cac_group_library()->get_prop( 'nav_slug' ),
@@ -53,6 +55,7 @@ class Nav {
 				'name'            => 'Library',
 				'screen_function' => array( '\CAC\GroupLibrary\Screens\Library', 'panel' ),
 				'position'        => 32,
+				'user_has_access' => $user_has_access,
 			),
 			'groups'
 		);
