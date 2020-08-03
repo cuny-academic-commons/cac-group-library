@@ -499,6 +499,10 @@ class LibraryItem extends WP_REST_Controller {
 			return false;
 		}
 
+		if ( current_user_can( 'bp_moderate' ) ) {
+			return true;
+		}
+
 		if ( 'public' === $group->status ) {
 			return true;
 		}
