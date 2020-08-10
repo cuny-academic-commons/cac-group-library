@@ -362,6 +362,8 @@ class LibraryItem extends WP_REST_Controller {
 			return $retval;
 		}
 
+		do_action( 'bp_group_documents_add_success', $doc );
+
 		if ( ! empty( $params['folder'] ) ) {
 			if ( '_addNew' === $params['folder'] ) {
 				$folder_name = $params['newFolderTitle'];
