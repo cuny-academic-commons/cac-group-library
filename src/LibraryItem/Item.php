@@ -42,7 +42,6 @@ class Item {
 			$wpdb->insert(
 				$this->table_name,
 				array(
-					'id'             => $this->get_id(),
 					'group_id'       => $this->get_group_id(),
 					'source_item_id' => $this->get_source_item_id(),
 					'item_type'      => $this->get_item_type(),
@@ -54,7 +53,6 @@ class Item {
 					'url'            => $this->get_url(),
 				),
 				array(
-					'%d', // id
 					'%d', // group_id
 					'%d', // source_item_id
 					'%s', // item_type
