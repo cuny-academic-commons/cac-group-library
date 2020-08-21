@@ -22,30 +22,35 @@ class SyncCommand extends WP_CLI_Command {
 	 *   - bp_group_document
 	 *   - cacsp_paper
 	 *   - forum_attachment
+	 *
+	 * [--group-id=<group_id>]
+	 * : ID of the group to be synced. Omit to sync items across all groups.
 	 */
 	public function __invoke( $args, $assoc_args ) {
 		$item_type = $args[0];
 
+		$group_id = isset( $assoc_args['group-id'] ) ? (int) $assoc_args['group-id'] : null;
+
 		switch ( $item_type ) {
 			case 'bp_doc' :
-				$this->sync_bp_doc();
+				$this->sync_bp_doc( $group_id );
 			break;
 
 			case 'bp_group_document' :
-				$this->sync_bp_group_document();
+				$this->sync_bp_group_document( $group_id );
 			break;
 
 			case 'forum_attachment' :
-				$this->sync_forum_attachment();
+				$this->sync_forum_attachment( $group_id );
 			break;
 
 			case 'cacsp_paper' :
-				$this->sync_cacsp_paper();
+				$this->sync_cacsp_paper( $group_id );
 			break;
 		}
 	}
 
-	protected function sync_bp_doc() {
+	protected function sync_bp_doc( $group_id = null ) {
 		global $wpdb;
 
 		$doc_ids = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'bp_doc' AND post_status = 'publish'" );
@@ -60,10 +65,14 @@ class SyncCommand extends WP_CLI_Command {
 		$progress->finish();
 	}
 
-	protected function sync_bp_group_document() {
+	protected function sync_bp_group_document( $group_id = null ) {
 		global $wpdb, $bp;
 
-		$doc_ids = $wpdb->get_col( "SELECT id FROM {$bp->group_documents->table_name}" );
+		if ( $group_id ) {
+			$doc_ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->group_documents->table_name} WHERE group_id = %d", $group_id ) );
+		} else {
+			$doc_ids = $wpdb->get_col( "SELECT id FROM {$bp->group_documents->table_name}" );
+		}
 
 		$progress = WP_CLI\Utils\make_progress_bar( 'Syncing BuddyPress Group Documents items', count( $doc_ids ) );
 
@@ -75,7 +84,7 @@ class SyncCommand extends WP_CLI_Command {
 		$progress->finish();
 	}
 
-	protected function sync_forum_attachment() {
+	protected function sync_forum_attachment( $group_id = null ) {
 		global $wpdb;
 
 		$att_ids = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'attachment' AND post_parent IN ( SELECT ID FROM {$wpdb->posts} WHERE post_type in ('forum', 'topic', 'reply') )" );
@@ -90,7 +99,7 @@ class SyncCommand extends WP_CLI_Command {
 		$progress->finish();
 	}
 
-	protected function sync_cacsp_paper() {
+	protected function sync_cacsp_paper( $group_id = null ) {
 		global $wpdb;
 
 		$att_ids = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'cacsp_paper' and post_status IN ( 'private', 'publish' )" );
