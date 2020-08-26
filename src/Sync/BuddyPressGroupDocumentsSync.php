@@ -84,8 +84,8 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 		$item->set_item_type( 'bp_group_document' );
 		$item->set_file_type( $path_parts['extension'] );
 		$item->set_source_item_id( $document_id );
-		$item->set_title( $document->name );
-		$item->set_description( $document->description );
+		$item->set_title( stripslashes( $document->name ) );
+		$item->set_description( stripslashes( $document->description ) );
 		$item->set_url( $document->get_url() );
 		$item->set_user_id( $document->user_id );
 		$item->set_folders( $folders );
