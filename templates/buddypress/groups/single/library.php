@@ -11,6 +11,8 @@
 			</div>
 		</div>
 
+		<?php do_action( 'template_notices' ); ?>
+
 		<div class="group-library-refreshable">
 			<div class="library-loading">
 				Loading...
