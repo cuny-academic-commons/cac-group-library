@@ -251,6 +251,15 @@
 						'setSuccessMessage',
 						{ value: noticeText }
 					)
+
+					setTimeout( function() {
+						vm.$store.commit(
+							'setSuccessMessage',
+							{
+								value: ''
+							}
+						)
+					}, 10000 )
 				},
 				1000
 			);
