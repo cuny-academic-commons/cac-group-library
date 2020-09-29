@@ -15,7 +15,7 @@
 		</div>
 
 		<transition name="fade">
-			<div v-if="successMessage.length > 0" class="success-message">
+			<div v-if="successMessage.length > 0" class="success-message" v-html="successMessage">
 				{{ successMessage }}
 			</div>
 		</transition>
@@ -232,6 +232,28 @@
 			if ( this.initialLoadComplete ) {
 				return;
 			}
+
+			setTimeout(
+				function() {
+					const templateNotice = document.getElementById( 'message' )
+
+					if ( 'undefined' === typeof templateNotice ) {
+						return
+					}
+
+					if ( 0 === templateNotice.childNodes.length ) {
+						return
+					}
+
+					const noticeText = templateNotice.childNodes[0].innerHTML
+
+					vm.$store.commit(
+						'setSuccessMessage',
+						{ value: noticeText }
+					)
+				},
+				1000
+			);
 
 			this.$store.dispatch( 'refetchItems' )
 				.then( function() {

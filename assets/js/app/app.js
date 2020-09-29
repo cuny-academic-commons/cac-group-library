@@ -28,6 +28,6 @@ window.cacGroupLibrary = new Vue(
 		el: '#cac-group-library',
 		router,
 		store,
-		render: h => h( App ),
+		render: h => h( App )
 	}
 );
