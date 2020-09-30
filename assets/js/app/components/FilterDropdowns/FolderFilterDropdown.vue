@@ -17,6 +17,10 @@
 		},
 
 		computed: {
+			canEditFolders() {
+				return this.$store.state.canEditFolders
+			},
+
 			foldersOfGroup() {
 				return this.$store.state.foldersOfGroup
 			},
@@ -38,12 +42,6 @@
 						const theItem = getItem( itemId )
 						for ( var i in theItem.folders ) {
 							folders.push( theItem.folders[ i ] )
-							/*
-							folders.push( {
-								code: theItem.folders[ i ],
-								value: theItem.folders[ i ],
-							} )
-							*/
 						}
 					}
 				)
@@ -70,8 +68,12 @@
 				)
 
 				const anyFolder = { code: 'any', label: 'Any folder' }
-
 				folderObjects.unshift( anyFolder )
+
+				if ( this.canEditFolders ) {
+					const editFolders = { code: '_edit', label: 'Edit folders' }
+					folderObjects.push( editFolders )
+				}
 
 				return folderObjects
 			},
@@ -86,15 +88,21 @@
 			},
 
 			setCurrentCallback( payload ) {
-				const newQuery = Object.assign( {}, this.$route.query, {
-					folder: encodeURIComponent( payload.code ),
-					page: 1
-				} )
+				if ( '_edit' === payload.code ) {
+					this.$router.push( {
+						path: '/editFolders'
+					} )
+				} else {
+					const newQuery = Object.assign( {}, this.$route.query, {
+						folder: encodeURIComponent( payload.code ),
+						page: 1
+					} )
 
-				this.$router.push( {
-					path: '/',
-					query: newQuery
-				} )
+					this.$router.push( {
+						path: '/',
+						query: newQuery
+					} )
+				}
 			}
 		}
 	}

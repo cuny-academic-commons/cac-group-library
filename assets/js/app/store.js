@@ -31,13 +31,15 @@ function defaultFormsState() {
 			description: '',
 			folder: '',
 			newFolderTitle: '',
-		}
+		},
+		folderNames: {
+		},
 	}
 }
 
 function initialState() {
 	const {
-		canCreateNew, foldersOfGroup
+		canCreateNew, canEditFolders, foldersOfGroup
 	} = window.CACGroupLibrary;
 
 	const currentSort = 'date'
@@ -65,6 +67,8 @@ function initialState() {
 
 	return {
 		canCreateNew,
+		canEditFolders,
+		currentlyEditedFolder: '',
 		currentSort,
 		currentSortOrder,
 		deleteInProgress: false,
@@ -253,6 +257,10 @@ export default new Vuex.Store(
 				state.forms = defaultFormsState()
 			},
 
+			setCurrentlyEditedFolder( state, payload ) {
+				state.currentlyEditedFolder = payload.value
+			},
+
 			setDeleteInProgress( state, payload ) {
 				state.deleteInProgress = payload.value
 			},
@@ -318,6 +326,23 @@ export default new Vuex.Store(
 
 			setSuccessMessage( state, payload ) {
 				state.successMessage = payload.value
+			},
+
+			setUpFolderNamesForm( state, payload ) {
+				const { foldersOfGroup } = state
+
+				let newFolderNamesForm = {}
+				foldersOfGroup.map(
+					function( folderName ) {
+						newFolderNamesForm[ folderName ] = { savedValue: folderName, editValue: folderName }
+					}
+				)
+				console.log(newFolderNamesForm)
+
+				let newForms = Object.assign( {}, state.forms )
+				Vue.set( newForms, 'folderNames', newFolderNamesForm )
+
+				state.forms = newForms
 			},
 
 			setValidationError( state, payload ) {

@@ -11,6 +11,25 @@
 			v-bind:id="fieldId"
 			v-model="selected"
 			:options="opts">
+
+			<template #option="{code, label}">
+				<div v-if="'_edit' === code" class="edit-filter-option">
+					<span class="dashicons dashicons-plus"></span> {{ label }}
+				</div>
+				<div v-else class="">
+					{{ label }}
+				</div>
+			</template>
+
+			<template #selected-option="{code, label}">
+				<span v-if="'_edit' === code" class="edit-filter-option-selected">
+					<span class="dashicons dashicons-plus"></span> {{ label }}
+				</span>
+
+				<span v-else>
+					{{ label }}
+				</span>
+			</template>
 		</v-select>
 	</span>
 </template>

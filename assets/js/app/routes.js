@@ -1,6 +1,7 @@
 import GroupLibrary from './views/GroupLibrary.vue'
 import AddNew from './views/AddNew.vue'
 import Edit from './views/Edit.vue'
+import EditFolders from './views/EditFolders.vue'
 
 export default [
 	{
@@ -17,6 +18,11 @@ export default [
 		path: '/edit/:itemId',
 		component: Edit,
 		name: 'edit',
+	},
+	{
+		path: '/editFolders/',
+		component: EditFolders,
+		name: 'editFolders',
 	}
 ]
 

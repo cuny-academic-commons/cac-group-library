@@ -237,7 +237,7 @@
 				function() {
 					const templateNotice = document.getElementById( 'message' )
 
-					if ( 'undefined' === typeof templateNotice ) {
+					if ( 'undefined' === typeof templateNotice || null === templateNotice ) {
 						return
 					}
 
