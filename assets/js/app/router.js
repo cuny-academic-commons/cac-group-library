@@ -22,6 +22,13 @@ router.beforeEach( function(to, from, next) {
 
 			store.commit( 'resetForms' )
 		break
+
+		case 'editFolders' :
+			if ( ! window.CACGroupLibrary.canEditFolders ) {
+				next( { path: '/' } )
+				return
+			}
+		break
 	}
 
 	next()
