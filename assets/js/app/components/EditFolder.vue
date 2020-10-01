@@ -174,9 +174,18 @@
 		padding-top: 0;
 	}
 
+	.edit-folder-non-edit-mode .edit-folder-actions button:hover,
+	.edit-folder-actions button.edit-folder-cancel:hover {
+		text-decoration: underline;
+	}
+
 	.edit-folder-actions button.edit-folder-rename {
 		border-right: 1px solid #1c576c;
 		color: #1c576c;
+	}
+
+	.edit-folder-actions button.edit-folder-rename:hover {
+		border-right: 1px solid #1c576c;
 	}
 
 	.edit-folder-actions button.edit-folder-delete {
