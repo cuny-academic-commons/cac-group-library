@@ -1,5 +1,20 @@
 module.exports = {
 	computed: {
+		backgroundStyles() {
+			const { imgUrlBase } = window.CACGroupLibrary;
+
+			if ( this.deleteInProgress || this.submitInProgress ) {
+				return {
+					'background-image': 'url( ' + imgUrlBase + 'spinner.gif )',
+					'background-position': 'center right 8px',
+					'background-repeat': 'no-repeat',
+					'padding-right': '30px',
+				}
+			} else {
+				return {}
+			}
+		},
+
 		deleteInProgress: {
 			get() {
 				return this.$store.state.deleteInProgress

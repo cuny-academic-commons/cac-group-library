@@ -9,6 +9,8 @@
 
 			<div class="edit-folder-actions">
 				<button
+					:class="{ 'submit-in-progress': submitInProgress }"
+					v-bind:style="backgroundStyles"
 					v-on:click="onUpdateClick()"
 				>Update</button>
 
@@ -42,6 +44,9 @@
 </template>
 
 <script>
+	import AjaxTools from '../mixins/AjaxTools.js'
+	import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+
 	export default {
 		computed: {
 			fieldId() {
@@ -116,7 +121,7 @@
 			onUpdateClick() {
 				const app = this
 
-				this.$store.commit( 'setSubmitInProgress', { value: true } )
+				this.submitInProgress = true
 
 				this.$store.dispatch(
 					'updateFolderName',
@@ -127,11 +132,7 @@
 					return response.json()
 				} ).then( function( json ) {
 					if ( json.success ) {
-						app.$store.commit(
-							'setSubmitInProgress',
-							{ value: false }
-						)
-
+						app.submitInProgress = false
 						app.isEditMode = false
 						app.savedValue = app.editValue
 					}
@@ -140,6 +141,10 @@
 				} )
 			},
 		},
+
+		mixins: [
+			AjaxTools
+		],
 
 		props: {
 			folderName: String

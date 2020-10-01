@@ -14,22 +14,6 @@
 	import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 	export default {
-		computed: {
-			backgroundStyles() {
-				const { imgUrlBase } = window.CACGroupLibrary;
-
-				if ( this.deleteInProgress ) {
-					return {
-						'background-image': 'url( ' + imgUrlBase + 'spinner.gif )',
-						'background-position': 'center right 8px',
-						'background-repeat': 'no-repeat',
-					}
-				} else {
-					return {}
-				}
-			},
-		},
-
 		methods: {
 			disabled() {
 				return this.deleteInProgress || this.$store.state.submitInProgress
@@ -105,10 +89,6 @@
 
 .delete-button:disabled:hover {
 	background: #1C576C;
-}
-
-.delete-button.delete-in-progress {
-	padding-right: 30px;
 }
 
 .delete-item-dialog button {
