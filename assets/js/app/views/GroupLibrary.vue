@@ -443,6 +443,24 @@ a.add-new-item-button:hover {
 	width: 100%;
 }
 
+.group-library-dialog {
+
+}
+
+.group-library-dialog button {
+	background: #1C576C;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 9px 15px;
+}
+
+.group-library-dialog button:hover {
+	background: #022d3c;
+	border: none;
+	color: #fff;
+}
 @media screen and (max-width:600px) {
 	.group-library-header {
 		align-items: flex-start;

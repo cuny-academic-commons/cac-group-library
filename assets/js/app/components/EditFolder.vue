@@ -109,12 +109,41 @@
 		},
 
 		methods: {
+			checkForEditing() {
+				const app = this
+
+				const { currentlyEditedFolder } = this.$store.state
+				if ( ! currentlyEditedFolder ) {
+					return false
+				}
+
+				const dialogOptions = {
+					cancelText: 'Cancel',
+					customClass: 'group-library-dialog discard-changes-dialog',
+					okText: 'Discard Changes',
+				}
+
+				return app.$dialog
+					.confirm( 'You are currently editing a different folder\'s name. Do you want to discard your changes?', dialogOptions )
+					.then( function( dialog ) {
+						app.isEditMode = false
+						app.editValue = app.savedValue
+					})
+					.catch( function( dialog ) {
+						return true
+					})
+			},
+
 			onCancelClick() {
 				this.editValue = this.savedValue
 				this.isEditMode = false
 			},
 
 			onEditClick() {
+				if ( this.checkForEditing() ) {
+					return
+				}
+
 				this.isEditMode = true
 			},
 

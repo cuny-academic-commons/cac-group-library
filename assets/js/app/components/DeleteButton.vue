@@ -26,7 +26,7 @@
 
 				const dialogOptions = {
 					cancelText: 'Cancel',
-					customClass: 'delete-item-dialog',
+					customClass: 'group-library-dialog delete-item-dialog',
 					okText: 'Delete',
 				}
 
@@ -91,18 +91,4 @@
 	background: #1C576C;
 }
 
-.delete-item-dialog button {
-	background: #1C576C;
-	border: none;
-	color: #fff;
-	font-size: 16px;
-	font-weight: normal;
-	padding: 9px 15px;
-}
-
-.delete-item-dialog button:hover {
-	background: #022d3c;
-	border: none;
-	color: #fff;
-}
 </style>
