@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="edit-folders-content">
-			<ul>
+			<ul class="edit-folders">
 				<li v-for="folder in foldersOfGroup">
 					<EditFolder
 						:folderName='folder'
@@ -47,5 +47,14 @@
 <style>
 	.edit-folders-content {
 		margin-top: 20px;
+	}
+
+	.edit-folders li:first-child {
+		border-top: 1px solid #ddd;
+	}
+
+	.edit-folders li {
+		border-bottom: 1px solid #ddd;
+		padding: 12px;
 	}
 </style>

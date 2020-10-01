@@ -111,7 +111,7 @@ class Item {
 			foreach ( $folder_names as $folder ) {
 				$term = Folder::get_group_folder_by_name( $this->get_group_id(), $folder );
 
-				$folder_ids[] = $term->term_id;
+				$folder_ids[] = $term->get_term_id();
 			}
 			$set = wp_set_object_terms( $this->get_id(), $folder_ids, 'cacgl_folder' );
 

@@ -64,7 +64,7 @@ class BuddyPressGroupDocumentsSync implements SyncInterface {
 			function( $category ) use ( $group_id ) {
 				// Ensures that folder exists.
 				$folder = Folder::get_group_folder_by_name( $group_id, $category->name );
-				return $folder->name;
+				return $folder->get_name();
 			},
 			$categories
 		);

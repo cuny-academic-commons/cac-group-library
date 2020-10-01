@@ -279,6 +279,21 @@ export default new Vuex.Store(
 				state.visitedFields = newVisitedFields
 			},
 
+			setFolderNameFormValue( state, payload ) {
+				const { folderName, field, value } = payload
+
+				let newThisFolder = Object.assign( {}, state.forms.folderNames[ folderName ] )
+				newThisFolder[ field ] = value
+
+				let newFolderNames = Object.assign( {}, state.forms.folderNames )
+				newFolderNames[ folderName ] = newThisFolder
+
+				let newForms = Object.assign( {}, state.forms )
+				Vue.set( newForms, 'folderNames', newFolderNames )
+
+				state.forms = newForms
+			},
+
 			setFormFieldValue( state, payload ) {
 				const { form, field, value } = payload
 
@@ -506,6 +521,35 @@ export default new Vuex.Store(
 						credentials: 'include',
 						headers,
 						body,
+					}
+				)
+			},
+
+			updateFolderName( commit ) {
+				const { currentlyEditedFolder } = commit.state
+				const { editValue } = commit.state.forms.folderNames[ currentlyEditedFolder ]
+
+				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
+
+				const endpoint = endpointBase + 'folders-of-group?groupId=' + groupId
+
+				const body = {
+					editValue,
+					folderName: currentlyEditedFolder,
+				}
+
+				const headers = {
+						'X-WP-Nonce': nonce,
+						'Content-Type': 'application/json'
+				}
+
+				return fetch(
+					endpoint,
+					{
+						method: 'POST',
+						credentials: 'include',
+						headers,
+						body: JSON.stringify( body ),
 					}
 				)
 			}
