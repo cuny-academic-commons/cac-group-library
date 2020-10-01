@@ -112,6 +112,11 @@ class FoldersOfGroup extends WP_REST_Controller {
 	}
 
 	public function edit_item( $request ) {
+		$delete_type = $request->get_param( 'deleteType' );
+		if ( $delete_type ) {
+			return $this->delete_item( $request );
+		}
+
 		$group_id = $request->get_param( 'groupId' );
 
 		$retval = [
@@ -131,6 +136,34 @@ class FoldersOfGroup extends WP_REST_Controller {
 
 		$folder->set_name( $edit_value );
 		$folder->save();
+
+		$retval['success'] = true;
+
+		return rest_ensure_response( $retval );
+	}
+
+	public function delete_item( $request ) {
+		$delete_type = $request->get_param( 'deleteType' );
+		$group_id    = $request->get_param( 'groupId' );
+		$folder_name = $request->get_param( 'folderName' );
+
+		$retval = [
+			'success' => false,
+			'message' => '',
+		];
+
+		if ( ! $folder_name || ! $group_id ) {
+			$retval['message'] = 'You must provide a folderName and groupId.';
+			return rest_ensure_response( $retval );
+		}
+
+		$folder = Folder::get_group_folder_by_name( $group_id, $folder_name );
+
+		if ( 'deleteFolderAndContents' === $delete_type ) {
+			_b( 'delete contents' );
+		}
+
+		$folder->delete();
 
 		$retval['success'] = true;
 

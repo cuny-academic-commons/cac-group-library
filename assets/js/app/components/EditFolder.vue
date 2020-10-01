@@ -35,7 +35,7 @@
 					v-on:click="onEditClick()"
 				>Rename</button><button
 					class="edit-folder-delete"
-					v-on:click="onEditClick()"
+					v-on:click="onDeleteClick()"
 				>Delete</button>
 			</div>
 		</div>
@@ -44,10 +44,16 @@
 </template>
 
 <script>
+	import Vue from 'vue'
 	import AjaxTools from '../mixins/AjaxTools.js'
+	import DeleteFolderDialog from './DeleteFolderDialog.vue'
 	import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 	export default {
+		components: {
+			DeleteFolderDialog,
+		},
+
 		computed: {
 			fieldId() {
 				return 'edit-folder-' + this.folderName
@@ -137,6 +143,50 @@
 			onCancelClick() {
 				this.editValue = this.savedValue
 				this.isEditMode = false
+			},
+
+			onDeleteClick() {
+				if ( this.checkForEditing() ) {
+					return
+				}
+
+				const app = this
+
+				this.$dialog.registerComponent( 'deleteFolderDialog', DeleteFolderDialog )
+
+				const dialogMessage = {
+					title: this.folderName,
+					body: 'Are you sure you want to DELETE the folder "' + this.folderName + '"?'
+				}
+
+				this.$dialog.confirm(
+					dialogMessage,
+					{
+						customClass: 'group-library-dialog-container-wide',
+						view: 'deleteFolderDialog',
+						html: true,
+					}
+				).then( function( dialog ) {
+					app.deleteInProgress = true
+
+					app.$store.dispatch(
+						'deleteFolder',
+						{
+							deleteType: dialog.data,
+							folderName: app.folderName
+						}
+					).then( function( response ) {
+						return response.json()
+					} ).then( function( json ) {
+						if ( json.success ) {
+							app.$store.dispatch(
+								'fetchFoldersOfGroup'
+							).then( function() {
+								app.deleteInProgress = false
+							} )
+						}
+					} )
+				} )
 			},
 
 			onEditClick() {

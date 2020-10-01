@@ -370,6 +370,33 @@ export default new Vuex.Store(
 		},
 
 		actions: {
+			deleteFolder( commit, data ) {
+				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
+				const { deleteType, folderName } = data
+
+				const endpoint = endpointBase + 'folders-of-group?groupId=' + groupId
+
+				const body = {
+					deleteType,
+					folderName
+				}
+
+				const headers = {
+						'X-WP-Nonce': nonce,
+						'Content-Type': 'application/json'
+				}
+
+				return fetch(
+					endpoint,
+					{
+						method: 'POST',
+						credentials: 'include',
+						headers,
+						body: JSON.stringify( body ),
+					}
+				)
+			},
+
 			deleteItem( commit, itemIdToDelete ) {
 				const { endpointBase, nonce } = window.CACGroupLibrary
 

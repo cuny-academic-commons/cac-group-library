@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="edit-folders-content">
-			<ul class="edit-folders">
+			<ul :class="listClass">
 				<li v-for="folder in foldersOfGroup">
 					<EditFolder
 						:folderName='folder'
@@ -33,6 +33,16 @@
 			foldersOfGroup() {
 				return this.$store.state.foldersOfGroup
 			},
+
+			listClass() {
+				let theClass = 'edit-folders'
+
+				if ( this.$store.state.deleteInProgress ) {
+					theClass += ' delete-in-progress'
+				}
+
+				return theClass
+			}
 		},
 
 		created() {
@@ -51,6 +61,16 @@
 
 	.edit-folders li:first-child {
 		border-top: 1px solid #ddd;
+	}
+
+	.edit-folders.delete-in-progress {
+		opacity: .5;
+	}
+
+	.edit-folders.delete-in-progress button,
+	.edit-folders.delete-in-progress a {
+		cursor: default;
+		pointer-events: none;
 	}
 
 	.edit-folders li {

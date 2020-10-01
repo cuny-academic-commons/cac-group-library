@@ -443,10 +443,6 @@ a.add-new-item-button:hover {
 	width: 100%;
 }
 
-.group-library-dialog {
-
-}
-
 .group-library-dialog button {
 	background: #1C576C;
 	border: none;

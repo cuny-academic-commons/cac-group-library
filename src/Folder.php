@@ -47,6 +47,10 @@ class Folder {
 		);
 	}
 
+	public function delete() {
+		wp_delete_term( $this->get_id(), self::get_taxonomy_name() );
+	}
+
 	public static function get_taxonomy_name() {
 		return 'cacgl_folder';
 	}
