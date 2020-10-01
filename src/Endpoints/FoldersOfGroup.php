@@ -8,6 +8,7 @@ use \WP_REST_Request;
 use \WP_REST_Response;
 
 use CAC\GroupLibrary\Folder;
+use CAC\GroupLibrary\LibraryItem\Query;
 
 /**
  * potential-parent-docs endpoint.
@@ -159,8 +160,21 @@ class FoldersOfGroup extends WP_REST_Controller {
 
 		$folder = Folder::get_group_folder_by_name( $group_id, $folder_name );
 
+		_b( $folder );
 		if ( 'deleteFolderAndContents' === $delete_type ) {
-			_b( 'delete contents' );
+			$group_items = Query::get(
+				[
+					'group_id' => $group_id,
+				]
+			);
+
+			foreach ( $group_items as $group_item ) {
+				$folders = $group_item->get_folders();
+
+				if ( ! in_array( $folder_name, $folders, true ) ) {
+					continue;
+				}
+			}
 		}
 
 		$folder->delete();
