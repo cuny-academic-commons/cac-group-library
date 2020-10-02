@@ -1,20 +1,5 @@
 module.exports = {
 	computed: {
-		backgroundStyles() {
-			const { imgUrlBase } = window.CACGroupLibrary;
-
-			if ( this.deleteInProgress || this.submitInProgress ) {
-				return {
-					'background-image': 'url( ' + imgUrlBase + 'spinner.gif )',
-					'background-position': 'center right 8px',
-					'background-repeat': 'no-repeat',
-					'padding-right': '30px',
-				}
-			} else {
-				return {}
-			}
-		},
-
 		deleteInProgress: {
 			get() {
 				return this.$store.state.deleteInProgress
@@ -37,6 +22,21 @@ module.exports = {
 	},
 
 	methods: {
+		backgroundStyles( buttonType ) {
+			const { imgUrlBase } = window.CACGroupLibrary;
+
+			if ( this.deleteInProgress && 'delete' === buttonType || this.submitInProgress && 'submit' === buttonType ) {
+				return {
+					'background-image': 'url( ' + imgUrlBase + 'spinner.gif )',
+					'background-position': 'center right 8px',
+					'background-repeat': 'no-repeat',
+					'padding-right': '30px',
+				}
+			} else {
+				return {}
+			}
+		},
+
 		postAjaxFormActions( payload ) {
 			const { message } = payload
 			const app = this

@@ -2,7 +2,7 @@
 	<button
 		:class="{ 'delete-button': true, 'delete-in-progress': deleteInProgress }"
 		:disabled="disabled()"
-		v-bind:style="backgroundStyles"
+		v-bind:style="backgroundStyles( 'delete' )"
 		@click.prevent="onClick()"
 	>
 		Delete

@@ -10,7 +10,7 @@
 			<div class="edit-folder-actions">
 				<button
 					:class="{ 'submit-in-progress': submitInProgress }"
-					v-bind:style="backgroundStyles"
+					v-bind:style="backgroundStyles( 'submit' )"
 					v-on:click="onUpdateClick()"
 				>Update</button>
 

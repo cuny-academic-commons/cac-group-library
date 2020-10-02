@@ -1,7 +1,7 @@
 <template>
 	<button
 		:class="{ 'add-new-submit-button': true, 'submit-in-progress': submitInProgress }"
-		v-bind:style="backgroundStyles"
+		v-bind:style="backgroundStyles( 'submit' )"
 		:disabled="disabled()"
 		@click.prevent="onSubmitClick()"
 	>{{ buttonText }}</button>
