@@ -97,7 +97,6 @@
 
 			savedValue: {
 				get() {
-					console.log(this.folderName)
 					const folder = this.$store.state.forms.folderNames[ this.folderName ]
 					return folder.savedValue
 				},

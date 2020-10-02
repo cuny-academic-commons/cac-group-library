@@ -160,7 +160,6 @@ class FoldersOfGroup extends WP_REST_Controller {
 
 		$folder = Folder::get_group_folder_by_name( $group_id, $folder_name );
 
-		_b( $folder );
 		if ( 'deleteFolderAndContents' === $delete_type ) {
 			$group_items = Query::get(
 				[
@@ -174,6 +173,8 @@ class FoldersOfGroup extends WP_REST_Controller {
 				if ( ! in_array( $folder_name, $folders, true ) ) {
 					continue;
 				}
+
+				$group_item->delete();
 			}
 		}
 
