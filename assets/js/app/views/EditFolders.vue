@@ -49,8 +49,9 @@
 			this.$store.commit( 'setUpFolderNamesForm' )
 		},
 
-		methods: {
-		}
+		mounted() {
+			this.$store.commit( 'setUpFolderNamesForm' )
+		},
 	}
 </script>
 

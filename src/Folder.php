@@ -34,11 +34,11 @@ class Folder {
 	}
 
 	public function set_name( $value ) {
-		$this->data['name'] = (int) $value;
+		$this->data['name'] = $value;
 	}
 
 	public function save() {
-		wp_update_term(
+		$updated = wp_update_term(
 			$this->get_id(),
 			self::get_taxonomy_name(),
 			[

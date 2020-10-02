@@ -352,7 +352,6 @@ export default new Vuex.Store(
 						newFolderNamesForm[ folderName ] = { savedValue: folderName, editValue: folderName }
 					}
 				)
-				console.log(newFolderNamesForm)
 
 				let newForms = Object.assign( {}, state.forms )
 				Vue.set( newForms, 'folderNames', newFolderNamesForm )

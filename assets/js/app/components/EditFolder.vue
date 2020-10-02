@@ -97,6 +97,7 @@
 
 			savedValue: {
 				get() {
+					console.log(this.folderName)
 					const folder = this.$store.state.forms.folderNames[ this.folderName ]
 					return folder.savedValue
 				},
@@ -179,9 +180,13 @@
 						return response.json()
 					} ).then( function( json ) {
 						if ( json.success ) {
+							// Refetch all items in the background, since item have changed.
+							app.$store.dispatch( 'refetchItems' )
+
 							app.$store.dispatch(
 								'fetchFoldersOfGroup'
 							).then( function() {
+								app.$store.commit( 'setUpFolderNamesForm' )
 								app.deleteInProgress = false
 							} )
 						}
@@ -211,9 +216,16 @@
 					return response.json()
 				} ).then( function( json ) {
 					if ( json.success ) {
-						app.submitInProgress = false
-						app.isEditMode = false
-						app.savedValue = app.editValue
+						// Refetch all items in the background, since item have changed.
+						app.$store.dispatch( 'refetchItems' )
+
+						app.$store.dispatch( 'fetchFoldersOfGroup' )
+						.then( function() {
+							app.$store.commit( 'setUpFolderNamesForm' )
+							app.submitInProgress = false
+							app.isEditMode = false
+							app.savedValue = app.editValue
+						} )
 					}
 				} ).catch( function( ex ) {
 					console.log( 'failed', ex )

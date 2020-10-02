@@ -128,7 +128,7 @@ class FoldersOfGroup extends WP_REST_Controller {
 		$folder_name = $request->get_param( 'folderName' );
 		$edit_value  = $request->get_param( 'editValue' );
 
-		if ( ! $folder_name || ! $edit_value ) {
+		if ( null === $folder_name || ! $edit_value ) {
 			$retval['message'] = 'You must provide a folderName and editValue.';
 			return rest_ensure_response( $retval );
 		}
