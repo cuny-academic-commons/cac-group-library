@@ -70,7 +70,7 @@
 				const anyFolder = { code: 'any', label: 'Any folder' }
 				folderObjects.unshift( anyFolder )
 
-				if ( this.canEditFolders ) {
+				if ( this.canEditFolders && uniqueFolders.length > 0 ) {
 					const editFolders = { code: '_edit', label: 'Edit folders' }
 					folderObjects.push( editFolders )
 				}
