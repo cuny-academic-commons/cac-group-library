@@ -23,6 +23,12 @@
 
 		<div v-else class="edit-folder-non-edit-mode">
 			<div class="edit-folder-name">
+				<div class="folder-icon">
+					<img
+						:src="folderIconUrl"
+					/>
+				</div>
+
 				<router-link
 					class="go-to-folder"
 					:to="goToFolderLink"
@@ -57,6 +63,11 @@
 		computed: {
 			fieldId() {
 				return 'edit-folder-' + this.folderName
+			},
+
+			folderIconUrl() {
+				const { imgUrlBase } = window.CACGroupLibrary;
+				return imgUrlBase + 'folder-icon.png'
 			},
 
 			editValue: {
@@ -248,7 +259,19 @@
 		display: flex;
 	}
 
+	.edit-folder-non-edit-mode .folder-icon {
+		height: 21px;
+		margin-right: 12px;
+	}
+
+	.edit-folder-non-edit-mode .folder-icon img {
+		height: 14px;
+		vertical-align: middle;
+	}
+
 	.edit-folder-non-edit-mode .edit-folder-name {
+		display: flex;
+		align-items: center;
 		flex-basis: 70%;
 		font-weight: 700;
 	}
