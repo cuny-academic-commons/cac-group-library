@@ -10,6 +10,7 @@
 			<div class="edit-folder-actions">
 				<button
 					:class="{ 'submit-in-progress': submitInProgress }"
+					:disabled="editValueIsEmpty"
 					v-bind:style="backgroundStyles( 'submit' )"
 					v-on:click="onUpdateClick()"
 				>Update</button>
@@ -61,6 +62,10 @@
 		},
 
 		computed: {
+			editValueIsEmpty() {
+				return this.editValue.length === 0
+			},
+
 			fieldId() {
 				return 'edit-folder-' + this.folderName
 			},
@@ -314,6 +319,10 @@
 
 	.edit-folder-actions button.edit-folder-delete {
 		color: #f00;
+	}
+
+	.edit-folder-edit-mode button:disabled {
+		opacity: .5;
 	}
 
 	.edit-folder-edit-mode input {

@@ -12,6 +12,7 @@
 			<div class="edit-folder-actions">
 				<button
 					:class="{ 'submit-in-progress': submitInProgress }"
+					:disabled="editValueIsEmpty"
 					v-bind:style="backgroundStyles( 'submit' )"
 					v-on:click="onAddClick()"
 				>Add Folder</button>
@@ -46,6 +47,10 @@
 						}
 					)
 				}
+			},
+
+			editValueIsEmpty() {
+				return this.editValue.length === 0
 			},
 
 			isEditMode: {
