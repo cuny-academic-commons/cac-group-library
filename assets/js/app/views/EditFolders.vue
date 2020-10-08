@@ -5,11 +5,25 @@
 				<span class="dashicons dashicons-arrow-left-alt"></span> <router-link to="/">Back to Library</router-link>
 			</div>
 
-			<h2>Library folders</h2>
+			<div class="header-with-actions">
+				<h2>Library folders</h2>
+
+				<div class="header-actions">
+					<a
+						v-on:click="onAddNewClick"
+						class="add-new-item-button"
+						href="#/editFolders"
+					>Add New Folder</a>
+				</div>
+			</div>
 
 		</div>
 
 		<div class="edit-folders-content">
+			<AddFolder
+				v-if="isAddNewMode"
+			/>
+
 			<ul :class="listClass">
 				<li v-for="folder in foldersOfGroup">
 					<EditFolder
@@ -22,16 +36,28 @@
 </template>
 
 <script>
+	import AddFolder from '../components/AddFolder.vue'
 	import EditFolder from '../components/EditFolder.vue'
 
 	export default {
 		components: {
+			AddFolder,
 			EditFolder
 		},
 
 		computed: {
 			foldersOfGroup() {
 				return this.$store.state.foldersOfGroup
+			},
+
+			isAddNewMode: {
+				get() {
+					return '_new' === this.$store.state.currentlyEditedFolder	
+				},
+
+				set( value ) {
+					this.$store.commit( 'setCurrentlyEditedFolder', { value: '_new' } );
+				}
 			},
 
 			listClass() {
@@ -47,6 +73,12 @@
 
 		created() {
 			this.$store.commit( 'setUpFolderNamesForm' )
+		},
+
+		methods: {
+			onAddNewClick() {
+				this.isAddNewMode = true
+			}
 		},
 
 		mounted() {

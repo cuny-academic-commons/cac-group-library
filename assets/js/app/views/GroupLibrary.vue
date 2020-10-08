@@ -1,16 +1,18 @@
 <template>
 	<div id="cac-group-library-inner">
 		<div :class="headerClass">
-			<h2>Library</h2>
+			<div class="header-with-actions">
+				<h2>Library</h2>
 
-			<div class="header-actions">
-				<router-link
-					class="add-new-item-button"
-					v-if='canCreateNew'
-					to='/new'
-				>Add New Item</router-link>
+				<div class="header-actions">
+					<router-link
+						class="add-new-item-button"
+						v-if='canCreateNew'
+						to='/new'
+					>Add New Item</router-link>
 
-				<SearchInput />
+					<SearchInput />
+				</div>
 			</div>
 		</div>
 
@@ -315,19 +317,26 @@ body.groups.single-item.library #item-header {
 	margin-top: 24px;
 }
 
-.group-library-header {
+.header-with-actions {
 	align-items: center;
-	border-bottom: 2px solid #eeeeee;
 	display: flex;
+}
+
+.group-library-header {
+	border-bottom: 2px solid #eeeeee;
 	padding-bottom: 20px;
 }
 
 .group-library-header h2 {
 	font-size: 28px;
-	margin-right: 20px;
 }
 
-.group-library-header .header-actions {
+.header-with-actions h2 {
+	margin-right: 20px;
+	white-space: nowrap;
+}
+
+.header-with-actions .header-actions {
 	display: block;
 	position: relative;
 	margin-left: 20px;

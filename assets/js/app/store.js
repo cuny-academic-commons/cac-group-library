@@ -346,7 +346,10 @@ export default new Vuex.Store(
 			setUpFolderNamesForm( state, payload ) {
 				const { foldersOfGroup } = state
 
-				let newFolderNamesForm = {}
+				let newFolderNamesForm = {
+					'_new': { savedValue: '', editValue: '' }
+				}
+
 				foldersOfGroup.map(
 					function( folderName ) {
 						newFolderNamesForm[ folderName ] = { savedValue: folderName, editValue: folderName }
@@ -369,6 +372,34 @@ export default new Vuex.Store(
 		},
 
 		actions: {
+			addFolder( commit, data ) {
+				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
+
+				const { editValue } = commit.state.forms.folderNames._new
+
+				const endpoint = endpointBase + 'folders-of-group?groupId=' + groupId
+
+				const body = {
+					editValue,
+					folderName: '_new'
+				}
+
+				const headers = {
+						'X-WP-Nonce': nonce,
+						'Content-Type': 'application/json'
+				}
+
+				return fetch(
+					endpoint,
+					{
+						method: 'POST',
+						credentials: 'include',
+						headers,
+						body: JSON.stringify( body ),
+					}
+				)
+			},
+
 			deleteFolder( commit, data ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 				const { deleteType, folderName } = data

@@ -109,6 +109,12 @@
 			savedValue: {
 				get() {
 					const folder = this.$store.state.forms.folderNames[ this.folderName ]
+
+					// This may happen immediately after creation.
+					if ( 'undefined' === typeof( folder ) ) {
+						return this.folderName
+					}
+
 					return folder.savedValue
 				},
 

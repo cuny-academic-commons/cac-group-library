@@ -133,10 +133,13 @@ class FoldersOfGroup extends WP_REST_Controller {
 			return rest_ensure_response( $retval );
 		}
 
-		$folder = Folder::get_group_folder_by_name( $group_id, $folder_name );
-
-		$folder->set_name( $edit_value );
-		$folder->save();
+		if ( '_new' === $folder_name ) {
+			$folder = Folder::get_group_folder_by_name( $group_id, $edit_value );
+		} else {
+			$folder = Folder::get_group_folder_by_name( $group_id, $folder_name );
+			$folder->set_name( $edit_value );
+			$folder->save();
+		}
 
 		$retval['success'] = true;
 
