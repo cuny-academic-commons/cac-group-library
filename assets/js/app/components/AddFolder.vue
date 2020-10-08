@@ -6,6 +6,7 @@
 			<input
 				id="add-new-folder-editValue"
 				name="add-new-folder-editValue"
+				ref="editValueInput"
 				v-model="editValue"
 			/>
 
@@ -123,6 +124,11 @@
 				this.editValue = ''
 				this.isEditMode = false
 			},
+		},
+
+		mounted() {
+			console.log(this.$refs.editValueInput)
+			this.$refs.editValueInput.focus()
 		}
 	}
 </script>
