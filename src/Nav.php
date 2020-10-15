@@ -80,6 +80,10 @@ class Nav {
 	 * Redirect away from legacy panels that are now controlled by Library.
 	 */
 	public function redirect_from_legacy_panels() {
+		if ( ! bp_is_group() ) {
+			return;
+		}
+
 		$redirect    = false;
 		$redirect_to = bp_get_group_permalink( groups_get_current_group() ) . cac_group_library()->get_prop( 'nav_slug' );
 
