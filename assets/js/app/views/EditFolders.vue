@@ -6,7 +6,7 @@
 			</div>
 
 			<div class="header-with-actions">
-				<h2>Library folders</h2>
+				<h2>Manage folders</h2>
 
 				<div class="header-actions">
 					<a
