@@ -1,6 +1,12 @@
 <template>
 	<div>
 		<div v-if="isEditMode" class="edit-folder-edit-mode">
+			<div class="folder-icon">
+				<img
+					:src="folderIconUrl"
+				/>
+			</div>
+
 			<input
 				:id="fieldId"
 				:name="fieldId"
@@ -270,12 +276,16 @@
 		display: flex;
 	}
 
-	.edit-folder-non-edit-mode .folder-icon {
+	.edit-folders .folder-icon {
 		height: 21px;
 		margin-right: 12px;
 	}
 
-	.edit-folder-non-edit-mode .folder-icon img {
+	.edit-folder-edit-mode .folder-icon {
+		display: none;
+	}
+
+	.edit-folders .folder-icon img {
 		height: 14px;
 		vertical-align: middle;
 	}
@@ -333,5 +343,42 @@
 		margin-right: 10px;
 		padding: 0 8px;
 		width: 200px;
+	}
+
+	@media screen and (max-width:600px) {
+		.edit-folder-name {
+			margin-right: 12px;
+		}
+
+		.edit-folders .folder-icon {
+			margin-top: 4px;
+		}
+
+		.edit-folder-edit-mode .folder-icon {
+			display: inline-block;
+		}
+
+		.edit-folder-non-edit-mode .edit-folder-actions {
+			margin-top: 4px;
+		}
+
+		.add-new-folder {
+			padding: 6px 6px 12px;
+		}
+
+		div#content .add-new-folder h3 {
+			font-size: 14px;
+			margin-bottom: 0px;
+			margin-left: 2px;
+		}
+
+		.edit-folder-edit-mode.add-new-folder-fields {
+			display: block;
+		}
+
+		.edit-folder-edit-mode.add-new-folder-fields input {
+			margin-bottom: 12px;
+			width: calc(100% - 24px);
+		}
 	}
 </style>

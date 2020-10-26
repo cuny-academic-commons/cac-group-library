@@ -110,4 +110,14 @@
 		border-bottom: 1px solid #ddd;
 		padding: 12px;
 	}
+
+	@media screen and (max-width:600px) {
+		.edit-folders li {
+			padding: 12px 6px;
+		}
+
+		.edit-folder-actions {
+			white-space: nowrap;
+		}
+	}
 </style>
