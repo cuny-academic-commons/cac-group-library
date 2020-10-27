@@ -16,7 +16,7 @@
 			},
 
 			buttonText() {
-				return this.showDescriptions ? 'Collapse all' : 'Expand all'
+				return this.showDescriptions ? 'Hide details' : 'Show details'
 			},
 
 			showDescriptions: {

@@ -6,7 +6,7 @@
 
 		<div
 			class="pagination-links"
-			v-if="hasMoreThanOnePage()"
+			v-if="hasMoreThanOnePage() && showPagLinks"
 		>
 			<Paginate
 				:clickHandler="clickHandler"
@@ -84,6 +84,12 @@
 			totalNumber() {
 				return this.$store.state.filteredItemIds.length
 			}
+		},
+
+		props: {
+			showPagLinks: {
+				type: Boolean
+			}
 		}
 	}
 </script>
@@ -97,7 +103,7 @@
 	font-size: 12px;
 	position: absolute;
 	right: 0;
-	top: 0;
+	bottom: 0;
 }
 
 .pagination-links ul {

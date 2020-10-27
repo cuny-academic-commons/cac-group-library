@@ -25,6 +25,23 @@
 						{{ description() }}
 					</span>
 				</p>
+
+				<div
+					class="item-folders"
+					v-if="showFolders()"
+				>
+					<span class="folder-icon">
+						<img
+							:src="folderIconUrl"
+						/>
+					</span>
+
+					<a
+						class="item-folder-link"
+						v-for="folder in itemFolders()"
+						v-on:click="onFolderClick(folder)"
+					>{{folder}}</a>
+				</div>
 			</div>
 		</div>
 
@@ -55,6 +72,13 @@
 
 <script>
 	export default {
+		computed: {
+			folderIconUrl() {
+				const { imgUrlBase } = window.CACGroupLibrary;
+				return imgUrlBase + 'folder-icon.png'
+			},
+		},
+
 		methods: {
 			addedByName() {
 				return this.getItem().user.name
@@ -106,8 +130,39 @@
 				return 'forum_attachment' === this.itemType()
 			},
 
+			itemFolders() {
+				return this.getItem().folders
+			},
+
+			onFolderClick(folder) {
+				let folderQuery = Object.assign( {}, this.$route.query )
+
+				folderQuery.page = 1
+
+				let folderQueryArgs
+				if ( '' === folder ) {
+					delete folderQuery.folder
+				} else {
+					folderQuery.folder = encodeURIComponent( folder )
+				}
+
+				this.$router.push( {
+					path: '/',
+					query: folderQuery
+				} )
+
+				this.$store.commit( 'refresh' )
+			},
+
 			showDescription() {
 				return ( this.isForumAttachment() || this.description().length > 0 ) && this.$store.state.showDescriptions
+			},
+
+			showFolders() {
+				const theItem = this.getItem()
+				const currentFolder = this.$store.state.route.query.hasOwnProperty( 'folder' ) ? decodeURIComponent( this.$store.state.route.query.folder ) : 'any'
+
+				return this.$store.state.showDescriptions && 'any' === currentFolder && theItem.hasOwnProperty( 'folders' ) && theItem.folders.length > 0
 			},
 
 			getFileTypeBase() {
@@ -296,7 +351,26 @@
 	border-bottom: 1px solid #ddd;
 }
 
-.group-library-items > ul > li:last-child {
-	border-bottom: none;
+.item-folders {
+	margin-top: 10px;
+}
+
+.item-folders .folder-icon {
+	line-height: 16px;
+	margin-right: 3px;
+}
+
+.item-folders .folder-icon img {
+	height: 14px;
+	vertical-align: text-bottom;
+}
+
+a.item-folder-link {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+a.item-folder-link:hover {
+	text-decoration: none;
 }
 </style>

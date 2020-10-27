@@ -29,18 +29,24 @@
 					<div class="group-library-filters">
 						<FolderFilterDropdown />
 						<ItemTypeFilterDropdown />
-						<DescriptionToggle
-							v-if="showDescriptionToggle"
-						/>
 					</div>
 
 					<div
+						class="current-folder-breadcrumb"
+						v-if="'any' !== currentFolder"
+					>{{currentFolderBreadcrumb}}</div>
+
+					<div
 						class="group-library-pagination"
-						v-if="$mq === 'desktop'"
 					>
 						<transition name="fade" mode="out-in">
-							<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
-							<Pagination v-else key="pagination" />
+							<span>
+								<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
+								<Pagination v-else key="pagination" :showPagLinks="false" />
+								<DescriptionToggle
+									v-if="showDescriptionToggle"
+								/>
+							</span>
 						</transition>
 					</div>
 				</div>
@@ -85,6 +91,18 @@
 						v-if="showLoadMore"
 						v-on:click="doLoadMore()"
 					>Load More</button>
+
+					<div
+						class="group-library-pagination"
+						v-if="! showLoadMore"
+					>
+						<transition name="fade" mode="out-in">
+							<span>
+								<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
+								<Pagination v-else key="pagination" :showPagLinks="true" />
+							</span>
+						</transition>
+					</div>
 				</div>
 
 				<div
@@ -138,6 +156,14 @@
 		computed: {
 			canCreateNew() {
 				return this.$store.state.canCreateNew
+			},
+
+			currentFolder() {
+				return this.$store.state.route.query.hasOwnProperty( 'folder' ) ? decodeURIComponent( this.$store.state.route.query.folder ) : 'any'
+			},
+
+			currentFolderBreadcrumb() {
+				return 'In: ' + this.currentFolder
 			},
 
 			errorNotice() {
@@ -195,6 +221,10 @@
 			showDescriptionToggle() {
 				for ( var itemId of this.paginatedItemIds ) {
 					if ( this.hasDescription( itemId ) ) {
+						return true
+					}
+
+					if ( ! this.currentFolder && this.hasFolders( itemId ) ) {
 						return true
 					}
 				}
@@ -299,6 +329,11 @@
 				return 'forum_attachment' === item_type || ( 'string' === typeof description && description.length > 0 )
 			},
 
+			hasFolders( itemId ) {
+				const { folders } = this.$store.state.libraryItems[ itemId ]
+				return 'undefined' !== typeof folders && folders.length > 0
+			},
+
 			onAddNewClick() {
 				return
 			}
@@ -382,12 +417,12 @@ a.add-new-item-button:hover {
 }
 
 .group-library-nav {
-	padding: 20px 0;
+	padding: 15px 0;
 }
 
 .group-library-pagination {
 	font-size: 11px;
-	padding-bottom: 20px;
+	padding-top: 20px;
 }
 
 .group-library-column-headers {
@@ -442,7 +477,7 @@ a.add-new-item-button:hover {
 .description-toggle {
 	position: absolute;
 	right: 0;
-	top: 0;
+	bottom: 0;
 }
 
 .library-load-more-button {
@@ -467,6 +502,13 @@ a.add-new-item-button:hover {
 	background: #022d3c;
 	border: none;
 	color: #fff;
+}
+
+.current-folder-breadcrumb {
+	color: #1c576c;
+	font-size: 16px;
+	font-weight: 700;
+	margin-top: 20px;
 }
 
 @media screen and (max-width:600px) {
