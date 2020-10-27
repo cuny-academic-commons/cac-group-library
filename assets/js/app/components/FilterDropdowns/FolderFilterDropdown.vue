@@ -171,8 +171,9 @@
 			},
 
 			isCurrentFolder( folder ) {
-				const currentFolder = this.getCurrentCallback()[0]
-				return ( '' === folder && 'any' === currentFolder.code ) || folder === currentFolder.code
+				const currentFolder = this.$store.state.route.query.hasOwnProperty( 'folder' ) ? decodeURIComponent( this.$store.state.route.query.folder ) : 'any'
+
+				return ( '' === folder && 'any' === currentFolder ) || folder === currentFolder
 			},
 
 			setCurrentCallback( payload ) {
