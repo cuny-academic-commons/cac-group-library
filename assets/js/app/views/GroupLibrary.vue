@@ -25,6 +25,15 @@
 		<transition name="fade">
 			<div v-if="! isLoading && initialLoadComplete" class="group-library-refreshable">
 				<div class="group-library-nav">
+
+					<div class="group-library-filters">
+						<FolderFilterDropdown />
+						<ItemTypeFilterDropdown />
+						<DescriptionToggle
+							v-if="showDescriptionToggle"
+						/>
+					</div>
+
 					<div
 						class="group-library-pagination"
 						v-if="$mq === 'desktop'"
@@ -33,14 +42,6 @@
 							<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
 							<Pagination v-else key="pagination" />
 						</transition>
-					</div>
-
-					<div class="group-library-filters">
-						<FolderFilterDropdown />
-						<ItemTypeFilterDropdown />
-						<DescriptionToggle
-							v-if="showDescriptionToggle"
-						/>
 					</div>
 				</div>
 
@@ -270,6 +271,7 @@
 				.then( function() {
 					vm.$store.commit( 'refreshFilteredItemIds' )
 					vm.$store.commit( 'setInitialLoadComplete' )
+					vm.$store.commit( 'calculateFolderCounts' )
 				} )
 		},
 
@@ -466,6 +468,7 @@ a.add-new-item-button:hover {
 	border: none;
 	color: #fff;
 }
+
 @media screen and (max-width:600px) {
 	.group-library-header {
 		align-items: flex-start;

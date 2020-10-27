@@ -73,6 +73,7 @@ function initialState() {
 		currentSortOrder,
 		deleteInProgress: false,
 		filteredItemIds: [],
+		folderCounts: {},
 		foldersOfGroup,
 		forms,
 		initialLoadComplete: false,
@@ -110,6 +111,35 @@ export default new Vuex.Store(
 				let newUsersById               = Object.assign( {}, state.formInput.usersById )
 				newUsersById[ payload.userId ] = payload.userName
 				state.formInput.usersById      = newUsersById
+			},
+
+			calculateFolderCounts( state ) {
+				const { foldersOfGroup, libraryItemIds, libraryItems } = state
+
+				let folderCounts = {}
+
+				foldersOfGroup.map(
+					function( folderName ) {
+						folderCounts[ folderName ] = 0
+					}
+				)
+
+				libraryItemIds.map(
+					function( itemId ) {
+						if ( libraryItems.hasOwnProperty( itemId ) ) {
+							const { folders } = libraryItems[ itemId ]
+							if ( 'undefined' !== typeof folders && folders.length > 0 ) {
+								folders.map(
+									function( folderName ) {
+										folderCounts[ folderName ]++
+									}
+								)
+							}
+						}
+					}
+				)
+
+				state.folderCounts = folderCounts
 			},
 
 			refresh( state ) {
@@ -469,6 +499,7 @@ export default new Vuex.Store(
 				.then( function ( json )  {
 					if ( json.success ) {
 						commit( 'replaceFoldersOfGroup', json.results )
+						commit( 'calculateFolderCounts' )
 					}
 				} )
 			},
