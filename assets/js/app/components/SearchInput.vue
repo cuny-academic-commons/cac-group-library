@@ -87,7 +87,7 @@
 						'background-image': 'url( ' + imgUrlBase + 'search.svg )',
 						'background-position': 'center right 8px',
 						'background-repeat': 'no-repeat',
-						'background-size': '12px',
+						'background-size': '16px',
 						'opacity': '.75',
 					}
 				}

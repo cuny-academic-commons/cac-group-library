@@ -115,45 +115,30 @@
 			},
 
 			folders() {
-				const { itemIds, getItem } = this
+				const { folderCounts, itemIds, getItem } = this
 				const vm = this
 
-				let folders = []
+				const { foldersOfGroup } = this.$store.state
 
-				itemIds.map(
-					function( itemId ) {
-						const theItem = getItem( itemId )
-						for ( var i in theItem.folders ) {
-							folders.push( theItem.folders[ i ] )
-						}
-					}
-				)
-
-				let uniqueFolders = folders.filter(
-					function( value, index, self ) {
-						return self.indexOf( value ) === index
-					}
-				)
-
-				uniqueFolders.sort(
-					function( a, b ) {
-						return a.localeCompare( b )
-					}
-				)
-
-				let folderObjects = uniqueFolders.map(
+				let folderCount
+				let folderObjects = foldersOfGroup.map(
 					function( folder ) {
+						folderCount = folderCounts.hasOwnProperty( folder ) ? folderCounts[ folder ] : 0
+
+						const folderLabel = folder + ' (' + folderCount + ')'
+
 						return {
 							code: folder,
-							label: folder,
+							label: folderLabel,
 						}
 					}
 				)
 
-				const anyFolder = { code: 'any', label: 'Any folder' }
+				const allItemsLabel = 'ALL ITEMS (' + this.$store.state.libraryItemIds.length + ')'
+				const anyFolder = { code: 'any', label: allItemsLabel }
 				folderObjects.unshift( anyFolder )
 
-				if ( this.canEditFolders && uniqueFolders.length > 0 ) {
+				if ( this.canEditFolders && foldersOfGroup.length > 0 ) {
 					const editFolders = { code: '_edit', label: 'Edit folders' }
 					folderObjects.push( editFolders )
 				}
@@ -222,5 +207,20 @@
 	.folder-button.current-folder {
 		background: #666;
 		color: #fff;
+	}
+
+	@media screen and (max-width:600px) {
+		.group-library-folder-filter-dropdown .vs__dropdown-toggle,
+		.group-library-folder-filter-dropdown .vs__selected-options {
+			background: #666;
+		}
+
+		.group-library-folder-filter-dropdown .vs__selected {
+			color: #fff;
+		}
+
+		.group-library-folder-filter-dropdown .vs__open-indicator {
+			fill: #fff;
+		}
 	}
 </style>

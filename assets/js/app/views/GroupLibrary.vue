@@ -517,12 +517,19 @@ a.add-new-item-button:hover {
 	}
 
 	.group-library-header h2 {
-		font-size: 24px;
+		font-size: 28px;
+	}
+
+	.library-search-input {
+		line-height: 28px;
+	}
+
+	.group-library-header .library-search {
+		margin-top: -2px;
 	}
 
 	.group-library-header .header-actions {
 		margin-left: 0;
-		padding-top: 40px;
 	}
 
 	.group-library-filters {

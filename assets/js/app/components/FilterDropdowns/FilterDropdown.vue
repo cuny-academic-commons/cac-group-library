@@ -79,7 +79,9 @@
 
 @media screen and (max-width:600px) {
 	.v-select {
-		width: 49%;
+		display: block;
+		margin-bottom: 10px;
+		width: 100%;
 	}
 }
 </style>
