@@ -19,6 +19,13 @@
 					>{{folderButtonText(folder)}}</button>
 				</li>
 
+				<li>
+					<button
+						:class="folderButtonClass('_null')"
+						v-on:click="folderButtonClick('_null')"
+					>{{folderButtonText('_null')}}</button>
+				</li>
+
 				<li v-if="canEditFolders">
 					<router-link
 						class="manage-folders-link"
@@ -106,6 +113,9 @@
 
 				if ( '' === folder ) {
 					return 'ALL ITEMS (' + this.$store.state.libraryItemIds.length + ')'
+				} else if ( '_null' === folder ) {
+					const nullCount = folderCounts.hasOwnProperty( '_null' ) ? folderCounts._null : 0
+					return 'Not in a folder (' + nullCount + ')'
 				} else {
 
 					const folderCount = folderCounts.hasOwnProperty( folder ) ? folderCounts[ folder ] : 0
@@ -137,6 +147,10 @@
 				const allItemsLabel = 'ALL ITEMS (' + this.$store.state.libraryItemIds.length + ')'
 				const anyFolder = { code: 'any', label: allItemsLabel }
 				folderObjects.unshift( anyFolder )
+
+				const nullCount = folderCounts.hasOwnProperty( '_null' ) ? folderCounts._null : 0
+				const nullFolder = { code: '_null', label: 'Not in a folder (' + nullCount + ')' }
+				folderObjects.push( nullFolder )
 
 				if ( this.canEditFolders && foldersOfGroup.length > 0 ) {
 					const editFolders = { code: '_edit', label: 'Edit folders' }

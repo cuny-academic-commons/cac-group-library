@@ -163,7 +163,11 @@
 			},
 
 			currentFolderBreadcrumb() {
-				return 'In: ' + this.currentFolder
+				if ( '_null' === this.currentFolder ) {
+					return 'Items not in a folder'
+				} else {
+					return 'In: ' + this.currentFolder
+				}
 			},
 
 			errorNotice() {

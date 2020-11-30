@@ -116,7 +116,9 @@ export default new Vuex.Store(
 			calculateFolderCounts( state ) {
 				const { foldersOfGroup, libraryItemIds, libraryItems } = state
 
-				let folderCounts = {}
+				let folderCounts = { 
+					'_null': 0
+				}
 
 				foldersOfGroup.map(
 					function( folderName ) {
@@ -134,6 +136,8 @@ export default new Vuex.Store(
 										folderCounts[ folderName ]++
 									}
 								)
+							} else {
+								folderCounts._null++
 							}
 						}
 					}
@@ -179,7 +183,13 @@ export default new Vuex.Store(
 
 				// Folder dropdown.
 				const theCurrentFolder = state.route.query.hasOwnProperty( 'folder' ) ? decodeURIComponent( state.route.query.folder ) : 'any'
-				if ( 'any' !== theCurrentFolder ) {
+				if ( '_null' === theCurrentFolder ) {
+					newFilteredItemIds = newFilteredItemIds.filter(
+						function( itemId ) {
+							return 'undefined' === typeof state.libraryItems[ itemId ].folders || state.libraryItems[ itemId ].folders.length === 0
+						}
+					)
+				} else if ( 'any' !== theCurrentFolder ) {
 					newFilteredItemIds = newFilteredItemIds.filter(
 						function( itemId ) {
 							for ( var i in state.libraryItems[ itemId ].folders ) {
