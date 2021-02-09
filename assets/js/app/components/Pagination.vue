@@ -45,9 +45,12 @@
 
 		methods: {
 			clickHandler( pageNum ) {
+				const currentFolder = this.$store.state.route.query.hasOwnProperty( 'folder' ) ? decodeURIComponent( this.$store.state.route.query.folder ) : 'any';
+
 				this.$router.push({
 					path: '/',
 					query: {
+						folder: currentFolder,
 						page: pageNum
 					}
 				})
