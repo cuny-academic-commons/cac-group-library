@@ -347,9 +347,21 @@ class LibraryItem extends WP_REST_Controller {
 
 		// Only provide file info on creation.
 		if ( ! $item_id ) {
-			$doc->file = basename( $file_params['name'] );
+			$basename  = basename( $file_params['name'] );
+			$doc->file = $basename;
 
-			$file_path = $doc->get_path( 0,1 );
+			// Ensure uniqueness.
+			$file_path = $doc->get_path( 0, 1 );
+			$counter   = 2;
+			$pathparts = pathinfo( $file_path );
+			while ( file_exists( $file_path ) ) {
+				$basename  = $pathparts['filename'] . '-' . $counter . '.' . $pathparts['extension'];
+
+				$doc->file = $basename;
+				$file_path = $doc->get_path( 0, 0 );
+
+				$counter++;
+			}
 
 			if ( ! move_uploaded_file( $file_params['tmp_name'], $file_path ) ) {
 				$error_message = 'There was a problem saving your file, please try again.';
