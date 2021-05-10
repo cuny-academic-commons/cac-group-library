@@ -88,22 +88,45 @@ class ForumAttachmentsSync implements SyncInterface {
 	public static function delete_library_item( $post_id ) {
 		$post = get_post( $post_id );
 
-		if ( ( ! ( $post instanceof WP_Post ) ) || 'attachment' !== $post->post_type ) {
+		if ( ! ( $post instanceof WP_Post ) ) {
 			return false;
 		}
 
-		$group_id = self::get_group_id( $post_id );
-		if ( ! $group_id ) {
-			return;
+		if ( 'attachment' === $post->post_type ) {
+			$group_id = self::get_group_id( $post_id );
+
+			if ( ! $group_id ) {
+				return;
+			}
+
+			$item = self::get_library_item_from_source_item_id( $post_id, $group_id );
+
+			if ( ! $item->exists() ) {
+				return false;
+			}
+
+			return $item->delete();
+		} elseif ( 'topic' === $post->post_type || 'reply' === $post->post_type ) {
+			$files = d4p_get_post_attachments( $post_id );
+
+			foreach ( $files as $file ) {
+				$group_id = self::get_group_id( $file->ID );
+
+				if ( ! $group_id ) {
+					return;
+				}
+
+				$item = self::get_library_item_from_source_item_id( $file->ID, $group_id );
+
+				if ( ! $item->exists() ) {
+					continue;
+				}
+
+				return $item->delete();
+			}
+
+			return true;
 		}
-
-		$item = self::get_library_item_from_source_item_id( $post_id, $group_id );
-
-		if ( ! $item->exists() ) {
-			return false;
-		}
-
-		return $item->delete();
 	}
 
 	protected static function get_group_id( $attachment_id ) {
