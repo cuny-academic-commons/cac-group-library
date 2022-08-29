@@ -486,9 +486,11 @@ class LibraryItem extends WP_REST_Controller {
 			$folders = [];
 		}
 
-		$library_item = BuddyPressDocsSync::get_library_item_from_source_item_id( $created['doc_id'], $params['groupId'] );
-		$library_item->set_folders( [ $folder_name ] );
-		$library_item->save();
+		if ( $folders ) {
+			$library_item = BuddyPressDocsSync::get_library_item_from_source_item_id( $created['doc_id'], $params['groupId'] );
+			$library_item->set_folders( [ $folder_name ] );
+			$library_item->save();
+		}
 
 		return $retval;
 	}
