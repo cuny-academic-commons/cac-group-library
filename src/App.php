@@ -64,6 +64,8 @@ class App {
 			999
 		);
 
+		$this->group_doc_taxonomy_mods();
+
 		if ( defined( 'WP_CLI' ) ) {
 			$this->set_up_cli_commands();
 		}
@@ -156,6 +158,19 @@ class App {
 	protected function set_up_cli_commands() {
 		\WP_CLI::add_command( 'cacgl database', '\CAC\GroupLibrary\CLI\Command\DatabaseCommand' );
 		\WP_CLI::add_command( 'cacgl sync', '\CAC\GroupLibrary\CLI\Command\SyncCommand' );
+	}
+
+	/**
+	 * Ensures 'group-documents-category' taxonomy is not public.
+	 */
+	protected function group_doc_taxonomy_mods() {
+		add_filter(
+			'register_group-documents-category_taxonomy_args',
+			function( $args ) {
+				$args['public'] = false;
+				return $args;
+			}
+		);
 	}
 
 	public function __get( $key ) {
