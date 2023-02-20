@@ -97,6 +97,12 @@ class Nav {
 			// Only when looking at the group listing, on Edit, or on Create.
 			if ( ! bp_action_variables() || bp_is_action_variable( BP_DOCS_CREATE_SLUG, 0 ) ) {
 				$redirect = true;
+
+				// If on Doc listing, redirect to library filtered by docs.
+				if ( ! bp_action_variables() ) {
+					$redirect_to .= '/#/?itemType=bp_doc';
+				}
+
 			} elseif ( bp_docs_is_doc_edit() ) {
 				$doc  = bp_docs_get_current_doc();
 				$item = BuddyPressDocsSync::get_library_item_from_source_item_id( $doc->ID, bp_get_current_group_id() );
