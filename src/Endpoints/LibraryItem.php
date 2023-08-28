@@ -219,13 +219,17 @@ class LibraryItem extends WP_REST_Controller {
 		}
 
 		switch ( $item->get_item_type() ) {
-			case 'external_link' :
+			case 'external_link':
 				$retval = $this->delete_external_link( $item_id );
-			break;
+				break;
 
-			case 'bp_group_document' :
+			case 'bp_group_document':
 				$retval = $this->delete_bp_group_document( $item_id );
-			break;
+				break;
+
+			case 'bp_doc':
+				$retval = $this->delete_bp_doc( $item_id );
+				break;
 		}
 
 		return rest_ensure_response( $retval );
@@ -434,6 +438,27 @@ class LibraryItem extends WP_REST_Controller {
 		if ( $deleted ) {
 			$retval['success'] = true;
 			$retval['message'] = 'Your file has been successfully deleted.';
+		}
+
+		return $retval;
+	}
+
+	protected function delete_bp_doc( $item_id ) {
+		global $wpdb, $bp;
+
+		$retval = [
+			'success' => false,
+			'message' => '',
+		];
+
+		$item   = new Item( $item_id );
+		$doc_id = $item->get_source_item_id();
+
+		$trashed = bp_docs_trash_doc( $doc_id );
+
+		if ( $trashed ) {
+			$retval['success'] = true;
+			$retval['message'] = 'Your doc has been successfully deleted.';
 		}
 
 		return $retval;

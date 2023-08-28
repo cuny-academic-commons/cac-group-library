@@ -58,6 +58,11 @@
 					:buttonText="submitButtonText"
 					:formName="formName"
 				/>
+
+				<DeleteButton
+					:itemId="itemId()"
+					v-if="isEditMode"
+				/>
 			</div>
 		</form>
 	</div>
@@ -69,6 +74,7 @@
 	import vSelect from 'vue-select'
 	import 'vue-select/dist/vue-select.css';
 
+	import DeleteButton from '../DeleteButton.vue'
 	import FormField from '../FormField.vue'
 	import FolderSelector from '../FolderSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
@@ -77,6 +83,7 @@
 
 	export default {
 		components: {
+			DeleteButton,
 			Editor,
 			FormField,
 			FolderSelector,
@@ -105,10 +112,6 @@
 
 			folderInputName() {
 				return 'add-new-' + this.formNameHyphens + '-folder'
-			},
-
-			isEditMode() {
-				return this.itemId > 0
 			},
 
 			isFormValidated() {
@@ -189,8 +192,16 @@
 		},
 
 		methods: {
+			isEditMode() {
+				return this.itemId() > 0
+			},
+
 			isSilentChecked() {
-				return this.isEditMode
+				return this.isEditMode()
+			},
+
+			itemId() {
+				return this.$store.state.forms.bpDoc.itemId ?? 0
 			}
 		},
 
