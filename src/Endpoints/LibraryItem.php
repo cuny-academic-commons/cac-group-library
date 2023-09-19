@@ -152,6 +152,10 @@ class LibraryItem extends WP_REST_Controller {
 		$params  = $request->get_params();
 		$item_id = $request->get_param( 'item_id' );
 
+		if ( ! empty( $params['silentUpdate'] ) ) {
+			$this->silence_update();
+		}
+
 		$retval = [
 			'success' => false,
 			'message' => '',
