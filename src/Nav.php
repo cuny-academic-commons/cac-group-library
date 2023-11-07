@@ -29,7 +29,7 @@ class Nav {
 	public function init() {
 		add_action( 'bp_setup_nav', array( $this, 'remove_group_documents_admin_nav' ), 1 );
 		add_action( 'bp_setup_nav', array( $this, 'add_library_nav_item' ), 200 );
-		add_action( 'bp_actions', array( $this, 'remove_nav_items' ), 200 );
+		add_action( 'bp_actions', array( $this, 'remove_nav_items' ), 9 );
 		add_action( 'bp_actions', array( $this, 'redirect_from_legacy_panels' ) );
 	}
 
