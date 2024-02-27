@@ -34,7 +34,7 @@ class Library {
 			'cac-group-library',
 			'CACGroupLibrary',
 			[
-				'appUrlBase'             => bp_get_group_permalink( groups_get_current_group() ) . '/library/',
+				'appUrlBase'             => bp_get_group_url( groups_get_current_group() ) . '/library/',
 				'canCreateNew'           => current_user_can( 'bp_moderate' ) || groups_is_user_member( bp_loggedin_user_id(), bp_get_current_group_id() ),
 				'canEditFolders'         => current_user_can( 'bp_moderate' ) || groups_is_user_admin( bp_loggedin_user_id(), bp_get_current_group_id() ),
 				'endpointBase'           => home_url() . '/wp-json/cacgl/v1/',
