@@ -51,7 +51,7 @@ class Nav {
 			array(
 				'slug'            => cac_group_library()->get_prop( 'nav_slug' ),
 				'parent_slug'     => $group->slug,
-				'parent_url'      => bp_get_group_permalink( $group ),
+				'parent_url'      => bp_get_group_url( $group ),
 				'name'            => 'Library',
 				'screen_function' => array( '\CAC\GroupLibrary\Screens\Library', 'panel' ),
 				'position'        => 32,
@@ -89,7 +89,7 @@ class Nav {
 		}
 
 		$redirect    = false;
-		$redirect_to = bp_get_group_permalink( groups_get_current_group() ) . cac_group_library()->get_prop( 'nav_slug' );
+		$redirect_to = bp_get_group_url( groups_get_current_group() ) . cac_group_library()->get_prop( 'nav_slug' );
 
 		// BP Group Documents
 		if ( bp_is_group() && bp_is_current_action( BP_GROUP_DOCUMENTS_SLUG ) ) {
