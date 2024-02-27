@@ -358,7 +358,7 @@ class Item {
 		$retval = [
 			'id'   => $user_id,
 			'name' => bp_core_get_user_displayname( $user_id ),
-			'url'  => bp_core_get_user_domain( $user_id ),
+			'url'  => bp_members_get_user_url( $user_id ),
 		];
 
 		return $retval;
