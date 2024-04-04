@@ -83,7 +83,7 @@
 
 <style>
 .group-library-column-header {
-	color: var(--ally-grey);
+	color: var(--dark-grey);
 	display: inline-block;
 	line-height: 28px;
 }

@@ -14,32 +14,33 @@
 				>{{ title() }}</a>
 
 				<div
-					class="item-folders"
-					v-if="showFolders()"
+					class="item-file-size"
+					v-if="fileSize().length > 0"
 				>
-					<span class="folder-icon">
-						<img
-							:src="folderIconUrl"
-						/>
-					</span>
-
-					<a
-						class="item-folder-link"
-						v-for="folder in itemFolders()"
-						v-on:click="onFolderClick(folder)"
-					>{{folder}}</a>
+					{{ fileSize() }}
 				</div>
 			</div>
 		</div>
 
 		<div class="group-library-item-details">
-			<span v-if="isForumAttachment()">
+			<p v-if="isForumAttachment()">
 				In topic <a :href="topicUrl()">{{ topicTitle() }}</a>
-			</span>
+			</p>
 
-			<span v-else>
+			<p v-else>
 				{{ description() }}
-			</span>
+			</p>
+
+			<p
+				class="item-folders"
+				v-if="showFolders()"
+			>
+				Tagged in: <a
+					class="item-folder-link"
+					v-for="folder in itemFolders()"
+					v-on:click="onFolderClick(folder)"
+				>{{folder}}</a>
+			</p>
 		</div>
 
 		<div class="group-library-item-date">
@@ -119,6 +120,11 @@
 				return item.hasOwnProperty( 'edit_url' ) ? item.edit_url : ''
 			},
 
+			fileSize() {
+				const item = this.getItem()
+				return item.hasOwnProperty( 'file_size' ) ? item.file_size : ''
+			},
+
 			fileType() {
 				const item = this.getItem()
 				return item.hasOwnProperty( 'file_type' ) ? item.file_type : ''
@@ -156,15 +162,11 @@
 				this.$store.commit( 'refresh' )
 			},
 
-			showDescription() {
-				return ( this.isForumAttachment() || this.description().length > 0 ) && this.$store.state.showDescriptions
-			},
-
 			showFolders() {
 				const theItem = this.getItem()
 				const currentFolder = this.$store.state.route.query.hasOwnProperty( 'folder' ) ? decodeURIComponent( this.$store.state.route.query.folder ) : 'any'
 
-				return this.$store.state.showDescriptions && 'any' === currentFolder && theItem.hasOwnProperty( 'folders' ) && theItem.folders.length > 0
+				return 'any' === currentFolder && theItem.hasOwnProperty( 'folders' ) && theItem.folders.length > 0
 			},
 
 			getFileTypeBase() {
@@ -348,20 +350,6 @@
 .group-library-edit {
 	position: absolute;
 	right: 10px;
-}
-
-.item-folders {
-	margin-top: 10px;
-}
-
-.item-folders .folder-icon {
-	line-height: 16px;
-	margin-right: 3px;
-}
-
-.item-folders .folder-icon img {
-	height: 14px;
-	vertical-align: text-bottom;
 }
 
 a.item-folder-link {

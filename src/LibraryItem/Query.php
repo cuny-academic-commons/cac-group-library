@@ -84,6 +84,7 @@ class Query {
 			$formatted_item = [
 				'id'             => $item->get_id(),
 				'date_modified'  => $item->get_date_modified(),
+				'file_size'      => $item->get_file_size(),
 				'item_type'      => $item->get_item_type(),
 				'source_item_id' => $item->get_source_item_id(),
 				'title'          => $item->get_title(),

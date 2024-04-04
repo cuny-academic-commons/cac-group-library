@@ -387,7 +387,7 @@ body.groups.single-item.library #item-header {
 }
 
 .group-library-nav:not(:empty) {
-	padding: 15px 0;
+	padding: 12px 48px;
 }
 
 .group-library-pagination {
@@ -423,14 +423,26 @@ ul.group-library-items-list li:nth-child(odd) {
 }
 
 .group-library-item-details {
+	color: var(--dark-grey);
 	flex-basis: 30%;
 }
 
 .group-library-item-added-by {
+	color: var(--dark-grey);
 	flex-basis: 20%;
 }
 
+.directory-content .group-library-item-added-by a {
+	color: var(--dark-grey);
+	text-decoration: underline;
+}
+
+.directory-content .group-library-item-added-by a:hover {
+	text-decoration: none;
+}
+
 .group-library-item-date {
+	color: var(--dark-grey);
 	flex-basis: 20%;
 }
 
