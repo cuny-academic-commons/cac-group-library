@@ -1,5 +1,5 @@
 <template>
-	<span class="group-library-filter-dropdown">
+	<div class="group-library-filter-dropdown">
 		<label
 			v-bind:for="fieldId"
 			class="screen-reader-only">
@@ -31,7 +31,7 @@
 				</span>
 			</template>
 		</v-select>
-	</span>
+	</div>
 </template>
 
 <script>
@@ -75,6 +75,12 @@
 .v-select {
 	display: inline-block;
 	width: 200px;
+}
+
+.group-library-filter-dropdown {
+	align-items: center;
+	display: flex;
+	gap: 8px;
 }
 
 @media screen and (max-width:600px) {

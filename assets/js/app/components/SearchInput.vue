@@ -2,8 +2,8 @@
 	<div class="library-search">
 		<input
 			class="library-search-input"
+			type="text"
 			:placeholder="placeholderText"
-			v-bind:style="backgroundStyles()"
 			v-on:focus="onFocus()"
 			v-model="currentSearchTerm"
 		/>
@@ -12,7 +12,7 @@
 			class="dashicons dashicons-no-alt search-input-click-to-close"
 			v-if="isSearchExpanded"
 			v-on:click="onCloseClick()"
-		></span>
+		><span class="screen-reader-text">Click to cancel search</span></span>
 	</div>
 </template>
 
@@ -59,7 +59,7 @@
 			},
 
 			placeholderText() {
-				return this.$mq === 'mobile' ? '' : 'Enter text to search library'
+				return this.$mq === 'mobile' ? '' : 'Search the Library'
 			}
 		},
 
@@ -124,31 +124,27 @@
 	background: url( ../../../img/search.svg );
 	background-repeat: no-repeat;
 	background-position: 0 100%;
-	font-size: 11px;
-	line-height: 31px;
-	padding: 0 5px;
 	width: 100%;
 }
 
 .library-search {
+	position: relative;
 	transition: width .5s ease-in-out;
 	width: 200px;
-}
-
-.search-is-expanded .library-search {
-	width: calc(100% - 28px);
-}
-
-.search-is-expanded .library-search-input {
-	width: calc(100% - 28px);
 }
 
 .search-input-click-to-close {
 	cursor: pointer;
 	position: absolute;
-	right: 0;
-	top: 8px;
-	z-index: 50;
+	right: 8px;
+	top: 50%;
+	transform: translateY( -50% );
+}
+
+input[type="text"].library-search-input {
+	border: 1px solid #cecece;
+	border-radius: 5px;
+	margin-bottom: 0;
 }
 
 @media screen and (max-width:600px) {

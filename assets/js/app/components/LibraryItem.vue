@@ -13,19 +13,6 @@
 					class="group-library-item-title-title"
 				>{{ title() }}</a>
 
-				<p
-					class="library-item-description"
-					v-if="showDescription()"
-				>
-					<span v-if="isForumAttachment()">
-						In topic <a :href="topicUrl()">{{ topicTitle() }}</a>
-					</span>
-
-					<span v-else>
-						{{ description() }}
-					</span>
-				</p>
-
 				<div
 					class="item-folders"
 					v-if="showFolders()"
@@ -45,12 +32,22 @@
 			</div>
 		</div>
 
-		<div class="group-library-item-added-by">
-			<a :href="addedByUrl()">{{ addedByName() }}</a>
+		<div class="group-library-item-details">
+			<span v-if="isForumAttachment()">
+				In topic <a :href="topicUrl()">{{ topicTitle() }}</a>
+			</span>
+
+			<span v-else>
+				{{ description() }}
+			</span>
 		</div>
 
 		<div class="group-library-item-date">
 			{{ date() }}
+		</div>
+
+		<div class="group-library-item-added-by">
+			<a :href="addedByUrl()">{{ addedByName() }}</a>
 		</div>
 
 		<div
@@ -99,7 +96,12 @@
 				// JS format.
 				const dateString = date_modified.replace( ' ', 'T' )
 				const d = new Date( dateString )
-				const dtf = new Intl.DateTimeFormat('en-US').format( d )
+				const dateTimeOptions = {
+					month: 'short',
+					day: 'numeric',
+					year: 'numeric'
+				}
+				const dtf = new Intl.DateTimeFormat( 'en-US', dateTimeOptions ).format( d )
 				return dtf
 			},
 

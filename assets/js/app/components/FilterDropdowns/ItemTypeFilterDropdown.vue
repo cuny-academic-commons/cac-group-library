@@ -1,7 +1,7 @@
 <template>
 	<FilterDropdown
 		name='itemType'
-		title='Select Item Type'
+		title='Filter: '
 		:opts="itemTypesWithItems()"
 		:getCurrentCallback="getCurrentCallback"
 		:setCurrentCallback="setCurrentCallback"
@@ -23,7 +23,7 @@
 
 			itemTypes() {
 				return [
-					{ code: 'any', label: 'Any kind' },
+					{ code: 'any', label: 'No Filter' },
 					{ code: 'bp_group_document', label: 'Files' },
 					{ code: 'bp_doc', label: 'Docs' },
 					{ code: 'cacsp_paper', label: 'Papers' },

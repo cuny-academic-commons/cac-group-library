@@ -1,18 +1,19 @@
 <template>
-	<div id="cac-group-library-inner">
+	<div class="cac-group-library" id="cac-group-library-inner">
 		<div :class="headerClass">
-			<div class="header-with-actions">
-				<h2>Library</h2>
+			<div class="header-filters">
+				<ItemTypeFilterDropdown />
+				<FolderFilterDropdown />
+			</div>
 
-				<div class="header-actions">
-					<router-link
-						class="add-new-item-button"
-						v-if='canCreateNew'
-						to='/new'
-					>Add New Item</router-link>
+			<div class="header-right">
+				<router-link
+					class="add-new-item-button cac-button cac-button-secondary"
+					v-if='canCreateNew'
+					to='/new'
+				>Add New Item</router-link>
 
-					<SearchInput />
-				</div>
+				<SearchInput />
 			</div>
 		</div>
 
@@ -25,30 +26,10 @@
 		<transition name="fade">
 			<div v-if="! isLoading && initialLoadComplete" class="group-library-refreshable">
 				<div class="group-library-nav">
-
-					<div class="group-library-filters">
-						<FolderFilterDropdown />
-						<ItemTypeFilterDropdown />
-					</div>
-
 					<div
 						class="current-folder-breadcrumb"
 						v-if="'any' !== currentFolder"
 					>{{currentFolderBreadcrumb}}</div>
-
-					<div
-						class="group-library-pagination"
-					>
-						<transition name="fade" mode="out-in">
-							<span>
-								<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
-								<Pagination v-else key="pagination" :showPagLinks="false" />
-								<DescriptionToggle
-									v-if="showDescriptionToggle"
-								/>
-							</span>
-						</transition>
-					</div>
 				</div>
 
 				<div
@@ -58,19 +39,25 @@
 				>
 					<div class="group-library-column-headers group-library-row">
 						<SortableColumnHeader
-							label="Title"
+							label="File name"
 							name="title"
 							defaultSortOrder="asc"
 						/>
+
+						<div class="group-library-column-header group-library-item-details">
+							Details
+						</div>
+
+						<SortableColumnHeader
+							label="Date uploaded"
+							name="date"
+							defaultSortOrder="desc"
+						/>
+
 						<SortableColumnHeader
 							label="Added by"
 							name="added-by"
 							defaultSortOrder="asc"
-						/>
-						<SortableColumnHeader
-							label="Date"
-							name="date"
-							defaultSortOrder="desc"
 						/>
 						<div
 							class="group-library-column group-library-edit"
@@ -78,7 +65,7 @@
 						/>
 					</div>
 
-					<ul>
+					<ul class="group-library-items-list">
 						<li v-for="itemId in paginatedItemIds">
 							<LibraryItem
 								:itemId='itemId'
@@ -354,70 +341,49 @@ body.groups.single-item.library #item-header {
 	margin-top: 24px;
 }
 
+.header-filters {
+	display: flex;
+	gap: 50px;
+}
+
 #cac-group-library-inner {
 	margin-top: 24px;
 }
 
-.header-with-actions {
-	align-items: center;
-	display: flex;
+.cac-group-library {
+	font-family: var(--sans-serif);
+}
+
+.cac-group-library .vs__dropdown-toggle {
+	border-radius: 0;
+	padding: 8px 0 12px;
 }
 
 .group-library-header {
-	border-bottom: 2px solid #eeeeee;
+	display: flex;
+	gap: 200px;
 	padding-bottom: 20px;
 }
 
-.group-library-header h2 {
-	font-size: 28px;
+.header-right {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	gap: 20px;
+	justify-content: space-between;
 }
 
-.header-with-actions h2 {
-	margin-right: 20px;
-	white-space: nowrap;
+.library-search {
+	flex: 1;
 }
 
-.header-with-actions .header-actions {
-	display: block;
-	position: relative;
-	margin-left: 20px;
-	margin-right: 12px;
-	height: 28px;
-	width: 100%;
+.cac-button.add-new-item-button {
+	line-height: 2em;
+	padding: 8px 16px;
 }
 
 .group-library-header.search-is-expanded .header-actions {
 	margin-right: 7px;
-}
-
-a.add-new-item-button {
-	background: #1C576C 0% 0% no-repeat padding-box;
-	border-radius: 4px;
-	color: #fff;
-	font-size: 11px;
-	left: 0;
-	line-height: 24px;
-	padding: 0 12px;
-	position: absolute;
-	text-decoration: none;
-	top: 2px;
-}
-
-a.add-new-item-button,
-a.add-new-item-button:link,
-a.add-new-item-button:visited {
-	color: #fff;
-}
-
-a.add-new-item-button:hover {
-	background-color: #4f8a95;
-}
-
-.group-library-header .library-search {
-	position: absolute;
-	right: 0;
-	text-align: right;
-	top: 0
 }
 
 .group-library-nav {
@@ -429,24 +395,28 @@ a.add-new-item-button:hover {
 	padding-top: 20px;
 }
 
-.group-library-column-headers {
-	background: #f5f5f5;
-	border-bottom: 1px solid #ddd;
-	border-top: 1px solid #ddd;
-	color: #666;
-	font-weight: 700;
-	line-height: 28px;
+ul.group-library-items-list {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .group-library-row {
+	align-items: center;
+	border-bottom: 1px solid var(--lt-grey);
 	display: flex;
-	padding-left: 10px;
-	padding-right: 30px;
+	gap: 24px;
+	padding: 12px 48px;
 	position: relative;
 }
 
 .group-library-item-title {
-	flex-basis: 70%;
+	flex-basis: 30%;
+	padding: 16px 0;
+}
+
+.group-library-item-details {
+	flex-basis: 30%;
 }
 
 .group-library-item-added-by {
@@ -465,14 +435,6 @@ a.add-new-item-button:hover {
   opacity: 0;
 }
 
-.search-is-expanded .add-new-item-button {
-	opacity: 0;
-}
-
-.add-new-item-button {
-	transition: opacity .25s;
-}
-
 .group-library-filters {
 	position: relative;
 	padding-right: 10px;
@@ -482,6 +444,10 @@ a.add-new-item-button:hover {
 	position: absolute;
 	right: 0;
 	bottom: 0;
+}
+
+.group-library-refreshable {
+	background: #fff;
 }
 
 .library-load-more-button {
