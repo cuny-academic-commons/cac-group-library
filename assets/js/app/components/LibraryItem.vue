@@ -55,15 +55,32 @@
 			class="group-library-edit"
 			v-if="canEdit()"
 		>
-			<a
-				:href="editUrl()"
-				v-if="editLinkIsStatic()"
-			>Edit</a>
+			<button
+				class="group-library-item-menu-toggle"
+				v-on:click="toggleMenu()"
+				aria-haspopup="true"
+				:aria-controls="'group-library-item-menu-' + itemId"
+				:aria-expanded="isMenuOpen"
+			><img
+				:src="moreIconUrl"
+				alt="Click for advanced options"
+			/></button>
 
-			<router-link
-				:to="'/edit/' + itemId"
-				v-else
-			>Edit</router-link>
+			<div
+				v-show="isMenuOpen"
+				class="group-library-item-menu"
+				:id="'group-library-item-menu-' + itemId"
+			>
+				<a
+					:href="editUrl()"
+					v-if="editLinkIsStatic()"
+				>Edit</a>
+
+				<router-link
+					:to="'/edit/' + itemId"
+					v-else
+				>Edit</router-link>
+			</div>
 		</div>
 	</div>
 </template>
@@ -75,6 +92,17 @@
 				const { imgUrlBase } = window.CACGroupLibrary;
 				return imgUrlBase + 'folder-icon.png'
 			},
+
+			moreIconUrl() {
+				const { imgUrlBase } = window.CACGroupLibrary;
+				return imgUrlBase + 'more.png'
+			}
+		},
+
+		data() {
+			return {
+				isMenuOpen: false
+			}
 		},
 
 		methods: {
@@ -287,6 +315,10 @@
 				return this.getItem().title
 			},
 
+			toggleMenu() {
+				this.isMenuOpen = ! this.isMenuOpen
+			},
+
 			topicTitle() {
 				const item = this.getItem()
 				return item.hasOwnProperty( 'topic_title' ) ? item.topic_title : ''
@@ -333,23 +365,21 @@
 	width: 20px;
 }
 
-.group-library-item-title,
-.group-library-item-date,
-.group-library-item-added-by {
-	margin-right: 16px;
-}
-
 .group-library-item-title-title {
 	font-weight: 500;
 }
 
-.library-item-description {
-	margin-top: 6px;
+.group-library-edit {
+	flex: 0 0 40px;
+	position: relative;
 }
 
-.group-library-edit {
+.group-library-item-menu {
+	background: #fff;
+	border: 1px solid var(--med-dark-grey);
+	padding: 12px;
 	position: absolute;
-	right: 10px;
+	top: 37px;
 }
 
 a.item-folder-link {
@@ -360,4 +390,20 @@ a.item-folder-link {
 a.item-folder-link:hover {
 	text-decoration: none;
 }
+
+button.group-library-item-menu-toggle {
+	background: none;
+	border: 1px solid transparent;
+	cursor: pointer;
+	padding: 0;
+}
+
+button.group-library-item-menu-toggle:hover {
+	border-color: var(--med-grey);
+}
+
+button.group-library-item-menu-toggle[aria-expanded="true"] {
+	border-color: var(--med-dark-grey);
+}
+
 </style>
