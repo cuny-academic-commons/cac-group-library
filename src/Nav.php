@@ -71,6 +71,10 @@ class Nav {
 
 		$group = groups_get_current_group();
 
+		if ( empty( buddypress()->groups->nav ) ) {
+			return;
+		}
+
 		buddypress()->groups->nav->delete_nav( BP_GROUP_DOCUMENTS_SLUG, $group->slug );
 		buddypress()->groups->nav->delete_nav( bp_docs_get_docs_slug(), $group->slug );
 		buddypress()->groups->nav->delete_nav( 'papers', $group->slug );
