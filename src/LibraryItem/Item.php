@@ -185,6 +185,48 @@ class Item {
 	}
 
 	/**
+	 * Get file size.
+	 *
+	 * @return string
+	 */
+	public function get_file_size() {
+		$item_type = $this->get_item_type();
+		if ( ! in_array( $item_type, [ 'bp_group_document', 'forum_attachment' ], true ) ) {
+			return '';
+		}
+
+		switch ( $item_type ) {
+			case 'bp_group_document':
+				$document  = new \BP_Group_Documents( $this->get_source_item_id() );
+				$file_path = $document->get_path();
+				$file_size = size_format( filesize( $file_path ) );
+				break;
+
+			case 'forum_attachment':
+				$source_item   = get_post( $this->get_source_item_id() );
+				$attachment_id = 0;
+				if ( 'attachment' === $source_item->post_type ) {
+					$attachment_id = $source_item->ID;
+				} else {
+					$attachments = d4p_get_post_attachments( $this->get_source_item_id() );
+					if ( ! empty( $attachments ) ) {
+						$attachment_id = $attachments[0]->ID;
+					}
+				}
+
+				$file_size = size_format( filesize( get_attached_file( $attachment_id ) ) );
+
+				break;
+
+			default:
+				$file_size = '';
+				break;
+		}
+
+		return $file_size;
+	}
+
+	/**
 	 * Get description.
 	 *
 	 * @return string
