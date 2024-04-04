@@ -386,7 +386,7 @@ body.groups.single-item.library #item-header {
 	margin-right: 7px;
 }
 
-.group-library-nav {
+.group-library-nav:not(:empty) {
 	padding: 15px 0;
 }
 
@@ -401,9 +401,13 @@ ul.group-library-items-list {
 	margin: 0;
 }
 
+ul.group-library-items-list li:nth-child(odd) {
+	background: var(--xlt-grey);
+}
+
 .group-library-row {
 	align-items: center;
-	border-bottom: 1px solid var(--lt-grey);
+	border-bottom: 1px solid var(--med-grey);
 	display: flex;
 	gap: 24px;
 	padding: 12px 48px;
@@ -411,6 +415,9 @@ ul.group-library-items-list {
 }
 
 .group-library-item-title {
+	align-items: center;
+	display: flex;
+	gap: 12px;
 	flex-basis: 30%;
 	padding: 16px 0;
 }

@@ -82,11 +82,14 @@
 </script>
 
 <style>
-.group-library-column-header span {
-	color: #666;
-	cursor: pointer;
+.group-library-column-header {
+	color: var(--ally-grey);
 	display: inline-block;
 	line-height: 28px;
+}
+
+.group-library-column-header span {
+	cursor: pointer;
 	position: relative;
 	text-decoration: none;
 	width: 100%;
