@@ -59,10 +59,11 @@
 							name="added-by"
 							defaultSortOrder="asc"
 						/>
+
 						<div
 							class="group-library-column group-library-edit"
 							v-if="showEditColumn"
-						/>
+						>&nbsp;</div>
 					</div>
 
 					<ul class="group-library-items-list">
@@ -418,18 +419,18 @@ ul.group-library-items-list li:nth-child(odd) {
 	align-items: center;
 	display: flex;
 	gap: 12px;
-	flex-basis: 30%;
+	flex: 0 0 30%;
 	padding: 16px 0;
 }
 
 .group-library-item-details {
 	color: var(--dark-grey);
-	flex-basis: 30%;
+	flex: 0 0 30%;
 }
 
 .group-library-item-added-by {
 	color: var(--dark-grey);
-	flex-basis: 20%;
+	flex: 0 0 15%;
 }
 
 .directory-content .group-library-item-added-by a {
@@ -443,7 +444,7 @@ ul.group-library-items-list li:nth-child(odd) {
 
 .group-library-item-date {
 	color: var(--dark-grey);
-	flex-basis: 20%;
+	flex: 0 0 15%;
 }
 
 .fade-enter-active, .fade-leave-active {
