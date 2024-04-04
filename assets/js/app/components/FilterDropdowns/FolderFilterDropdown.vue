@@ -1,54 +1,11 @@
 <template>
-	<span>
-		<div
-			class="group-library-folder-filter-buttons"
-			v-if="$mq === 'desktop'"
-		>
-			<ul class="folder-buttons">
-				<li>
-					<button
-						:class="folderButtonClass('')"
-						v-on:click="folderButtonClick('')"
-					>{{folderButtonText('')}}</button>
-				</li>
-
-				<li v-for="folder in foldersOfGroup">
-					<button
-						:class="folderButtonClass(folder)"
-						v-on:click="folderButtonClick(folder)"
-					>{{folderButtonText(folder)}}</button>
-				</li>
-
-				<li>
-					<button
-						:class="folderButtonClass('_null')"
-						v-on:click="folderButtonClick('_null')"
-					>{{folderButtonText('_null')}}</button>
-				</li>
-
-				<li v-if="canEditFolders">
-					<router-link
-						class="manage-folders-link"
-						to='/editFolders'
-					>Manage folders</router-link>
-				</li>
-
-			</ul>
-		</div>
-
-		<div
-			class="group-library-folder-filter-dropdown"
-			v-else
-		>
-			<FilterDropdown
-				name='folder'
-				title='Select Folder'
-				:opts="folders()"
-				:getCurrentCallback="getCurrentCallback"
-				:setCurrentCallback="setCurrentCallback"
-			/>
-		</div>
-	</span>
+	<FilterDropdown
+		name='folder'
+		title='Tag: '
+		:opts="folders()"
+		:getCurrentCallback="getCurrentCallback"
+		:setCurrentCallback="setCurrentCallback"
+	/>
 </template>
 
 <script>
@@ -112,7 +69,7 @@
 				const { folderCounts } = this
 
 				if ( '' === folder ) {
-					return 'ALL ITEMS (' + this.$store.state.libraryItemIds.length + ')'
+					return 'All (' + this.$store.state.libraryItemIds.length + ')'
 				} else if ( '_null' === folder ) {
 					const nullCount = folderCounts.hasOwnProperty( '_null' ) ? folderCounts._null : 0
 					return 'Not in a folder (' + nullCount + ')'
@@ -144,7 +101,7 @@
 					}
 				)
 
-				const allItemsLabel = 'ALL ITEMS (' + this.$store.state.libraryItemIds.length + ')'
+				const allItemsLabel = 'All (' + this.$store.state.libraryItemIds.length + ')'
 				const anyFolder = { code: 'any', label: allItemsLabel }
 				folderObjects.unshift( anyFolder )
 
