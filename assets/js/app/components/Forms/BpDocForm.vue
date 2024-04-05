@@ -220,4 +220,8 @@
 .mce-tinymce button:hover, .mce-tinymce a.button:hover, .mce-tinymce a.button:focus, .mce-tinymce input[type=submit]:hover, .mce-tinymce input[type=button]:hover, .mce-tinymce input[type=reset]:hover {
 	border: none;
 }
+
+.mce-tinymce button {
+	padding: inherit !important;
+}
 </style>
