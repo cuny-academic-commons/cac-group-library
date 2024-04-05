@@ -1,5 +1,5 @@
 <div id="cac-group-library">
-	<div id="cac-group-library-inner">
+	<div id="cac-group-library-inner" class="cac-group-library-inner">
 		<div class="group-library-header">
 			<h2>Library</h2>
 			<div class="header-actions">

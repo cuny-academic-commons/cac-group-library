@@ -1,28 +1,91 @@
 <template>
-	<div class="library-item group-library-row">
-		<div class="group-library-item-title">
-			<div class="group-library-item-icon">
-				<img
-					:class="iconClass()"
-					:src="iconSrc()" />
+	<span>
+		<div class="library-item group-library-row">
+			<div class="group-library-item-title">
+				<div class="group-library-item-icon">
+					<img
+						:class="iconClass()"
+						:src="iconSrc()" />
+				</div>
+
+				<div class="group-library-item-title-details">
+					<a
+						:href="url()"
+						class="group-library-item-title-title"
+					>{{ title() }}</a>
+
+					<div
+						class="item-file-size"
+						v-if="fileSize().length > 0"
+					>
+						{{ fileSize() }}
+					</div>
+				</div>
 			</div>
 
-			<div class="group-library-item-title-details">
-				<a
-					:href="url()"
-					class="group-library-item-title-title"
-				>{{ title() }}</a>
+			<div class="group-library-item-details">
+				<p v-if="isForumAttachment()">
+					In topic <a :href="topicUrl()">{{ topicTitle() }}</a>
+				</p>
+
+				<p v-else>
+					{{ description() }}
+				</p>
+
+				<p
+					class="item-folders"
+					v-if="showFolders()"
+				>
+					Tagged in: <a
+						class="item-folder-link"
+						v-for="folder in itemFolders()"
+						v-on:click="onFolderClick(folder)"
+					>{{folder}}</a>
+				</p>
+			</div>
+
+			<div class="group-library-item-date">
+				{{ date() }}
+			</div>
+
+			<div class="group-library-item-added-by">
+				<a :href="addedByUrl()">{{ addedByName() }}</a>
+			</div>
+
+			<div
+				class="group-library-edit"
+				v-if="canEdit()"
+			>
+				<button
+					class="group-library-item-menu-toggle"
+					v-on:click="toggleMenu()"
+					aria-haspopup="true"
+					:aria-controls="'group-library-item-menu-' + itemId"
+					:aria-expanded="isMenuOpen"
+				><img
+					:src="moreIconUrl"
+					alt="Click for advanced options"
+				/></button>
 
 				<div
-					class="item-file-size"
-					v-if="fileSize().length > 0"
+					v-show="isMenuOpen"
+					class="group-library-item-menu"
+					:id="'group-library-item-menu-' + itemId"
 				>
-					{{ fileSize() }}
+					<a
+						:href="editUrl()"
+						v-if="editLinkIsStatic()"
+					>Edit</a>
+
+					<router-link
+						:to="'/edit/' + itemId"
+						v-else
+					>Edit</router-link>
 				</div>
 			</div>
 		</div>
 
-		<div class="group-library-item-details">
+		<div class="group-library-item-details-mobile group-library-row">
 			<p v-if="isForumAttachment()">
 				In topic <a :href="topicUrl()">{{ topicTitle() }}</a>
 			</p>
@@ -42,47 +105,7 @@
 				>{{folder}}</a>
 			</p>
 		</div>
-
-		<div class="group-library-item-date">
-			{{ date() }}
-		</div>
-
-		<div class="group-library-item-added-by">
-			<a :href="addedByUrl()">{{ addedByName() }}</a>
-		</div>
-
-		<div
-			class="group-library-edit"
-			v-if="canEdit()"
-		>
-			<button
-				class="group-library-item-menu-toggle"
-				v-on:click="toggleMenu()"
-				aria-haspopup="true"
-				:aria-controls="'group-library-item-menu-' + itemId"
-				:aria-expanded="isMenuOpen"
-			><img
-				:src="moreIconUrl"
-				alt="Click for advanced options"
-			/></button>
-
-			<div
-				v-show="isMenuOpen"
-				class="group-library-item-menu"
-				:id="'group-library-item-menu-' + itemId"
-			>
-				<a
-					:href="editUrl()"
-					v-if="editLinkIsStatic()"
-				>Edit</a>
-
-				<router-link
-					:to="'/edit/' + itemId"
-					v-else
-				>Edit</router-link>
-			</div>
-		</div>
-	</div>
+	</span>
 </template>
 
 <script>
@@ -341,12 +364,27 @@
 </script>
 
 <style>
+.group-library-item-details-mobile {
+	display: none;
+}
+
+@media (max-width: 768px) {
+	.group-library-item-details {
+		display: none;
+	}
+
+	.group-library-row.group-library-item-details-mobile {
+		display: block;
+	}
+}
+
 .library-item {
 	padding: 12px;
 }
 
 .group-library-item-icon {
 	display: flex;
+	flex: 0 0 40px;
 	align-items: center;
 	justify-content: center;
 	height: 40px;
