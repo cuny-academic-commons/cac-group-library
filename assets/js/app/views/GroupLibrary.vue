@@ -358,6 +358,10 @@ body.groups.single-item.library #item-header {
 	padding: 8px 0 12px;
 }
 
+.vs__dropdown-option {
+	font-family: var(--sans-serif);
+}
+
 .group-library-header {
 	display: flex;
 	gap: 200px;

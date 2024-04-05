@@ -15,7 +15,7 @@
 			:id="fieldId"
 			:name="fieldId"
 			:required="required"
-			:type="fieldValidationType"
+			:type="htmlFieldType"
 			v-on:focus="setFieldVisited()"
 			v-on:blur="validateThisField()"
 			v-on:keyup="validateThisField()"
@@ -91,6 +91,16 @@
 
 			hasTooltip() {
 				return this.tooltipText.length > 0
+			},
+
+			htmlFieldType() {
+				const { fieldType, fieldValidationType } = this
+
+				if ( fieldValidationType && fieldValidationType.length > 0 ) {
+					return fieldValidationType
+				}
+
+				return 'text'
 			},
 
 			isInputTypeFile() {
@@ -223,32 +233,12 @@
 		margin-bottom: 20px;
 	}
 
-	.add-new-field label {
-		display: block;
-		font-weight: bold;
-	}
-
-	.add-new-folder-container input,
-	.add-new-field-text input {
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 12px;
-		line-height: 35px;
-		padding: 0 8px;
-		width: calc(100% - 16px);
-	}
-
 	.add-new-field p.description {
 		font-style: italic;
 	}
 
 	.add-new-field-textarea textarea {
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		font-size: 12px;
-		height: 76px;
-		padding: 8px;
-		width: calc(100% - 16px);
+		margin-bottom: 12px;
 	}
 
 	.add-new-folder-container.has-error input,

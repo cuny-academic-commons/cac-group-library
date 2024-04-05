@@ -28,7 +28,7 @@
 			</template>
 		</v-select>
 
-		<div 
+		<div
 			:class="addNewFolderContainerClass"
 			v-if="showNewFolder">
 
@@ -156,7 +156,7 @@
 				return ''
 			},
 		},
-		
+
 		mixins: [
 			FormValidation
 		],
@@ -181,6 +181,10 @@
 </script>
 
 <style>
+.folder-selector-dropdown .v-select {
+	width: auto;
+}
+
 .folder-selector-dropdown .vs__dropdown-menu {
 	z-index: 999;
 }
