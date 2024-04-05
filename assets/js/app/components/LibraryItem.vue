@@ -364,7 +364,7 @@
 </script>
 
 <style>
-.group-library-item-details-mobile {
+.group-library-row.group-library-item-details-mobile {
 	display: none;
 }
 
