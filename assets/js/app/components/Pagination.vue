@@ -98,25 +98,14 @@
 </script>
 
 <style>
-.group-library-pagination {
-	position: relative;
-}
-
-.pagination-links {
-	font-size: 12px;
-	position: absolute;
-	right: 0;
-	bottom: 0;
-}
 
 .pagination-links ul {
+	display: flex;
 	list-style-type: none;
 }
 
 .pagination-links li {
-	display: block;
-	float: left;
-	padding: 0 4px;
+	padding: 0 8px;
 }
 
 .pagination-links li a {

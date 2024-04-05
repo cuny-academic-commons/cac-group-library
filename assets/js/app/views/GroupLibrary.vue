@@ -73,24 +73,6 @@
 							/>
 						</li>
 					</ul>
-
-					<button
-						class="library-load-more-button"
-						v-if="showLoadMore"
-						v-on:click="doLoadMore()"
-					>Load More</button>
-
-					<div
-						class="group-library-pagination"
-						v-if="! showLoadMore"
-					>
-						<transition name="fade" mode="out-in">
-							<span>
-								<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
-								<Pagination v-else key="pagination" :showPagLinks="true" />
-							</span>
-						</transition>
-					</div>
 				</div>
 
 				<div
@@ -109,6 +91,22 @@
 					v-if="filteredListIsEmpty"
 				>
 					No items found. Try a different filter option or search query.
+				</div>
+
+				<button
+					class="library-load-more-button"
+					v-if="showLoadMore"
+					v-on:click="doLoadMore()"
+				>Load More</button>
+
+				<div
+					class="group-library-pagination"
+					v-if="! showLoadMore"
+				>
+					<transition name="fade" mode="out-in">
+						<SearchResultsCount v-if="isSearchExpanded" key="search-results" />
+						<Pagination v-else key="pagination" :showPagLinks="true" />
+					</transition>
 				</div>
 			</div>
 
@@ -392,11 +390,21 @@ body.groups.single-item.library #item-header {
 }
 
 .group-library-pagination {
-	font-size: 11px;
 	padding-top: 20px;
 }
 
+.group-library-pagination > span {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+.group-library-column-headers {
+	background: #fff;
+}
+
 ul.group-library-items-list {
+	background: #fff;
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
@@ -467,7 +475,6 @@ ul.group-library-items-list li:nth-child(odd) {
 }
 
 .group-library-refreshable {
-	background: #fff;
 }
 
 .library-load-more-button {
