@@ -59,7 +59,7 @@
 			},
 
 			placeholderText() {
-				return this.$mq === 'mobile' ? '' : 'Search the Library'
+				return 'Search the Library'
 			}
 		},
 
@@ -145,15 +145,5 @@ input[type="text"].library-search-input {
 	border: 1px solid #cecece;
 	border-radius: 5px;
 	margin-bottom: 0;
-}
-
-@media screen and (max-width:600px) {
-	.group-library-header .library-search {
-		width: 20px;
-	}
-
-	.search-is-expanded .library-search {
-		width: calc(100% - 28px);
-	}
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div id="cac-group-library-inner">
+	<div id="cac-group-library-inner" class="cac-group-library-inner">
 		<div class="add-new-header">
 			<div class="back-to-library">
 				<span class="dashicons dashicons-arrow-left-alt"></span> <router-link to="/">Back to Library</router-link>

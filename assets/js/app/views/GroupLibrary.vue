@@ -1,5 +1,5 @@
 <template>
-	<div class="cac-group-library" id="cac-group-library-inner">
+	<div id="cac-group-library-inner" class="cac-group-library-inner">
 		<div :class="headerClass">
 			<div class="header-filters">
 				<ItemTypeFilterDropdown />
@@ -349,7 +349,7 @@ body.groups.single-item.library #item-header {
 	margin-top: 24px;
 }
 
-.cac-group-library {
+.cac-group-library-inner {
 	font-family: var(--sans-serif);
 }
 
@@ -431,6 +431,20 @@ ul.group-library-items-list li:nth-child(odd) {
 	padding: 16px 0;
 }
 
+@media screen and (max-width: 768px) {
+	.group-library-row {
+		padding: 12px 24px;
+	}
+
+	.group-library-items-list .group-library-row:first-child {
+		border-bottom: none;
+	}
+
+	.group-library-item-title {
+		flex: 0 0 40%; 
+	}
+}
+
 .group-library-item-details {
 	color: var(--dark-grey);
 	flex: 0 0 30%;
@@ -508,7 +522,18 @@ ul.group-library-items-list li:nth-child(odd) {
 	margin-top: 20px;
 }
 
+@media screen and (max-width:1200px) {
+	.group-library-header {
+		flex-direction: column;
+		gap: 24px;
+	}
+}
+
 @media screen and (max-width:600px) {
+	.cac-group-library-inner {
+		width: 97%;
+	}
+
 	.group-library-header {
 		align-items: flex-start;
 	}
