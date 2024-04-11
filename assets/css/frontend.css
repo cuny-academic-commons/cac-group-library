@@ -260,6 +260,9 @@ body.groups.single-item.library #item-header {
 .vs__dropdown-option {
 	font-family: var(--sans-serif);
 }
+.vs__dropdown-menu {
+	width: auto !important;
+}
 .group-library-header {
 	display: flex;
 	gap: 200px;
@@ -318,6 +321,7 @@ ul.group-library-items-list li:nth-child(odd) {
 	display: flex;
 	gap: 12px;
 	flex: 0 0 30%;
+	overflow-wrap: anywhere;
 	padding: 16px 0;
 }
 @media screen and (max-width: 768px) {
@@ -1015,6 +1019,9 @@ body.dg-open {
 }
 .folder-selector-dropdown .vs__dropdown-option:hover .add-new-folder-option {
 	background: #5897fb;
+}
+.folder-selector-dropdown .vs__selected-options {
+	min-width: 300px;
 }
 .add-new-folder-option {
 	display: block;
