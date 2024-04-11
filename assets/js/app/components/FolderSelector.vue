@@ -206,6 +206,10 @@
 	background: #5897fb;
 }
 
+.folder-selector-dropdown .vs__selected-options {
+	min-width: 300px;
+}
+
 .add-new-folder-option {
 	display: block;
 	height: 30px;

@@ -362,6 +362,10 @@ body.groups.single-item.library #item-header {
 	font-family: var(--sans-serif);
 }
 
+.vs__dropdown-menu {
+	width: auto !important;
+}
+
 .group-library-header {
 	display: flex;
 	gap: 200px;
