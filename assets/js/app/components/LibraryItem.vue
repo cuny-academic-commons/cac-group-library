@@ -5,7 +5,8 @@
 				<div class="group-library-item-icon">
 					<img
 						:class="iconClass()"
-						:src="iconSrc()" />
+						:src="iconSrc()" 
+						alt="" />
 				</div>
 
 				<div class="group-library-item-title-details">
