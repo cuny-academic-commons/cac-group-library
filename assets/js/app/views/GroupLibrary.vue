@@ -432,6 +432,7 @@ ul.group-library-items-list li:nth-child(odd) {
 	display: flex;
 	gap: 12px;
 	flex: 0 0 30%;
+	overflow-wrap: anywhere;
 	padding: 16px 0;
 }
 
