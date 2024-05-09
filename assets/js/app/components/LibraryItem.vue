@@ -281,23 +281,17 @@
 
 				switch ( this.itemType() ) {
 					case 'bp_doc' :
-						fileName = 'bp-doc.png'
-					break
-
-					case 'bp_group_document' :
-						fileName = this.getFileTypeBase() + '.png'
-					break
-
 					case 'cacsp_paper' :
-						fileName = 'papers.png'
-					break
-
-					case 'external_link' :
-						fileName = this.getServiceFromUrl() + '.png'
+						fileName = 'general.png'
 					break
 
 					case 'forum_attachment' :
-						fileName = this.getFileTypeBase() + '-attachment.png'
+					case 'bp_group_document' :
+						fileName = this.getFileTypeBase() + '.svg'
+					break
+
+					case 'external_link' :
+						fileName = this.getServiceFromUrl() + '.svg'
 					break
 				}
 
