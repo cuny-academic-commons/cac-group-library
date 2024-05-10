@@ -282,7 +282,7 @@
 				switch ( this.itemType() ) {
 					case 'bp_doc' :
 					case 'cacsp_paper' :
-						fileName = 'general.png'
+						fileName = 'general.svg'
 					break
 
 					case 'forum_attachment' :
