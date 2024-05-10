@@ -1,6 +1,9 @@
 <template>
 	<span>
-		<div class="pagination-text">
+		<div
+			class="pagination-text"
+			v-if="hasAtLeastOneItem()"
+		>
 			Viewing {{startNumber()}} to {{endNumber()}} (of {{totalNumber()}} items)
 		</div>
 
@@ -66,6 +69,10 @@
 				const pagEnd = this.startNumber() + this.perPage - 1
 
 				return ( pagEnd > this.totalNumber() ) ? this.totalNumber() : pagEnd
+			},
+
+			hasAtLeastOneItem() {
+				return this.totalNumber() > 0
 			},
 
 			hasMoreThanOnePage() {
