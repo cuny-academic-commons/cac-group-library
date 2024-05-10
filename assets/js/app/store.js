@@ -116,7 +116,7 @@ export default new Vuex.Store(
 			calculateFolderCounts( state ) {
 				const { foldersOfGroup, libraryItemIds, libraryItems } = state
 
-				let folderCounts = { 
+				let folderCounts = {
 					'_null': 0
 				}
 
@@ -210,7 +210,7 @@ export default new Vuex.Store(
 							var theLibraryItem = state.libraryItems[ itemId ]
 							var theItemTitle = theLibraryItem.hasOwnProperty( 'title' ) ? theLibraryItem.title : ''
 							var theItemDescription = theLibraryItem.hasOwnProperty( 'description' ) ? theLibraryItem.description : ''
-							var theItemAuthorName = theLibraryItem.hasOwnProperty( 'user' ) ? theLibraryItem.user.name : ''
+							var theItemAuthorName = theLibraryItem.hasOwnProperty( 'user' ) ? theLibraryItem.user.nameWithoutPronouns : ''
 
 							var matchTitle = -1 !== theItemTitle.toLowerCase().indexOf( theCurrentSearchTerm )
 							var matchDescription = -1 !== theItemDescription.toLowerCase().indexOf( theCurrentSearchTerm )
@@ -239,8 +239,8 @@ export default new Vuex.Store(
 							}
 
 						case 'added-by' :
-							const addedByA = itemA.user.name
-							const addedByB = itemB.user.name
+							const addedByA = itemA.user.nameWithoutPronouns
+							const addedByB = itemB.user.nameWithoutPronouns
 
 							if ( 'asc' === currentSortOrder ) {
 								return addedByA.localeCompare( addedByB )

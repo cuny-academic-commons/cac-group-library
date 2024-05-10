@@ -355,10 +355,15 @@ class Item {
 	public function get_user() {
 		$user_id = $this->get_user_id();
 
+		remove_filter( 'get_the_author_display_name', 'cac_add_pronouns_to_display_name_wp', 10, 2 );
+		$name_without_pronouns = bp_core_get_user_displayname( $user_id );
+		add_filter( 'get_the_author_display_name', 'cac_add_pronouns_to_display_name_wp', 10, 2 );
+
 		$retval = [
-			'id'   => $user_id,
-			'name' => bp_core_get_user_displayname( $user_id ),
-			'url'  => bp_members_get_user_url( $user_id ),
+			'id'                  => $user_id,
+			'name'                => bp_core_get_user_displayname( $user_id ),
+			'nameWithoutPronouns' => $name_without_pronouns,
+			'url'                 => bp_members_get_user_url( $user_id ),
 		];
 
 		return $retval;
