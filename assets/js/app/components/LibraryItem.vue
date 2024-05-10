@@ -5,7 +5,7 @@
 				<div class="group-library-item-icon">
 					<img
 						:class="iconClass()"
-						:src="iconSrc()" 
+						:src="iconSrc()"
 						alt="" />
 				</div>
 
@@ -131,7 +131,7 @@
 
 		methods: {
 			addedByName() {
-				return this.getItem().user.name
+				return this.getItem().user.nameWithoutPronouns
 			},
 
 			addedByUrl() {
