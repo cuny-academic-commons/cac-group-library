@@ -2,7 +2,7 @@
 	<div id="cac-group-library-inner" class="cac-group-library-inner">
 		<div class="add-edit-header edit-header">
 			<div class="back-to-library">
-				<span class="dashicons dashicons-arrow-left-alt"></span> <router-link to="/">Back to Library</router-link>
+				<span class="dashicons dashicons-arrow-left-alt2"></span> <router-link to="/">Back to Library</router-link>
 			</div>
 
 			<h2>Edit Library Item</h2>
@@ -264,15 +264,4 @@
 </script>
 
 <style>
-	.back-to-library {
-		font-size: 12px;
-		line-height: 20px;
-		margin-bottom: 18px;
-	}
-
-	.back-to-library .dashicons {
-		color: #1c576c;
-		font-size: 14px;
-		line-height: 20px;
-	}
 </style>
