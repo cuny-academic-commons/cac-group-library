@@ -73,7 +73,7 @@ class BuddyPressDocsSync implements SyncInterface {
 		$item->set_item_type( 'bp_doc' );
 		$item->set_source_item_id( $post_id );
 		$item->set_title( $post->post_title );
-		$item->set_url( get_permalink( $post ) );
+		$item->set_url( bp_docs_get_doc_link( $post_id ) );
 		$item->set_user_id( $post->post_author );
 
 		$item->save();
