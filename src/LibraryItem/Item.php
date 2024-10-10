@@ -335,6 +335,11 @@ class Item {
 	 * @return string
 	 */
 	public function get_url() {
+		// Special case for BuddyPress Docs.
+		if ( 'bp_doc' === $this->get_item_type() ) {
+			return bp_docs_get_doc_link( $this->get_source_item_id() );
+		}
+
 		return $this->data['url'];
 	}
 

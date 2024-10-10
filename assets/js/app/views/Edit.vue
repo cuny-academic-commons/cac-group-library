@@ -4,28 +4,47 @@
 			<div class="back-to-library">
 				<span class="dashicons dashicons-arrow-left-alt2"></span> <router-link to="/">Back to Library</router-link>
 			</div>
-
-			<h2>Edit Library Item</h2>
 		</div>
 
-		<div class="add-edit-content edit-content">
-			<div class="add-new-content-form">
-				<h3 class="edit-item-title">{{ getTitle() }}</h3>
+		<div
+			class="cac-group-library-docs-tabs doc-tabs"
+			v-if="'bp_doc' === getItemType()"
+		>
+			<ul>
+				<li>
+					<a :href="getDocViewURL()">View</a>
+				</li>
 
-				<BpGroupDocumentForm
-					:itemId="getItemId()"
-					v-if="'bp_group_document' === getItemType()"
-				/>
+				<li class="current">
+					<router-link :to="getDocEditURL()">Edit</router-link>
+				</li>
 
-				<ExternalLinkForm
-					:itemId="getItemId()"
-					v-if="'external_link' === getItemType()"
-				/>
+				<li>
+					<a :href="getDocHistoryURL()">History</a>
+				</li>
+			</ul>
+		</div>
 
-				<BpDocForm
-					:itemId="getItemId()"
-					v-if="'bp_doc' === getItemType()"
-				/>
+		<div class="cac-group-library-inner-content">
+			<div class="add-edit-content edit-content">
+				<h2>Edit Library Item</h2>
+
+				<div class="add-new-content-form">
+					<BpGroupDocumentForm
+						:itemId="getItemId()"
+						v-if="'bp_group_document' === getItemType()"
+					/>
+
+					<ExternalLinkForm
+						:itemId="getItemId()"
+						v-if="'external_link' === getItemType()"
+					/>
+
+					<BpDocForm
+						:itemId="getItemId()"
+						v-if="'bp_doc' === getItemType()"
+					/>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -242,6 +261,24 @@
 				return item_type
 			},
 
+			getDocEditURL() {
+				const item = this.getItem()
+				return item.hasOwnProperty( 'edit_url' ) ? item.edit_url : ''
+			},
+
+			getDocHistoryURL() {
+				const itemUrl = this.getDocViewURL()
+				if ( ! itemUrl ) {
+					return ''
+				}
+				return itemUrl + 'history/'
+			},
+
+			getDocViewURL() {
+				const item = this.getItem()
+				return item.hasOwnProperty( 'url' ) ? item.url : ''
+			},
+
 			getTitle() {
 				const { title } = this.getItem()
 				return title
@@ -264,4 +301,42 @@
 </script>
 
 <style>
+.doc-tabs li:first-child {
+    margin-left: 0;
+}
+
+.doc-tabs ul {
+	margin-bottom: 0;
+	padding-left: 0;
+}
+
+.doc-tabs li {
+	display: inline-block;
+    margin: 0 5px;
+    list-style-type: none;
+}
+
+.groups .doc-tabs li.current a {
+    background-color: #fff;
+}
+
+.doc-tabs li.current a {
+    background: #f3f3f3;
+    color: #555;
+    font-weight: 700;
+}
+
+.doc-tabs a {
+    font-family: var(--sans-serif);
+    background-color: inherit;
+    padding: 16px 24px;
+}
+
+.doc-tabs li a {
+    background: #f1f1f1;
+    text-decoration: none;
+    display: block;
+    padding: 4px 10px;
+    border-radius: 5px 5px 0 0;
+}
 </style>
