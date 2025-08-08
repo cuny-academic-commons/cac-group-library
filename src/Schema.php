@@ -3,6 +3,8 @@
 namespace CAC\GroupLibrary;
 
 class Schema {
+	private $table_name;
+
 	/**
 	 * Constructor.
 	 *
