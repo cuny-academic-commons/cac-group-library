@@ -432,7 +432,10 @@ class LibraryItem extends WP_REST_Controller {
 
 		// Reproduce logic here because in the plugin there's a hardcoded permission check.
 		$doc = new BP_Group_Documents( $doc_id );
+
+		/** This action is documented in /buddypress-group-documents/index.php */
 		do_action( 'bp_group_documents_data_before_delete', $doc );
+
 		if ( $doc->file && file_exists( $doc->get_path(1) ) ) {
 			@unlink( $doc->get_path(1) );
 		}
@@ -440,6 +443,9 @@ class LibraryItem extends WP_REST_Controller {
 		$deleted = $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->group_documents->table_name} WHERE id = %d", $doc_id ) );
 
 		if ( $deleted ) {
+			/** This action is documented in /buddypress-group-documents/index.php */
+			do_action( 'bp_group_documents_delete_success', $doc );
+
 			$retval['success'] = true;
 			$retval['message'] = 'Your file has been successfully deleted.';
 		}
