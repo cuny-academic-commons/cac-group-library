@@ -301,6 +301,8 @@ class LibraryItem extends WP_REST_Controller {
 			$retval['message'] = 'Your external link was deleted successfully.';
 		}
 
+		self::delete_activity_item( $item );
+
 		return $retval;
 	}
 
@@ -634,6 +636,22 @@ class LibraryItem extends WP_REST_Controller {
 		add_filter( 'ass_this_activity_is_important', '__return_true' );
 
 		bp_activity_add( $activity_args );
+	}
+
+	/**
+	 * Deletes an activity item connected to a library item.
+	 *
+	 * @param \CAC\GroupLibrary\LibraryItem\Item $library_item
+	 */
+	public function delete_activity_item( $library_item ) {
+		bp_activity_delete(
+			[
+				'component'         => 'groups',
+				'type'              => 'group_library_item_created',
+				'item_id'           => $library_item->get_group_id(),
+				'secondary_item_id' => $library_item->get_id(),
+			]
+		);
 	}
 
 	protected function silence_update() {
