@@ -594,16 +594,16 @@ class LibraryItem extends WP_REST_Controller {
 	public function create_activity_item( $library_item ) {
 		switch ( $library_item->get_item_type() ) {
 			case 'external_link':
-				$action_format    = '%1$s added a new link to the <a href="%2$s">library</a> of the group %3$s.';
+				$action_format    = '%1$s added a new link to the <a href="%2$s">library</a> of the group %3$s';
 				$activity_content = sprintf( '<a href="%1$s">%2$s</a>', esc_url( $library_item->get_url() ), esc_html( $library_item->get_title() ) );
 				break;
 
 			case 'bp_group_document':
-				$action_format = '%1$s uploaded a new file to the <a href="%2$s">library</a> of the group %3$s.';
+				$action_format = '%1$s uploaded a new file to the <a href="%2$s">library</a> of the group %3$s';
 				break;
 
 			case 'bp_doc':
-				$action_format = '%1$s created a new doc in the <a href="%2$s">library</a> of the group %3$s.';
+				$action_format = '%1$s created a new doc in the <a href="%2$s">library</a> of the group %3$s';
 				break;
 
 			default:
