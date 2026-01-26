@@ -35,7 +35,7 @@
 				</label>
 
 				<FileUploader
-					:formName="formName"
+					formName="bpGroupDocument"
 					fieldName="file"
 					:itemId="itemId"
 					:required="!isEditMode"

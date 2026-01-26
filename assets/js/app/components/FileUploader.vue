@@ -53,6 +53,7 @@
 			type="file"
 			:accept="acceptFiletypes"
 			:required="required"
+			:capture="shouldUseCapture"
 			@change="handleFileSelect"
 			style="display: none;"
 		/>
@@ -73,6 +74,14 @@
 			acceptFiletypes() {
 				const { uploadFiletypes } = window.CACGroupLibrary
 				return uploadFiletypes.map( type => '.' + type ).join( ',' )
+			},
+
+			shouldUseCapture() {
+				// Enable camera on mobile for image uploads
+				const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
+				const { uploadFiletypes } = window.CACGroupLibrary
+				const hasImageTypes = uploadFiletypes.some(type => imageExtensions.includes(type.toLowerCase()))
+				return hasImageTypes ? 'environment' : undefined
 			},
 
 			existingFileUrl() {
@@ -187,14 +196,20 @@
 				this.isDragging = false
 				const files = e.dataTransfer.files
 				if (files.length > 0) {
-					this.processFile(files[0])
+					const file = files[0]
+					if (this.validateFile(file)) {
+						this.processFile(file)
+					}
 				}
 			},
 
 			handleFileSelect(e) {
 				const files = e.target.files
 				if (files.length > 0) {
-					this.processFile(files[0])
+					const file = files[0]
+					if (this.validateFile(file)) {
+						this.processFile(file)
+					}
 				}
 			},
 
@@ -203,14 +218,16 @@
 			},
 
 			processFile(file) {
+				// Revoke old preview URL to prevent memory leaks
+				if (this.previewUrl) {
+					URL.revokeObjectURL(this.previewUrl)
+					this.previewUrl = null
+				}
+
 				this.selectedFile = file
 
 				// Create preview URL for images
 				if (this.isImage) {
-					// Revoke old preview URL to prevent memory leaks
-					if (this.previewUrl) {
-						URL.revokeObjectURL(this.previewUrl)
-					}
 					this.previewUrl = URL.createObjectURL(file)
 				}
 
@@ -225,6 +242,29 @@
 						value: file
 					})
 				}
+			},
+
+			validateFile(file) {
+				const { uploadFiletypes, maxUploadSize } = window.CACGroupLibrary
+
+				// Check file extension
+				const fileName = file.name.toLowerCase()
+				const extension = fileName.substring(fileName.lastIndexOf('.') + 1)
+				const isValidType = uploadFiletypes.some(type => type.toLowerCase() === extension)
+
+				if (!isValidType) {
+					alert(`Invalid file type. Allowed types: ${uploadFiletypes.join(', ')}`)
+					return false
+				}
+
+				// Check file size
+				if (maxUploadSize && file.size > maxUploadSize) {
+					const { maxUploadSizeFormatted } = window.CACGroupLibrary
+					alert(`File size exceeds the maximum allowed size of ${maxUploadSizeFormatted}`)
+					return false
+				}
+
+				return true
 			}
 		},
 
