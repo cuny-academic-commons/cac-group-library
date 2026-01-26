@@ -278,6 +278,8 @@ class LibraryItem extends WP_REST_Controller {
 
 		$saved = $library_item->save();
 
+		self::create_activity_item( $library_item );
+
 		if ( $saved ) {
 			$retval['success'] = true;
 			$retval['message'] = $item_id ? 'Your external link was updated successfully.' : 'Your external link was added successfully';
@@ -582,6 +584,56 @@ class LibraryItem extends WP_REST_Controller {
 			'success' => true,
 			'results' => $results,
 		] );
+	}
+
+	/**
+	 * Creates an activity item for a new library item.
+	 *
+	 * @param \CAC\GroupLibrary\LibraryItem\Item $library_item
+	 */
+	public function create_activity_item( $library_item ) {
+		switch ( $library_item->get_item_type() ) {
+			case 'external_link':
+				$action_format    = '%1$s added a new link to the <a href="%2$s">library</a> of the group %3$s.';
+				$activity_content = sprintf( '<a href="%1$s">%2$s</a>', esc_url( $library_item->get_url() ), esc_html( $library_item->get_title() ) );
+				break;
+
+			case 'bp_group_document':
+				$action_format = '%1$s uploaded a new file to the <a href="%2$s">library</a> of the group %3$s.';
+				break;
+
+			case 'bp_doc':
+				$action_format = '%1$s created a new doc in the <a href="%2$s">library</a> of the group %3$s.';
+				break;
+
+			default:
+				return;
+		}
+
+		$group = groups_get_group( [ 'group_id' => $library_item->get_group_id() ] );
+
+		$action = sprintf(
+			$action_format,
+			bp_core_get_userlink( $library_item->get_user_id() ),
+			esc_url( bp_get_group_url( $library_item->get_group_id() ) . cac_group_library()->get_prop( 'nav_slug' ) ),
+			sprintf( '<a href="%s">%s</a>', esc_url( bp_get_group_url( $library_item->get_group_id() ) ), bp_get_group_name( $library_item->get_group_id() ) )
+		);
+
+		$activity_args = [
+			'user_id'           => $library_item->get_user_id(),
+			'action'            => $action,
+			'content'           => isset( $activity_content ) ? $activity_content : '',
+			'component'         => 'groups',
+			'type'              => 'group_library_item_created',
+			'item_id'           => $library_item->get_group_id(),
+			'secondary_item_id' => $library_item->get_id(),
+			'recorded_time'     => $library_item->get_date_modified(),
+			'hide_sitewide'     => 'public' !== $group->status ? 1 : 0,
+		];
+
+		add_filter( 'ass_this_activity_is_important', '__return_true' );
+
+		bp_activity_add( $activity_args );
 	}
 
 	protected function silence_update() {

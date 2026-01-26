@@ -44,6 +44,13 @@
 				/>
 			</div>
 
+			<div class="add-edit-silent-toggle">
+				<SilentToggle
+					:defaultValue="isSilentChecked()"
+					label="Silent add"
+				/>
+			</div>
+
 			<div class="add-new-submit">
 				<SubmitButton
 					:buttonText="submitButtonText"
@@ -64,6 +71,7 @@
 	import FormField from '../FormField.vue'
 	import FormValidation from '../../mixins/FormValidation'
 	import FolderSelector from '../FolderSelector.vue'
+	import SilentToggle from '../SilentToggle.vue'
 	import SubmitButton from '../SubmitButton.vue'
 
 	export default {
@@ -72,6 +80,7 @@
 			FormField,
 			FormValidation,
 			FolderSelector,
+			SilentToggle,
 			SubmitButton,
 		},
 
@@ -124,6 +133,12 @@
 				}
 			},
 		},
+
+		methods: {
+			isSilentChecked() {
+				return this.isEditMode
+			},
+		}
 	}
 </script>
 
