@@ -23,7 +23,7 @@
 			<div class="file-preview-container">
 				<!-- Image preview -->
 				<div v-if="isImage" class="file-preview-image-wrapper">
-					<img :src="previewUrl" alt="File preview" class="file-preview-image" />
+					<img :src="imagePreviewSrc" alt="File preview" class="file-preview-image" />
 				</div>
 
 				<!-- Non-image file icon -->
@@ -92,6 +92,20 @@
 
 				const item = this.$store.state.libraryItems[this.itemId]
 				return item && item.url ? item.url : null
+			},
+
+			imagePreviewSrc() {
+				// Use preview URL for newly selected files, or existing URL for edit mode
+				if (this.previewUrl) {
+					return this.previewUrl
+				}
+				
+				// In edit mode with an existing image file, use the existing file URL
+				if (this.isEditMode && this.existingFileUrl && this.isImage) {
+					return this.existingFileUrl
+				}
+				
+				return null
 			},
 
 			fileName() {
