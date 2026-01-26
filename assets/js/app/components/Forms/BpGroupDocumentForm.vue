@@ -24,25 +24,22 @@
 				:maxlength="350"
 			/>
 
-			<FormField
-				buttonText="Select file"
-				fieldLabel="Select your file"
-				fieldId="add-new-file-file"
-				:required="true"
-				formName="bpGroupDocument"
-				fieldName="file"
-				fieldType="file"
-				:tooltip="fileTooltip"
-				v-if="! isEditMode"
-			/>
+			<div class="add-new-field">
+				<label for="file-uploader">
+					Select your file
+					<button
+						class="tooltip-button"
+						v-if="fileTooltip"
+						v-tooltip.right-start="fileTooltip"
+					/>
+				</label>
 
-			<div
-				class="add-new-field add-new-field-static-file"
-				v-if="isEditMode"
-			>
-				<div class="static-file-label">Attached file</div>
-
-				<a :href="existingFileUrl">{{ existingFileUrl }}</a>
+				<FileUploader
+					:formName="formName"
+					fieldName="file"
+					:itemId="itemId"
+					:required="!isEditMode"
+				/>
 			</div>
 
 			<div class="add-new-field add-new-field-dropdown">
@@ -80,6 +77,7 @@
 
 <script>
 	import DeleteButton from '../DeleteButton.vue'
+	import FileUploader from '../FileUploader.vue'
 	import FormField from '../FormField.vue'
 	import FolderSelector from '../FolderSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
@@ -89,6 +87,7 @@
 	export default {
 		components: {
 			DeleteButton,
+			FileUploader,
 			FormField,
 			FormValidation,
 			FolderSelector,
@@ -97,11 +96,6 @@
 		},
 
 		computed: {
-			existingFileUrl() {
-				const item = this.$store.state.libraryItems[ this.itemId ]
-				return item.url
-			},
-
 			fileTooltip() {
 				const { maxUploadSizeFormatted, uploadFiletypes } = window.CACGroupLibrary
 				const types = uploadFiletypes.join( ' ')
