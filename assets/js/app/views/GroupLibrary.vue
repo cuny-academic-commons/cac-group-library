@@ -4,6 +4,7 @@
 			<div class="header-filters">
 				<ItemTypeFilterDropdown />
 				<FolderFilterDropdown />
+				<IncludeForumAttachmentsCheckbox />
 			</div>
 
 			<div class="header-right">
@@ -120,6 +121,7 @@
 <script>
 	import DescriptionToggle from '../components/DescriptionToggle.vue'
 	import FolderFilterDropdown from '../components/FilterDropdowns/FolderFilterDropdown.vue'
+	import IncludeForumAttachmentsCheckbox from '../components/IncludeForumAttachmentsCheckbox.vue'
 	import ItemTypeFilterDropdown from '../components/FilterDropdowns/ItemTypeFilterDropdown.vue'
 	import LibraryItem from '../components/LibraryItem.vue'
 	import Pagination from '../components/Pagination.vue'
@@ -131,6 +133,7 @@
 		components: {
 			DescriptionToggle,
 			FolderFilterDropdown,
+			IncludeForumAttachmentsCheckbox,
 			ItemTypeFilterDropdown,
 			LibraryItem,
 			Pagination,
@@ -293,6 +296,19 @@
 					vm.$store.commit( 'setInitialLoadComplete' )
 					vm.$store.commit( 'calculateFolderCounts' )
 				} )
+		},
+
+		watch: {
+			'$route.query.includeForumAttachments'( newValue, oldValue ) {
+				if ( newValue !== oldValue ) {
+					const vm = this
+					this.$store.dispatch( 'refetchItems' )
+						.then( function() {
+							vm.$store.commit( 'refreshFilteredItemIds' )
+							vm.$store.commit( 'calculateFolderCounts' )
+						} )
+				}
+			}
 		},
 
 		methods: {

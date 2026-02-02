@@ -574,11 +574,16 @@ class LibraryItem extends WP_REST_Controller {
 
 		$group_id = $params['groupId'];
 
-		$results = Query::get_for_endpoint(
-			[
-				'group_id' => $group_id,
-			]
-		);
+		$query_args = [
+			'group_id' => $group_id,
+		];
+
+		// Support for excluding forum attachments.
+		if ( ! empty( $params['itemTypeNotIn'] ) ) {
+			$query_args['item_type__not_in'] = $params['itemTypeNotIn'];
+		}
+
+		$results = Query::get_for_endpoint( $query_args );
 
 		return rest_ensure_response( [
 			'success' => true,

@@ -62,6 +62,7 @@ function initialState() {
 			itemType: 'any',
 			page: 1,
 			searchTerm: '',
+			includeForumAttachments: 'false',
 		}
 	}
 
@@ -543,7 +544,17 @@ export default new Vuex.Store(
 			refetchItems( {commit} ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
-				const endpoint = endpointBase + 'library-items?groupId=' + groupId
+				// Check if forum attachments should be excluded
+				const includeForumAttachments = commit.state.route.query.hasOwnProperty( 'includeForumAttachments' ) 
+					? decodeURIComponent( commit.state.route.query.includeForumAttachments ) 
+					: 'false'
+
+				let endpoint = endpointBase + 'library-items?groupId=' + groupId
+
+				// If not including forum attachments, add the parameter to exclude them
+				if ( includeForumAttachments === 'false' ) {
+					endpoint += '&itemTypeNotIn[]=forum_attachment'
+				}
 
 				return fetch(
 					endpoint,
