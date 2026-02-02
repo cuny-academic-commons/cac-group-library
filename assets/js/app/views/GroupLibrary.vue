@@ -302,10 +302,16 @@
 			'$route.query.includeForumAttachments'( newValue, oldValue ) {
 				if ( newValue !== oldValue ) {
 					const vm = this
+					// Trigger loading state for fade transition
+					vm.$store.commit( 'setIsLoading', { value: true } )
 					this.$store.dispatch( 'refetchItems' )
 						.then( function() {
 							vm.$store.commit( 'refreshFilteredItemIds' )
 							vm.$store.commit( 'calculateFolderCounts' )
+							// End loading state after a brief delay for smooth transition
+							setTimeout( function() {
+								vm.$store.commit( 'setIsLoading', { value: false } )
+							}, 250 )
 						} )
 				}
 			}
