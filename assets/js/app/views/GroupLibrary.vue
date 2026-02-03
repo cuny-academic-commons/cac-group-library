@@ -390,7 +390,7 @@ body.groups.single-item.library #item-header {
 
 .group-library-header {
 	display: flex;
-	gap: 200px;
+	gap: 50px;
 	padding-bottom: 20px;
 }
 
