@@ -597,7 +597,16 @@ export default new Vuex.Store(
 					body = new FormData()
 
 					for ( var fieldName in commit.state.forms[ itemType ] ) {
-						body.append( fieldName, commit.state.forms[ itemType ][ fieldName ] )
+						const fieldValue = commit.state.forms[ itemType ][ fieldName ]
+						
+						// Handle folder field as an array - append each item separately
+						if ( fieldName === 'folder' && Array.isArray( fieldValue ) ) {
+							fieldValue.forEach( function( folderItem ) {
+								body.append( 'folder[]', folderItem )
+							} )
+						} else {
+							body.append( fieldName, fieldValue )
+						}
 					}
 
 					body.append( 'itemType', itemType )
