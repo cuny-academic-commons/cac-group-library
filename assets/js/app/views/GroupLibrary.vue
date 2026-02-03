@@ -4,6 +4,7 @@
 			<div class="header-filters">
 				<ItemTypeFilterDropdown />
 				<FolderFilterDropdown />
+				<IncludeForumAttachmentsCheckbox />
 			</div>
 
 			<div class="header-right">
@@ -120,6 +121,7 @@
 <script>
 	import DescriptionToggle from '../components/DescriptionToggle.vue'
 	import FolderFilterDropdown from '../components/FilterDropdowns/FolderFilterDropdown.vue'
+	import IncludeForumAttachmentsCheckbox from '../components/IncludeForumAttachmentsCheckbox.vue'
 	import ItemTypeFilterDropdown from '../components/FilterDropdowns/ItemTypeFilterDropdown.vue'
 	import LibraryItem from '../components/LibraryItem.vue'
 	import Pagination from '../components/Pagination.vue'
@@ -131,6 +133,7 @@
 		components: {
 			DescriptionToggle,
 			FolderFilterDropdown,
+			IncludeForumAttachmentsCheckbox,
 			ItemTypeFilterDropdown,
 			LibraryItem,
 			Pagination,
@@ -295,6 +298,15 @@
 				} )
 		},
 
+		watch: {
+			'$route.query.includeForumAttachments'( newValue, oldValue ) {
+				if ( newValue !== oldValue ) {
+					// Use the refresh mutation which handles the loading state and fade transition
+					this.$store.commit( 'refresh' )
+				}
+			}
+		},
+
 		methods: {
 			canEdit( itemId ) {
 				const { can_edit } = this.$store.state.libraryItems[ itemId ]
@@ -368,7 +380,7 @@ body.groups.single-item.library #item-header {
 
 .group-library-header {
 	display: flex;
-	gap: 200px;
+	gap: 50px;
 	padding-bottom: 20px;
 }
 

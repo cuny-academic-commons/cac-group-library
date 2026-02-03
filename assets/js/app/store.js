@@ -62,6 +62,7 @@ function initialState() {
 			itemType: 'any',
 			page: 1,
 			searchTerm: '',
+			includeForumAttachments: 'false',
 		}
 	}
 
@@ -198,6 +199,16 @@ export default new Vuex.Store(
 								}
 							}
 							return false
+						}
+					)
+				}
+
+				// Forum attachments filter.
+				const includeForumAttachments = state.route.query.hasOwnProperty( 'includeForumAttachments' ) ? decodeURIComponent( state.route.query.includeForumAttachments ) : 'false'
+				if ( 'false' === includeForumAttachments ) {
+					newFilteredItemIds = newFilteredItemIds.filter(
+						function( itemId ) {
+							return 'forum_attachment' !== state.libraryItems[ itemId ].item_type
 						}
 					)
 				}
@@ -540,7 +551,7 @@ export default new Vuex.Store(
 				} )
 			},
 
-			refetchItems( {commit} ) {
+			refetchItems( {commit, state} ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
 				const endpoint = endpointBase + 'library-items?groupId=' + groupId
