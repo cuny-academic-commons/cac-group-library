@@ -203,6 +203,16 @@ export default new Vuex.Store(
 					)
 				}
 
+				// Forum attachments filter.
+				const includeForumAttachments = state.route.query.hasOwnProperty( 'includeForumAttachments' ) ? decodeURIComponent( state.route.query.includeForumAttachments ) : 'false'
+				if ( 'false' === includeForumAttachments ) {
+					newFilteredItemIds = newFilteredItemIds.filter(
+						function( itemId ) {
+							return 'forum_attachment' !== state.libraryItems[ itemId ].item_type
+						}
+					)
+				}
+
 				// Search.
 				const theCurrentSearchTerm = state.route.query.hasOwnProperty( 'searchTerm' ) ? decodeURIComponent( state.route.query.searchTerm ).toLowerCase() : ''
 				if ( '' !== theCurrentSearchTerm ) {
@@ -544,17 +554,7 @@ export default new Vuex.Store(
 			refetchItems( {commit, state} ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
-				// Check if forum attachments should be excluded
-				const includeForumAttachments = state.route.query.hasOwnProperty( 'includeForumAttachments' ) 
-					? decodeURIComponent( state.route.query.includeForumAttachments ) 
-					: 'false'
-
-				let endpoint = endpointBase + 'library-items?groupId=' + groupId
-
-				// If not including forum attachments, add the parameter to exclude them
-				if ( includeForumAttachments === 'false' ) {
-					endpoint += '&itemTypeNotIn[]=forum_attachment'
-				}
+				const endpoint = endpointBase + 'library-items?groupId=' + groupId
 
 				return fetch(
 					endpoint,

@@ -13,11 +13,10 @@ class Query {
 
 		$args = array_merge(
 			[
-				'group_id'          => null,
-				'item_type'         => null,
-				'item_type__not_in' => null,
-				'source_item_id'    => null,
-				'orderby'           => 'name',
+				'group_id'       => null,
+				'item_type'      => null,
+				'source_item_id' => null,
+				'orderby'        => 'name',
 			],
 			$_args
 		);
@@ -31,19 +30,7 @@ class Query {
 		);
 
 		if ( null !== $args['item_type'] ) {
-			if ( is_array( $args['item_type'] ) ) {
-				$placeholders = implode( ', ', array_fill( 0, count( $args['item_type'] ), '%s' ) );
-				$sql['where']['item_type'] = $wpdb->prepare( "item_type IN ({$placeholders})", $args['item_type'] );
-			} else {
-				$sql['where']['item_type'] = $wpdb->prepare( 'item_type = %s', $args['item_type'] );
-			}
-		}
-
-		if ( null !== $args['item_type__not_in'] ) {
-			if ( is_array( $args['item_type__not_in'] ) && ! empty( $args['item_type__not_in'] ) ) {
-				$placeholders = implode( ', ', array_fill( 0, count( $args['item_type__not_in'] ), '%s' ) );
-				$sql['where']['item_type__not_in'] = $wpdb->prepare( "item_type NOT IN ({$placeholders})", $args['item_type__not_in'] );
-			}
+			$sql['where']['item_type'] = $wpdb->prepare( 'item_type = %s', $args['item_type'] );
 		}
 
 		if ( null !== $args['source_item_id'] ) {
