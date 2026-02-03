@@ -530,6 +530,7 @@ class LibraryItem extends WP_REST_Controller {
 		$retval['success'] = true;
 		$retval['message'] = $doc_id ? 'Your doc was edited successfully' : 'Your doc was created successfully';
 
+		$folders = [];
 		if ( ! empty( $params['folder'] ) ) {
 			// Handle folder as an array (new behavior) or convert single value to array
 			$folders = is_array( $params['folder'] ) ? $params['folder'] : [ $params['folder'] ];
@@ -542,11 +543,9 @@ class LibraryItem extends WP_REST_Controller {
 			if ( ! empty( $params['newFolderTitle'] ) ) {
 				$folders[] = $params['newFolderTitle'];
 			}
-		} else {
-			$folders = [];
 		}
 
-		if ( $folders ) {
+		if ( ! empty( $folders ) ) {
 			$library_item = BuddyPressDocsSync::get_library_item_from_source_item_id( $created['doc_id'], $params['groupId'] );
 			$library_item->set_folders( $folders );
 			$library_item->save();

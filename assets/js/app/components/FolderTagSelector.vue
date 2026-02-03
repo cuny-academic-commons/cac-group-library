@@ -11,13 +11,13 @@
 			:closeOnSelect="false"
 			@option:created="onOptionCreated">
 
-			<template #option="{code, value}">
+			<template #option="{code}">
 				<div class="folder-tag-selector-option-content">
 					{{ code }}
 				</div>
 			</template>
 
-			<template #selected-option="{code, value}">
+			<template #selected-option="{code}">
 				<span>{{ code }}</span>
 			</template>
 		</v-select>
@@ -44,11 +44,11 @@
 				let folders = []
 
 				const { foldersOfGroup } = this
-				for ( var i in foldersOfGroup ) {
+				for ( const folderName of foldersOfGroup ) {
 					folders.push(
 						{
-							code: foldersOfGroup[ i ],
-							label: foldersOfGroup[ i ],
+							code: folderName,
+							label: folderName,
 						}
 					)
 				}
