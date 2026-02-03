@@ -9,6 +9,8 @@
 			:multiple="true"
 			:taggable="true"
 			:closeOnSelect="false"
+			label="code"
+			:create-option="createOption"
 			@option:created="onOptionCreated">
 
 			<template #option="{code}">
@@ -75,8 +77,11 @@
 				},
 
 				set( value ) {
-					// value is an array of objects with code and label
-					const folderNames = value ? value.map( item => item.code ) : []
+					// value is an array of objects with code and label, or strings
+					const folderNames = value ? value.map( item => {
+						// Handle both object format {code, label} and string format
+						return typeof item === 'string' ? item : (item.code || item.label || item)
+					}) : []
 
 					this.$store.commit(
 						'setFormFieldValue',
@@ -95,10 +100,20 @@
 		],
 
 		methods: {
+			createOption( newTag ) {
+				// Format new tags to match our expected structure
+				return {
+					code: newTag,
+					label: newTag
+				}
+			},
+
 			onOptionCreated( newOption ) {
 				// When user creates a new tag by typing and pressing enter
 				// Add it to the store's list of folders for the group
-				this.$store.commit( 'addFolderToGroup', newOption.label )
+				// newOption is a string when created by taggable mode
+				const folderName = typeof newOption === 'string' ? newOption : newOption.label
+				this.$store.commit( 'addFolderToGroup', folderName )
 			}
 		},
 
