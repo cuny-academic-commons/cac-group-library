@@ -23,9 +23,9 @@
 			<div class="add-new-field add-new-field-dropdown">
 				<label
 					:for="folderInputName"
-				>Folder (optional)</label>
+				>Tag (optional)</label>
 
-				<FolderSelector
+				<FolderTagSelector
 					:form="formName"
 					:inputId="folderInputName"
 				/>
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+	import DeleteButton from '../DeleteButton.vue'
 	import Editor from '@tinymce/tinymce-vue'
 
 	import vSelect from 'vue-select'
@@ -76,7 +77,7 @@
 
 	import DeleteButton from '../DeleteButton.vue'
 	import FormField from '../FormField.vue'
-	import FolderSelector from '../FolderSelector.vue'
+	import FolderTagSelector from '../FolderTagSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
 	import SilentToggle from '../SilentToggle.vue'
 	import SubmitButton from '../SubmitButton.vue'
@@ -86,7 +87,7 @@
 			DeleteButton,
 			Editor,
 			FormField,
-			FolderSelector,
+			FolderTagSelector,
 			FormValidation,
 			vSelect,
 			SilentToggle,

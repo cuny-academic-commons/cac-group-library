@@ -12,7 +12,7 @@ function defaultFormsState() {
 			itemId: 0,
 			title: '',
 			content: '',
-			folder: '',
+			folder: [],
 			newFolderTitle: '',
 			parent: 0,
 		},
@@ -20,7 +20,7 @@ function defaultFormsState() {
 			itemId: 0,
 			title: '',
 			description: '',
-			folder: '',
+			folder: [],
 			newFolderTitle: '',
 			file: '',
 		},
@@ -29,7 +29,7 @@ function defaultFormsState() {
 			title: '',
 			url: '',
 			description: '',
-			folder: '',
+			folder: [],
 			newFolderTitle: '',
 		},
 		folderNames: {
@@ -289,6 +289,12 @@ export default new Vuex.Store(
 				}
 
 				state.paginatedItemIds = newPaginatedItemIds
+			},
+
+			addFolderToGroup( state, folderName ) {
+				if ( ! state.foldersOfGroup.includes( folderName ) ) {
+					state.foldersOfGroup = [ ...state.foldersOfGroup, folderName ]
+				}
 			},
 
 			replaceFoldersOfGroup( state, payload ) {

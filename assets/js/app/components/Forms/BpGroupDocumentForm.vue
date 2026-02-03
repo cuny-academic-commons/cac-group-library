@@ -45,9 +45,9 @@
 			<div class="add-new-field add-new-field-dropdown">
 				<label
 					for="add-new-file-folder"
-				>Folder (optional)</label>
+				>Tag (optional)</label>
 
-				<FolderSelector
+				<FolderTagSelector
 					form="bpGroupDocument"
 					inputId="add-new-file-folder"
 				/>
@@ -79,7 +79,7 @@
 	import DeleteButton from '../DeleteButton.vue'
 	import FileUploader from '../FileUploader.vue'
 	import FormField from '../FormField.vue'
-	import FolderSelector from '../FolderSelector.vue'
+	import FolderTagSelector from '../FolderTagSelector.vue'
 	import FormValidation from '../../mixins/FormValidation'
 	import SilentToggle from '../SilentToggle.vue'
 	import SubmitButton from '../SubmitButton.vue'
@@ -90,7 +90,7 @@
 			FileUploader,
 			FormField,
 			FormValidation,
-			FolderSelector,
+			FolderTagSelector,
 			SilentToggle,
 			SubmitButton,
 		},

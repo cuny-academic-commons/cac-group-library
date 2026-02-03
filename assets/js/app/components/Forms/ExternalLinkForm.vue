@@ -36,9 +36,9 @@
 			<div class="add-new-field add-new-field-dropdown">
 				<label
 					for="add-new-external-link-folder"
-				>Folder (optional)</label>
+				>Tag (optional)</label>
 
-				<FolderSelector
+				<FolderTagSelector
 					form="externalLink"
 					inputId="add-new-external-link-folder"
 				/>
@@ -70,7 +70,7 @@
 	import DeleteButton from '../DeleteButton.vue'
 	import FormField from '../FormField.vue'
 	import FormValidation from '../../mixins/FormValidation'
-	import FolderSelector from '../FolderSelector.vue'
+	import FolderTagSelector from '../FolderTagSelector.vue'
 	import SilentToggle from '../SilentToggle.vue'
 	import SubmitButton from '../SubmitButton.vue'
 
@@ -79,7 +79,7 @@
 			DeleteButton,
 			FormField,
 			FormValidation,
-			FolderSelector,
+			FolderTagSelector,
 			SilentToggle,
 			SubmitButton,
 		},
