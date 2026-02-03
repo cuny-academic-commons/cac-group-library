@@ -18,7 +18,7 @@
 
 		computed: {
 			itemIds() {
-				return this.$store.state.libraryItemIds
+				return this.$store.state.filteredItemIds
 			},
 
 			itemTypes() {
