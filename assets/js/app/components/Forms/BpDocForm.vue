@@ -69,7 +69,6 @@
 </template>
 
 <script>
-	import DeleteButton from '../DeleteButton.vue'
 	import Editor from '@tinymce/tinymce-vue'
 
 	import vSelect from 'vue-select'
