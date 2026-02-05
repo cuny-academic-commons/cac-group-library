@@ -220,8 +220,8 @@
 /* Adjust deselect button spacing */
 .folder-tag-selector .vs__deselect {
 	fill: #999;
-	margin-left: 2px; /* Reduced from 4px to 2px */
-	padding: 0 2px;
+	margin-left: 6px;
+	padding: 0 2px !important;
 }
 
 .folder-tag-selector .vs__deselect:hover {
