@@ -12,7 +12,7 @@ function defaultFormsState() {
 			itemId: 0,
 			title: '',
 			content: '',
-			folder: '',
+			folder: [],
 			newFolderTitle: '',
 			parent: 0,
 		},
@@ -20,7 +20,7 @@ function defaultFormsState() {
 			itemId: 0,
 			title: '',
 			description: '',
-			folder: '',
+			folder: [],
 			newFolderTitle: '',
 			file: '',
 		},
@@ -29,7 +29,7 @@ function defaultFormsState() {
 			title: '',
 			url: '',
 			description: '',
-			folder: '',
+			folder: [],
 			newFolderTitle: '',
 		},
 		folderNames: {
@@ -289,6 +289,12 @@ export default new Vuex.Store(
 				}
 
 				state.paginatedItemIds = newPaginatedItemIds
+			},
+
+			addFolderToGroup( state, folderName ) {
+				if ( ! state.foldersOfGroup.includes( folderName ) ) {
+					state.foldersOfGroup = [ ...state.foldersOfGroup, folderName ]
+				}
 			},
 
 			replaceFoldersOfGroup( state, payload ) {
@@ -591,7 +597,16 @@ export default new Vuex.Store(
 					body = new FormData()
 
 					for ( var fieldName in commit.state.forms[ itemType ] ) {
-						body.append( fieldName, commit.state.forms[ itemType ][ fieldName ] )
+						const fieldValue = commit.state.forms[ itemType ][ fieldName ]
+						
+						// Handle folder field as an array - append each item separately
+						if ( fieldName === 'folder' && Array.isArray( fieldValue ) ) {
+							fieldValue.forEach( function( folderItem ) {
+								body.append( 'folder[]', folderItem )
+							} )
+						} else {
+							body.append( fieldName, fieldValue )
+						}
 					}
 
 					body.append( 'itemType', itemType )

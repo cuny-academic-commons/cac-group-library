@@ -36,14 +36,17 @@
 					return response.json()
 				}).then( function( json ) {
 					if ( json.success ) {
-						app.$store.dispatch( 'refetchItems' )
-						.then( function() {
+						// Wait for both refetch operations to complete
+						Promise.all([
+							app.$store.dispatch( 'refetchItems' ),
+							app.$store.dispatch( 'fetchFoldersOfGroup' )
+						]).then( function() {
+							// Recalculate counts now that both items and folders are updated
+							app.$store.commit( 'calculateFolderCounts' )
 							app.postAjaxFormActions( {
 								message: json.message
 							} )
 						})
-
-						app.$store.dispatch( 'fetchFoldersOfGroup' )
 					}
 				}).catch( function( ex ) {
 					console.log( 'failed', ex )

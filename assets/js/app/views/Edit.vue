@@ -123,7 +123,7 @@
 								{
 									form: 'bpGroupDocument',
 									field: 'folder',
-									value: item.folders[0]
+									value: item.folders
 								}
 							)
 						}
@@ -174,7 +174,7 @@
 								{
 									form: 'bpDoc',
 									field: 'folder',
-									value: { code: item.folders[0], label: item.folders[0] }
+									value: item.folders
 								}
 							)
 						}
@@ -226,7 +226,7 @@
 								{
 									form: 'externalLink',
 									field: 'folder',
-									value: { code: item.folders[0], label: item.folders[0] }
+									value: item.folders
 								}
 							)
 						}
