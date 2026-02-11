@@ -34,11 +34,13 @@
 				</div>
 
 				<div
-					:class="{ 'group-library-items': true, 'has-edit-column': showEditColumn }"
+					class="group-library-items"
 					id="group-library-items"
 					v-if="showItemList"
 				>
 					<div class="group-library-column-headers group-library-row">
+						<div class="group-library-column-header group-library-item-toggle">&nbsp;</div>
+						
 						<SortableColumnHeader
 							label="File name"
 							name="title"
@@ -60,11 +62,6 @@
 							name="added-by"
 							defaultSortOrder="asc"
 						/>
-
-						<div
-							class="group-library-column group-library-edit"
-							v-if="showEditColumn"
-						>&nbsp;</div>
 					</div>
 
 					<ul class="group-library-items-list">

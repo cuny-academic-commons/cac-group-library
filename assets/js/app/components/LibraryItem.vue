@@ -1,6 +1,20 @@
 <template>
 	<span>
 		<div class="library-item group-library-row">
+			<div class="group-library-item-toggle">
+				<button
+					class="drawer-toggle-button"
+					@click="toggleDrawer()"
+					:aria-expanded="isDrawerOpen"
+					:aria-label="isDrawerOpen ? 'Collapse details' : 'Expand details'"
+				>
+					<img
+						:src="drawerToggleIcon"
+						:alt="isDrawerOpen ? 'Collapse' : 'Expand'"
+						class="drawer-toggle-icon"
+					/>
+				</button>
+			</div>
 			<div class="group-library-item-title">
 				<div class="group-library-item-icon">
 					<img
@@ -53,38 +67,13 @@
 				<a :href="addedByUrl()">{{ addedByName() }}</a>
 			</div>
 
-			<div
-				class="group-library-edit"
-				v-if="canEdit()"
-			>
-				<button
-					class="group-library-item-menu-toggle"
-					v-on:click="toggleMenu()"
-					aria-haspopup="true"
-					:aria-controls="'group-library-item-menu-' + itemId"
-					:aria-expanded="isMenuOpen"
-				><img
-					:src="moreIconUrl"
-					alt="Click for advanced options"
-				/></button>
-
-				<div
-					v-show="isMenuOpen"
-					class="group-library-item-menu"
-					:id="'group-library-item-menu-' + itemId"
-				>
-					<a
-						:href="editUrl()"
-						v-if="editLinkIsStatic()"
-					>Edit</a>
-
-					<router-link
-						:to="'/edit/' + itemId"
-						v-else
-					>Edit</router-link>
-				</div>
-			</div>
 		</div>
+
+		<ItemDetailsDrawer
+			v-if="isDrawerOpen"
+			:itemId="itemId"
+			@edit-item="onEditItem"
+		/>
 
 		<div class="group-library-item-details-mobile group-library-row">
 			<p v-if="isForumAttachment()">
@@ -110,7 +99,13 @@
 </template>
 
 <script>
+	import ItemDetailsDrawer from './ItemDetailsDrawer.vue'
+
 	export default {
+		components: {
+			ItemDetailsDrawer
+		},
+
 		computed: {
 			folderIconUrl() {
 				const { imgUrlBase } = window.CACGroupLibrary;
@@ -120,12 +115,18 @@
 			moreIconUrl() {
 				const { imgUrlBase } = window.CACGroupLibrary;
 				return imgUrlBase + 'more.png'
+			},
+
+			drawerToggleIcon() {
+				const { imgUrlBase } = window.CACGroupLibrary;
+				return this.isDrawerOpen ? imgUrlBase + 'collapse.svg' : imgUrlBase + 'expand.svg'
 			}
 		},
 
 		data() {
 			return {
-				isMenuOpen: false
+				isMenuOpen: false,
+				isDrawerOpen: false
 			}
 		},
 
@@ -212,6 +213,19 @@
 				} )
 
 				this.$store.commit( 'refresh' )
+			},
+
+			onEditItem(itemId) {
+				// For bp_doc items with edit_url, navigate to external URL
+				const item = this.getItem()
+				if ( this.editLinkIsStatic() && item.item_type === 'bp_doc' ) {
+					window.location.href = this.editUrl()
+				} else if ( this.editLinkIsStatic() ) {
+					window.location.href = this.editUrl()
+				} else {
+					// For other items, use router
+					this.$router.push( '/edit/' + itemId )
+				}
 			},
 
 			showFolders() {
@@ -337,6 +351,10 @@
 				this.isMenuOpen = ! this.isMenuOpen
 			},
 
+			toggleDrawer() {
+				this.isDrawerOpen = ! this.isDrawerOpen
+			},
+
 			topicTitle() {
 				const item = this.getItem()
 				return item.hasOwnProperty( 'topic_title' ) ? item.topic_title : ''
@@ -375,6 +393,33 @@
 
 .library-item {
 	padding: 12px;
+}
+
+.group-library-item-toggle {
+	flex: 0 0 24px;
+	display: flex;
+	align-items: center;
+}
+
+.drawer-toggle-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+}
+
+.drawer-toggle-button:hover {
+	opacity: 0.7;
+}
+
+.drawer-toggle-icon {
+	width: 16px;
+	height: 16px;
 }
 
 .group-library-item-icon {
