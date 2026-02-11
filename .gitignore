@@ -1,4 +1,10 @@
 /node_modules
 /vendor
 
+# Built assets
+/assets/js/frontend.js
+/assets/js/runtime.js
+/assets/js/style.js
+/assets/css/frontend.css
+
 phpunit.xml
