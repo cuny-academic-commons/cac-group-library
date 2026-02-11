@@ -4,15 +4,14 @@
 			<div class="group-library-item-toggle">
 				<button
 					class="drawer-toggle-button"
+					:class="{ 'drawer-toggle-open': isDrawerOpen }"
 					@click="toggleDrawer()"
 					:aria-expanded="isDrawerOpen"
 					:aria-label="isDrawerOpen ? 'Collapse details' : 'Expand details'"
 				>
-					<img
-						:src="drawerToggleIcon"
-						:alt="isDrawerOpen ? 'Collapse' : 'Expand'"
-						class="drawer-toggle-icon"
-					/>
+					<svg class="drawer-toggle-icon" viewBox="0 0 8 12" xmlns="http://www.w3.org/2000/svg">
+						<path d="M1.5 1L6.5 6L1.5 11" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
 				</button>
 			</div>
 			<div class="group-library-item-title">
@@ -114,11 +113,6 @@
 			moreIconUrl() {
 				const { imgUrlBase } = window.CACGroupLibrary;
 				return imgUrlBase + 'more.png'
-			},
-
-			drawerToggleIcon() {
-				const { imgUrlBase } = window.CACGroupLibrary;
-				return this.isDrawerOpen ? imgUrlBase + 'collapse.svg' : imgUrlBase + 'expand.svg'
 			}
 		},
 
@@ -397,15 +391,21 @@
 	justify-content: center;
 	width: 24px;
 	height: 24px;
+	transition: transform 0.2s ease;
 }
 
 .drawer-toggle-button:hover {
 	opacity: 0.7;
 }
 
+.drawer-toggle-button.drawer-toggle-open {
+	transform: rotate(90deg);
+}
+
 .drawer-toggle-icon {
-	width: 16px;
-	height: 16px;
+	width: 12px;
+	height: 12px;
+	color: #555;
 }
 
 .group-library-item-icon {

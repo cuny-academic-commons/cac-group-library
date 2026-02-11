@@ -1,22 +1,42 @@
 <template>
 	<div class="item-details-drawer">
 		<div class="drawer-content" :class="drawerLayoutClass()">
-			<!-- Edit mode -->
-			<div v-if="isEditMode" class="drawer-edit-mode">
-				<BpGroupDocumentForm
-					v-if="itemType() === 'bp_group_document'"
-					:itemId="itemId"
-					@cancel-edit="cancelEdit"
-				/>
-				<ExternalLinkForm
-					v-else-if="itemType() === 'external_link'"
-					:itemId="itemId"
-					@cancel-edit="cancelEdit"
-				/>
-				<div v-else-if="itemType() === 'bp_doc'" class="drawer-bp-doc-edit">
-					<p>To edit this document, please visit the <a :href="editUrl()">document editing page</a>.</p>
-					<button class="drawer-cancel-button" @click="cancelEdit">Cancel</button>
+			<!-- Edit mode for bp_group_document -->
+			<div v-if="isEditMode && itemType() === 'bp_group_document'" class="drawer-two-column">
+				<div class="drawer-preview-column">
+					<img 
+						v-if="hasImagePreview()"
+						:src="imagePreviewUrl()"
+						:alt="title()"
+						class="drawer-preview-image"
+					/>
+					<img 
+						v-else
+						:src="noPreviewImageUrl"
+						alt="No Preview Available"
+						class="drawer-no-preview-image"
+					/>
 				</div>
+				<div class="drawer-details-column">
+					<BpGroupDocumentForm
+						:itemId="itemId"
+						@cancel-edit="cancelEdit"
+					/>
+				</div>
+			</div>
+
+			<!-- Edit mode for external_link -->
+			<div v-else-if="isEditMode && itemType() === 'external_link'" class="drawer-single-column">
+				<ExternalLinkForm
+					:itemId="itemId"
+					@cancel-edit="cancelEdit"
+				/>
+			</div>
+
+			<!-- Edit mode for bp_doc -->
+			<div v-else-if="isEditMode && itemType() === 'bp_doc'" class="drawer-single-column drawer-bp-doc-edit">
+				<p>To edit this document, please visit the <a :href="editUrl()">document editing page</a>.</p>
+				<button class="drawer-cancel-button" @click="cancelEdit">Cancel</button>
 			</div>
 
 			<!-- View mode - Two-column layout for forum_attachment and bp_group_document -->
@@ -592,14 +612,52 @@
 	background: #f5f5f5;
 }
 
-.drawer-edit-mode {
-	background: #fff;
-	padding: 24px;
-	border-radius: 4px;
+/* Form styling when in drawer context */
+.drawer-details-column .add-new-form,
+.drawer-single-column .add-new-form {
+	background: transparent;
+	padding: 0;
+}
+
+.drawer-details-column .add-new-field,
+.drawer-single-column .add-new-field {
+	display: grid;
+	grid-template-columns: 140px 1fr;
+	gap: 16px;
+	align-items: start;
+	margin-bottom: 16px;
+}
+
+.drawer-details-column .add-new-field label,
+.drawer-single-column .add-new-field label {
+	font-weight: 600;
+	color: #555;
+	text-align: left;
+	padding-top: 8px;
+}
+
+.drawer-details-column .add-new-field input,
+.drawer-details-column .add-new-field textarea,
+.drawer-single-column .add-new-field input,
+.drawer-single-column .add-new-field textarea {
+	width: 100%;
+}
+
+.drawer-details-column .add-new-submit,
+.drawer-single-column .add-new-submit {
+	display: flex;
+	gap: 12px;
+	margin-top: 24px;
+	grid-column: 1 / -1;
+}
+
+.drawer-details-column .add-edit-silent-toggle,
+.drawer-single-column .add-edit-silent-toggle {
+	grid-column: 1 / -1;
 }
 
 .drawer-bp-doc-edit {
-	padding: 24px;
+	padding: 0;
 }
 
 .drawer-bp-doc-edit p {
@@ -619,6 +677,17 @@
 	.drawer-field {
 		grid-template-columns: 1fr;
 		gap: 8px;
+	}
+
+	.drawer-details-column .add-new-field,
+	.drawer-single-column .add-new-field {
+		grid-template-columns: 1fr;
+		gap: 8px;
+	}
+
+	.drawer-details-column .add-new-field label,
+	.drawer-single-column .add-new-field label {
+		padding-top: 0;
 	}
 }
 </style>
