@@ -175,7 +175,6 @@
 
 		data() {
 			return {
-				deleteInProgress: false,
 				isEditMode: false
 			}
 		},
