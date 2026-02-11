@@ -110,7 +110,7 @@
 
 			showCancelButton() {
 				// Show cancel button when used in drawer (itemId passed as prop)
-				return !! this.$props.itemId
+				return this.$props.itemId !== null && this.$props.itemId !== undefined
 			},
 
 			title: {
@@ -160,7 +160,7 @@
 			itemId: {
 				type: Number,
 				required: false,
-				default: 0
+				default: null
 			}
 		}
 	}

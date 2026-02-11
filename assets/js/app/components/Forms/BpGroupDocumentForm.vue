@@ -128,7 +128,7 @@
 
 			itemId() {
 				// Check if itemId is passed as a prop (drawer context)
-				if ( this.$props.itemId ) {
+				if ( this.$props.itemId !== null && this.$props.itemId !== undefined ) {
 					return this.$props.itemId
 				}
 				// Otherwise get from route (standalone edit view)
@@ -138,7 +138,7 @@
 
 			showCancelButton() {
 				// Show cancel button when used in drawer (itemId passed as prop)
-				return !! this.$props.itemId
+				return this.$props.itemId !== null && this.$props.itemId !== undefined
 			},
 
 			title: {
@@ -194,7 +194,7 @@
 			itemId: {
 				type: Number,
 				required: false,
-				default: 0
+				default: null
 			}
 		}
 	}

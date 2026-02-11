@@ -230,7 +230,7 @@
 
 			hasImagePreview() {
 				const fileType = this.fileType()
-				const imageTypes = ['jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg', 'tif']
+				const imageTypes = ['jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg', 'tif', 'tiff', 'webp']
 				return imageTypes.includes( fileType.toLowerCase() )
 			},
 
@@ -316,15 +316,6 @@
 				// For bp_group_document and external_link, switch to edit mode
 				this.fillForm()
 				this.isEditMode = true
-			},
-
-			showEditButton() {
-				const item = this.getItem()
-				// Don't show edit button for forum_attachment
-				if ( item.item_type === 'forum_attachment' ) {
-					return false
-				}
-				return this.canEdit()
 			},
 
 			canEditInline() {
