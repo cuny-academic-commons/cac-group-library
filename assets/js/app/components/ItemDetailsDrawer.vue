@@ -1,8 +1,26 @@
 <template>
 	<div class="item-details-drawer">
 		<div class="drawer-content" :class="drawerLayoutClass()">
-			<!-- Two-column layout for forum_attachment and bp_group_document -->
-			<div v-if="hasTwoColumnLayout()" class="drawer-two-column">
+			<!-- Edit mode -->
+			<div v-if="isEditMode" class="drawer-edit-mode">
+				<BpGroupDocumentForm
+					v-if="itemType() === 'bp_group_document'"
+					:itemId="itemId"
+					@cancel-edit="cancelEdit"
+				/>
+				<ExternalLinkForm
+					v-else-if="itemType() === 'external_link'"
+					:itemId="itemId"
+					@cancel-edit="cancelEdit"
+				/>
+				<div v-else-if="itemType() === 'bp_doc'" class="drawer-bp-doc-edit">
+					<p>To edit this document, please visit the <a :href="editUrl()">document editing page</a>.</p>
+					<button class="drawer-cancel-button" @click="cancelEdit">Cancel</button>
+				</div>
+			</div>
+
+			<!-- View mode - Two-column layout for forum_attachment and bp_group_document -->
+			<div v-else-if="hasTwoColumnLayout()" class="drawer-two-column">
 				<div class="drawer-preview-column">
 					<img 
 						v-if="hasImagePreview()"
@@ -118,9 +136,16 @@
 
 <script>
 	import AjaxTools from '../mixins/AjaxTools.js'
+	import BpGroupDocumentForm from './Forms/BpGroupDocumentForm.vue'
+	import ExternalLinkForm from './Forms/ExternalLinkForm.vue'
 	import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 	export default {
+		components: {
+			BpGroupDocumentForm,
+			ExternalLinkForm
+		},
+
 		computed: {
 			noPreviewImageUrl() {
 				const { imgUrlBase } = window.CACGroupLibrary;
@@ -130,7 +155,8 @@
 
 		data() {
 			return {
-				deleteInProgress: false
+				deleteInProgress: false,
+				isEditMode: false
 			}
 		},
 
@@ -168,6 +194,11 @@
 
 			drawerLayoutClass() {
 				return this.hasTwoColumnLayout() ? 'drawer-layout-two-column' : 'drawer-layout-single-column'
+			},
+
+			editUrl() {
+				const item = this.getItem()
+				return item.hasOwnProperty( 'edit_url' ) ? item.edit_url : ''
 			},
 
 			fileName() {
@@ -215,6 +246,10 @@
 				return this.getItem().item_type
 			},
 
+			cancelEdit() {
+				this.isEditMode = false
+			},
+
 			onDeleteClick() {
 				const app = this
 
@@ -254,8 +289,24 @@
 			},
 
 			onEditClick() {
-				// Emit event to parent to handle edit mode
-				this.$emit('edit-item', this.itemId)
+				// For bp_doc and forum_attachment, we need to handle differently
+				const item = this.getItem()
+				
+				// bp_doc items with edit_url should navigate to external URL
+				if ( item.item_type === 'bp_doc' && this.editUrl() ) {
+					window.location.href = this.editUrl()
+					return
+				}
+				
+				// forum_attachment items cannot be edited inline
+				if ( item.item_type === 'forum_attachment' ) {
+					// For now, do nothing or show a message
+					return
+				}
+				
+				// For bp_group_document and external_link, switch to edit mode
+				this.fillForm()
+				this.isEditMode = true
 			},
 
 			onFolderClick(folder) {
@@ -274,6 +325,103 @@
 				} )
 
 				this.$store.commit( 'refresh' )
+			},
+
+			fillForm() {
+				const item = this.getItem()
+
+				switch ( this.itemType() ) {
+					case 'bp_group_document' :
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'bpGroupDocument',
+								field: 'itemId',
+								value: item.id
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'bpGroupDocument',
+								field: 'title',
+								value: item.title
+							}
+						)
+
+						const description = item.hasOwnProperty( 'description' ) ? item.description : ''
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'bpGroupDocument',
+								field: 'description',
+								value: description
+							}
+						)
+
+						if ( item.hasOwnProperty( 'folders' ) && item.folders.length > 0 ) {
+							this.$store.commit(
+								'setFormFieldValue',
+								{
+									form: 'bpGroupDocument',
+									field: 'folder',
+									value: item.folders
+								}
+							)
+						}
+					break;
+
+					case 'external_link' :
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'itemId',
+								value: item.id
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'title',
+								value: item.title
+							}
+						)
+
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'url',
+								value: item.url
+							}
+						)
+
+						const linkDescription = item.hasOwnProperty( 'description' ) ? item.description : ''
+						this.$store.commit(
+							'setFormFieldValue',
+							{
+								form: 'externalLink',
+								field: 'description',
+								value: linkDescription
+							}
+						)
+
+						if ( item.hasOwnProperty( 'folders' ) && item.folders.length > 0 ) {
+							this.$store.commit(
+								'setFormFieldValue',
+								{
+									form: 'externalLink',
+									field: 'folder',
+									value: item.folders
+								}
+							)
+						}
+					break;
+				}
 			},
 
 			title() {
@@ -414,6 +562,33 @@
 
 .drawer-delete-button:hover {
 	background: #f5f5f5;
+}
+
+.drawer-cancel-button {
+	background: #fff;
+	border: 1px solid #000;
+	color: #000;
+	font-size: 16px;
+	padding: 9px 24px;
+	cursor: pointer;
+}
+
+.drawer-cancel-button:hover {
+	background: #f5f5f5;
+}
+
+.drawer-edit-mode {
+	background: #fff;
+	padding: 24px;
+	border-radius: 4px;
+}
+
+.drawer-bp-doc-edit {
+	padding: 24px;
+}
+
+.drawer-bp-doc-edit p {
+	margin-bottom: 16px;
 }
 
 @media screen and (max-width: 768px) {

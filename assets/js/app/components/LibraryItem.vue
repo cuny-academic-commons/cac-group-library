@@ -72,7 +72,6 @@
 		<ItemDetailsDrawer
 			v-if="isDrawerOpen"
 			:itemId="itemId"
-			@edit-item="onEditItem"
 		/>
 
 		<div class="group-library-item-details-mobile group-library-row">
@@ -213,19 +212,6 @@
 				} )
 
 				this.$store.commit( 'refresh' )
-			},
-
-			onEditItem(itemId) {
-				// For bp_doc items with edit_url, navigate to external URL
-				const item = this.getItem()
-				if ( this.editLinkIsStatic() && item.item_type === 'bp_doc' ) {
-					window.location.href = this.editUrl()
-				} else if ( this.editLinkIsStatic() ) {
-					window.location.href = this.editUrl()
-				} else {
-					// For other items, use router
-					this.$router.push( '/edit/' + itemId )
-				}
 			},
 
 			showFolders() {

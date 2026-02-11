@@ -70,6 +70,13 @@
 					:itemId="itemId"
 					v-if="isEditMode"
 				/>
+				
+				<button
+					v-if="showCancelButton"
+					type="button"
+					class="drawer-cancel-button"
+					@click="onCancelClick"
+				>Cancel</button>
 			</div>
 		</form>
 	</div>
@@ -120,8 +127,18 @@
 			},
 
 			itemId() {
+				// Check if itemId is passed as a prop (drawer context)
+				if ( this.$props.itemId ) {
+					return this.$props.itemId
+				}
+				// Otherwise get from route (standalone edit view)
 				const { params } = this.$route
 				return params.hasOwnProperty( 'itemId' ) ? Number( params.itemId ) : 0
+			},
+
+			showCancelButton() {
+				// Show cancel button when used in drawer (itemId passed as prop)
+				return !! this.$props.itemId
 			},
 
 			title: {
@@ -166,11 +183,19 @@
 		methods: {
 			isSilentChecked() {
 				return this.isEditMode
+			},
+
+			onCancelClick() {
+				this.$emit('cancel-edit')
 			}
 		},
 
-		params: {
-			itemId: Number
+		props: {
+			itemId: {
+				type: Number,
+				required: false,
+				default: 0
+			}
 		}
 	}
 </script>
