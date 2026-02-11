@@ -587,7 +587,20 @@ export default new Vuex.Store(
 			submitItem( commit ) {
 				const { endpointBase, groupId, nonce } = window.CACGroupLibrary
 
-				const itemType = commit.state.forms.itemTypeSelector
+				let itemType = commit.state.forms.itemTypeSelector
+				
+				// If itemTypeSelector is not set (e.g., when editing from drawer),
+				// determine itemType from which form has a non-zero itemId
+				if ( ! itemType || itemType === '' ) {
+					if ( commit.state.forms.bpGroupDocument.itemId > 0 ) {
+						itemType = 'bpGroupDocument'
+					} else if ( commit.state.forms.externalLink.itemId > 0 ) {
+						itemType = 'externalLink'
+					} else if ( commit.state.forms.bpDoc.itemId > 0 ) {
+						itemType = 'bpDoc'
+					}
+				}
+				
 				const { silentUpdate } = commit.state
 				const { itemId } = commit.state.forms[ itemType ]
 				const isEdit = itemId > 0
