@@ -186,6 +186,12 @@
 				if (oldVal === true && newVal === false && this.isEditMode) {
 					this.isEditMode = false
 				}
+			},
+			'$store.state.successMessage': function(newVal) {
+				// Also close edit mode when success message appears
+				if (newVal && newVal.length > 0 && this.isEditMode) {
+					this.isEditMode = false
+				}
 			}
 		},
 
