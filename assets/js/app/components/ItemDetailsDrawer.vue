@@ -89,7 +89,7 @@
 								v-for="(folder, index) in itemFolders()"
 								:key="folder"
 								v-on:click="onFolderClick(folder)"
-							>{{ folder }}<span v-if="index < itemFolders().length - 1">, </span></a>
+							>{{ folder }}</a>
 						</div>
 					</div>
 					
@@ -141,7 +141,7 @@
 							v-for="(folder, index) in itemFolders()"
 							:key="folder"
 							v-on:click="onFolderClick(folder)"
-						>{{ folder }}<span v-if="index < itemFolders().length - 1">, </span></a>
+						>{{ folder }}</a>
 					</div>
 				</div>
 				

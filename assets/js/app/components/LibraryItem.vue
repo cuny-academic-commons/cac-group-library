@@ -455,6 +455,25 @@ a.item-folder-link:hover {
 	text-decoration: none;
 }
 
+.drawer-field {
+	a.item-folder-link {
+		background: white;
+		border: 1px solid #d8d8d8;
+		border-radius: 4px;
+		color: var(--black);
+		cursor: pointer;
+		display: inline-block;
+		font-size: 14px;
+		margin-right: 4px;
+		padding: 4px 6px;
+		text-decoration: none;
+	}
+
+	a.item-folder-link:hover {
+		background: var(--light-grey);
+	}
+}
+
 button.group-library-item-menu-toggle {
 	background: none;
 	border: 1px solid transparent;
