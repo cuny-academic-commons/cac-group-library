@@ -81,7 +81,7 @@
 					</div>
 					
 					<div class="drawer-actions" v-if="canEdit()">
-						<button class="drawer-edit-button" @click="onEditClick">Edit</button>
+						<button class="drawer-edit-button" v-if="canEditInline()" @click="onEditClick">Edit</button>
 						<button class="drawer-delete-button" @click="onDeleteClick">Delete</button>
 					</div>
 				</div>
@@ -102,7 +102,7 @@
 				</div>
 				
 				<div class="drawer-field">
-					<label class="drawer-field-label">Date uploaded</label>
+					<label class="drawer-field-label">Date Uploaded</label>
 					<div class="drawer-field-value">{{ date() }}</div>
 				</div>
 				
@@ -126,7 +126,7 @@
 				</div>
 				
 				<div class="drawer-actions" v-if="canEdit()">
-					<button class="drawer-edit-button" @click="onEditClick">Edit</button>
+					<button class="drawer-edit-button" v-if="canEditInline()" @click="onEditClick">Edit</button>
 					<button class="drawer-delete-button" @click="onDeleteClick">Delete</button>
 				</div>
 			</div>
@@ -298,15 +298,30 @@
 					return
 				}
 				
-				// forum_attachment items cannot be edited inline
+				// forum_attachment items cannot be edited
 				if ( item.item_type === 'forum_attachment' ) {
-					// For now, do nothing or show a message
+					// For now, do nothing
 					return
 				}
 				
 				// For bp_group_document and external_link, switch to edit mode
 				this.fillForm()
 				this.isEditMode = true
+			},
+
+			showEditButton() {
+				const item = this.getItem()
+				// Don't show edit button for forum_attachment
+				if ( item.item_type === 'forum_attachment' ) {
+					return false
+				}
+				return this.canEdit()
+			},
+
+			canEditInline() {
+				const item = this.getItem()
+				// Forum attachments cannot be edited inline
+				return item.item_type !== 'forum_attachment'
 			},
 
 			onFolderClick(folder) {
