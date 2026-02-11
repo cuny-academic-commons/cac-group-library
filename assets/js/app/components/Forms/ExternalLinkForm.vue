@@ -58,7 +58,7 @@
 				/>
 
 				<DeleteButton
-					:itemId="itemId"
+					:itemId="getItemId()"
 					v-if="isEditMode"
 				/>
 				
@@ -97,20 +97,11 @@
 			},
 
 			isEditMode() {
-				return this.itemId > 0
-			},
-
-			itemId() {
-				// Check if itemId is passed as a prop (drawer context)
-				if ( this.$props.itemId !== null && this.$props.itemId !== undefined ) {
-					return this.$props.itemId
-				}
-				// Otherwise get from store
-				return this.$store.state.forms.externalLink.itemId
+				return this.getItemId() > 0
 			},
 
 			submitButtonText() {
-				return this.itemId > 0 ? 'Update link' : 'Add link'
+				return this.getItemId() > 0 ? 'Update link' : 'Add link'
 			},
 
 			showCancelButton() {
@@ -158,6 +149,15 @@
 
 			onCancelClick() {
 				this.$emit('cancel-edit')
+			},
+
+			getItemId() {
+				// Check if itemId is passed as a prop (drawer context)
+				if ( this.$props.itemId !== null && this.$props.itemId !== undefined ) {
+					return this.$props.itemId
+				}
+				// Otherwise get from store
+				return this.$store.state.forms.externalLink.itemId
 			}
 		},
 

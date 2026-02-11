@@ -37,7 +37,7 @@
 				<FileUploader
 					formName="bpGroupDocument"
 					fieldName="file"
-					:itemId="itemId"
+					:itemId="getItemId()"
 					:required="!isEditMode"
 				/>
 			</div>
@@ -67,7 +67,7 @@
 				/>
 
 				<DeleteButton
-					:itemId="itemId"
+					:itemId="getItemId()"
 					v-if="isEditMode"
 				/>
 				
@@ -111,7 +111,7 @@
 			},
 
 			isEditMode() {
-				return this.itemId > 0
+				return this.getItemId() > 0
 			},
 
 			isFormValidated() {
@@ -124,16 +124,6 @@
 
 			submitButtonText() {
 				return this.isEditMode ? 'Save Changes' : 'Upload'
-			},
-
-			itemId() {
-				// Check if itemId is passed as a prop (drawer context)
-				if ( this.$props.itemId !== null && this.$props.itemId !== undefined ) {
-					return this.$props.itemId
-				}
-				// Otherwise get from route (standalone edit view)
-				const { params } = this.$route
-				return params.hasOwnProperty( 'itemId' ) ? Number( params.itemId ) : 0
 			},
 
 			showCancelButton() {
@@ -187,6 +177,16 @@
 
 			onCancelClick() {
 				this.$emit('cancel-edit')
+			},
+
+			getItemId() {
+				// Check if itemId is passed as a prop (drawer context)
+				if ( this.$props.itemId !== null && this.$props.itemId !== undefined ) {
+					return this.$props.itemId
+				}
+				// Otherwise get from route (standalone edit view)
+				const { params } = this.$route
+				return params.hasOwnProperty( 'itemId' ) ? Number( params.itemId ) : 0
 			}
 		},
 

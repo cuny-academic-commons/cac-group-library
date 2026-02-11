@@ -70,7 +70,7 @@
 
 		<ItemDetailsDrawer
 			v-if="isDrawerOpen"
-			:itemId="itemId"
+			:itemId="Number(itemId)"
 		/>
 
 		<div class="group-library-item-details-mobile group-library-row">
