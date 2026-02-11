@@ -160,6 +160,15 @@
 			}
 		},
 
+		watch: {
+			'$store.state.submitInProgress': function(newVal, oldVal) {
+				// When submit finishes (goes from true to false), close edit mode
+				if (oldVal === true && newVal === false && this.isEditMode) {
+					this.isEditMode = false
+				}
+			}
+		},
+
 		methods: {
 			addedByName() {
 				return this.getItem().user.nameWithoutPronouns
