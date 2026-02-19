@@ -628,13 +628,6 @@
 	padding-top: 8px;
 }
 
-.drawer-details-column .add-new-field input,
-.drawer-details-column .add-new-field textarea,
-.drawer-single-column .add-new-field input,
-.drawer-single-column .add-new-field textarea {
-	width: 100%;
-}
-
 .drawer-details-column .add-new-submit,
 .drawer-single-column .add-new-submit {
 	display: flex;

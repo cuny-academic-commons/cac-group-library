@@ -38,8 +38,8 @@
 				/>
 			</template>
 		</v-select>
-		<div 
-			v-if="showHelperText" 
+		<div
+			v-if="showHelperText"
 			class="folder-tag-selector-helper"
 			role="status"
 			aria-live="polite">
@@ -179,7 +179,7 @@
 }
 
 .folder-tag-selector .v-select {
-	width: auto;
+	width: 100%;
 }
 
 /* Fix dropdown position when input wraps to multiple lines */
