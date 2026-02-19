@@ -51,6 +51,10 @@
 							Details
 						</div>
 
+						<div class="group-library-column-header group-library-item-tagged">
+							Tagged
+						</div>
+
 						<SortableColumnHeader
 							label="Date uploaded"
 							name="date"
@@ -467,19 +471,43 @@ ul.group-library-items-list li:nth-child(odd) {
 	.group-library-item-title {
 		flex: 0 0 40%;
 	}
+
+	.group-library-item-details,
+	.group-library-item-tagged {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+	.group-library-item-title {
+		flex: 0 0 25%;
+	}
+
+	.group-library-item-details {
+		flex: 0 0 18%;
+	}
+
+	.group-library-item-tagged {
+		flex: 0 0 15%;
+	}
+
+	.group-library-item-date {
+		flex: 0 0 12%;
+	}
+
+	.group-library-item-added-by {
+		flex: 0 0 12%;
+	}
 }
 
 .group-library-item-details {
 	color: var(--dark-grey);
-	flex: 0 0 30%;
+	flex: 0 0 20%;
+}
 
-	p:first-child {
-		margin-top: 0;
-	}
-
-	p:last-child {
-		margin-bottom: 0;
-	}
+.group-library-item-tagged {
+	color: var(--dark-grey);
+	flex: 0 0 15%;
 }
 
 .group-library-item-added-by {

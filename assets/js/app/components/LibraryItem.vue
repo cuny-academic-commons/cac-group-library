@@ -45,17 +45,14 @@
 				<p v-else>
 					{{ description() }}
 				</p>
+			</div>
 
-				<p
-					class="item-folders"
-					v-if="showFolders()"
-				>
-					Tagged in: <a
-						class="item-folder-link"
-						v-for="folder in itemFolders()"
-						v-on:click="onFolderClick(folder)"
-					>{{folder}}</a>
-				</p>
+			<div class="group-library-item-tagged">
+				<a
+					class="item-folder-link"
+					v-for="folder in itemFolders()"
+					v-on:click="onFolderClick(folder)"
+				>{{folder}}</a>
 			</div>
 
 			<div class="group-library-item-date">
@@ -84,9 +81,9 @@
 
 			<p
 				class="item-folders"
-				v-if="showFolders()"
+				v-if="itemFolders().length > 0"
 			>
-				Tagged in: <a
+				Tagged: <a
 					class="item-folder-link"
 					v-for="folder in itemFolders()"
 					v-on:click="onFolderClick(folder)"
@@ -363,6 +360,10 @@
 
 @media (max-width: 768px) {
 	.group-library-item-details {
+		display: none;
+	}
+
+	.group-library-item-tagged {
 		display: none;
 	}
 
