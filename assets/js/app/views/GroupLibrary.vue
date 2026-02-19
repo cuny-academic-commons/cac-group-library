@@ -508,6 +508,15 @@ ul.group-library-items-list li:nth-child(odd) {
 .group-library-item-tagged {
 	color: var(--dark-grey);
 	flex: 0 0 15%;
+
+	a {
+		color: var(--dark-grey);
+		text-decoration: underline !important;
+
+		&:hover {
+			text-decoration: none !important;
+		}
+	}
 }
 
 .group-library-item-added-by {
