@@ -4,13 +4,13 @@
 			<!-- Edit mode for bp_group_document -->
 			<div v-if="isEditMode && itemType() === 'bp_group_document'" class="drawer-two-column">
 				<div class="drawer-preview-column">
-					<img 
+					<img
 						v-if="hasImagePreview()"
 						:src="imagePreviewUrl()"
 						:alt="title()"
 						class="drawer-preview-image"
 					/>
-					<img 
+					<img
 						v-else
 						:src="noPreviewImageUrl"
 						alt="No Preview Available"
@@ -42,13 +42,13 @@
 			<!-- View mode - Two-column layout for forum_attachment and bp_group_document -->
 			<div v-else-if="hasTwoColumnLayout()" class="drawer-two-column">
 				<div class="drawer-preview-column">
-					<img 
+					<img
 						v-if="hasImagePreview()"
 						:src="imagePreviewUrl()"
 						:alt="title()"
 						class="drawer-preview-image"
 					/>
-					<img 
+					<img
 						v-else
 						:src="noPreviewImageUrl"
 						alt="No Preview Available"
@@ -63,24 +63,24 @@
 							<div class="drawer-file-size">{{ fileSize() }}</div>
 						</div>
 					</div>
-					
+
 					<div class="drawer-field" v-if="description().length > 0">
 						<label class="drawer-field-label">Details</label>
 						<div class="drawer-field-value">{{ description() }}</div>
 					</div>
-					
+
 					<div class="drawer-field">
 						<label class="drawer-field-label">Date Uploaded</label>
 						<div class="drawer-field-value">{{ date() }}</div>
 					</div>
-					
+
 					<div class="drawer-field">
 						<label class="drawer-field-label">Added By</label>
 						<div class="drawer-field-value">
 							<a :href="addedByUrl()">{{ addedByName() }}</a>
 						</div>
 					</div>
-					
+
 					<div class="drawer-field" v-if="itemFolders().length > 0">
 						<label class="drawer-field-label">Tagged</label>
 						<div class="drawer-field-value">
@@ -92,21 +92,21 @@
 							>{{ folder }}</a>
 						</div>
 					</div>
-					
+
 					<div class="drawer-field" v-if="isForumAttachment()">
 						<label class="drawer-field-label">Posted In</label>
 						<div class="drawer-field-value">
 							<a :href="topicUrl()">{{ topicTitle() }}</a>
 						</div>
 					</div>
-					
+
 					<div class="drawer-actions" v-if="canEdit()">
 						<button class="drawer-edit-button" v-if="canEditInline()" @click="onEditClick">Edit</button>
 						<button class="drawer-delete-button" @click="onDeleteClick">Delete</button>
 					</div>
 				</div>
 			</div>
-			
+
 			<!-- Single-column layout for external_link and bp_doc -->
 			<div v-else class="drawer-single-column">
 				<div class="drawer-field">
@@ -115,24 +115,24 @@
 						<a :href="url()">{{ title() }}</a>
 					</div>
 				</div>
-				
+
 				<div class="drawer-field" v-if="description().length > 0">
 					<label class="drawer-field-label">Details</label>
 					<div class="drawer-field-value">{{ description() }}</div>
 				</div>
-				
+
 				<div class="drawer-field">
 					<label class="drawer-field-label">Date Uploaded</label>
 					<div class="drawer-field-value">{{ date() }}</div>
 				</div>
-				
+
 				<div class="drawer-field">
 					<label class="drawer-field-label">Added By</label>
 					<div class="drawer-field-value">
 						<a :href="addedByUrl()">{{ addedByName() }}</a>
 					</div>
 				</div>
-				
+
 				<div class="drawer-field" v-if="itemFolders().length > 0">
 					<label class="drawer-field-label">Tagged</label>
 					<div class="drawer-field-value">
@@ -144,7 +144,7 @@
 						>{{ folder }}</a>
 					</div>
 				</div>
-				
+
 				<div class="drawer-actions" v-if="canEdit()">
 					<button class="drawer-edit-button" v-if="canEditInline()" @click="onEditClick">Edit</button>
 					<button class="drawer-delete-button" @click="onDeleteClick">Delete</button>
@@ -325,19 +325,19 @@
 			onEditClick() {
 				// For bp_doc and forum_attachment, we need to handle differently
 				const item = this.getItem()
-				
+
 				// bp_doc items with edit_url should navigate to external URL
 				if ( item.item_type === 'bp_doc' && this.editUrl() ) {
 					window.location.href = this.editUrl()
 					return
 				}
-				
+
 				// forum_attachment items cannot be edited
 				if ( item.item_type === 'forum_attachment' ) {
 					// For now, do nothing
 					return
 				}
-				
+
 				// For bp_group_document and external_link, switch to edit mode
 				this.fillForm()
 				this.isEditMode = true
@@ -495,13 +495,39 @@
 
 <style>
 .item-details-drawer {
-	background: #F3F3F3;
-	padding: 24px 48px;
 	border-bottom: 1px solid var(--med-grey);
+	--line-x: -24px;      /* x position of the vertical stroke */
+	--line-w: 23px;      /* total width (includes the horizontal segment) */
+	--radius: 14px;      /* big rounded corner */
+	--thickness: 2px;
+	--stroke: #d6d9df;
+	--top-gap: 0px;      /* set if the line shouldn't start at the very top */
 }
 
 .drawer-content {
+	margin-left: calc(40px + 24px + 12px);
+	padding: 24px 48px 24px 24px;
 	max-width: 100%;
+	background: #F3F3F3;
+	position: relative;
+}
+
+.drawer-content::before {
+  content: "";
+  position: absolute;
+  left: var(--line-x);
+  top: var(--top-gap);
+  bottom: 0;
+  height: 50%;
+  width: var(--line-w);
+
+  border-left: var(--thickness) solid var(--stroke);
+  border-bottom: var(--thickness) solid var(--stroke);
+
+  /* This creates the large-radius 90° turn */
+  border-bottom-left-radius: var(--radius);
+
+  pointer-events: none;
 }
 
 .drawer-two-column {
