@@ -36,7 +36,7 @@
 			<!-- Edit mode for bp_doc -->
 			<div v-else-if="isEditMode && itemType() === 'bp_doc'" class="drawer-single-column drawer-bp-doc-edit">
 				<p>To edit this document, please visit the <a :href="editUrl()">document editing page</a>.</p>
-				<button class="drawer-cancel-button" @click="cancelEdit">Cancel</button>
+				<button class="cac-button cac-button-secondary drawer-cancel-button" @click="cancelEdit">Cancel</button>
 			</div>
 
 			<!-- View mode - Two-column layout for forum_attachment and bp_group_document -->
@@ -101,8 +101,8 @@
 					</div>
 
 					<div class="drawer-actions" v-if="canEdit()">
-						<button class="drawer-edit-button" v-if="canEditInline()" @click="onEditClick">Edit</button>
-						<button class="drawer-delete-button" @click="onDeleteClick">Delete</button>
+						<button class="cac-button drawer-edit-button" v-if="canEditInline()" @click="onEditClick">Edit</button>
+						<button class="cac-button cac-button-secondary drawer-delete-button" @click="onDeleteClick">Delete</button>
 					</div>
 				</div>
 			</div>
@@ -602,45 +602,6 @@
 	display: flex;
 	gap: 12px;
 	margin-top: 16px;
-}
-
-.drawer-edit-button {
-	background: #000;
-	border: none;
-	color: #fff;
-	font-size: 16px;
-	padding: 9px 24px;
-	cursor: pointer;
-}
-
-.drawer-edit-button:hover {
-	background: #333;
-}
-
-.drawer-delete-button {
-	background: #fff;
-	border: 1px solid #000;
-	color: #000;
-	font-size: 16px;
-	padding: 9px 24px;
-	cursor: pointer;
-}
-
-.drawer-delete-button:hover {
-	background: #f5f5f5;
-}
-
-.drawer-cancel-button {
-	background: #fff;
-	border: 1px solid #000;
-	color: #000;
-	font-size: 16px;
-	padding: 9px 24px;
-	cursor: pointer;
-}
-
-.drawer-cancel-button:hover {
-	background: #f5f5f5;
 }
 
 /* Form styling when in drawer context */

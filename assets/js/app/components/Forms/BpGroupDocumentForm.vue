@@ -70,11 +70,11 @@
 					:itemId="getItemId()"
 					v-if="isEditMode"
 				/>
-				
+
 				<button
 					v-if="showCancelButton"
 					type="button"
-					class="drawer-cancel-button"
+					class="cac-button cac-button-secondary drawer-cancel-button"
 					@click="onCancelClick"
 				>Cancel</button>
 			</div>
@@ -123,7 +123,7 @@
 			},
 
 			submitButtonText() {
-				return this.isEditMode ? 'Save Changes' : 'Upload'
+				return this.isEditMode ? 'Save' : 'Upload'
 			},
 
 			showCancelButton() {
