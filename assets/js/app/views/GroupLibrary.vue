@@ -468,12 +468,18 @@ ul.group-library-items-list li:nth-child(odd) {
 		border-bottom: none;
 	}
 
+	.group-library-column-headers {
+		display: none;
+	}
+
 	.group-library-item-title {
-		flex: 0 0 40%;
+		flex: 1;
 	}
 
 	.group-library-item-details,
-	.group-library-item-tagged {
+	.group-library-item-tagged,
+	.group-library-item-date,
+	.group-library-item-added-by {
 		display: none;
 	}
 }
