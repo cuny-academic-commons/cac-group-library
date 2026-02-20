@@ -611,6 +611,27 @@ ul.group-library-items-list li:nth-child(odd) {
 		font-size: 28px;
 	}
 
+	.header-right {
+		flex-direction: column;
+		order: 1;
+		width: 100%;
+	}
+
+	.header-right > .add-new-item-button {
+		width: calc(100% - 32px);
+	}
+
+	.header-right .library-search {
+		width: 100%;
+	}
+
+	.header-filters {
+		flex-direction: column;
+		order: 2;
+		gap: 16px;
+		width: 100%;
+	}
+
 	.library-search-input {
 		line-height: 28px;
 	}
