@@ -9,58 +9,60 @@
 			/>
 		</label>
 
-		<input
-			v-if="isInputTypeText"
-			:disabled="disabled"
-			:id="fieldId"
-			:name="fieldId"
-			:required="required"
-			:type="htmlFieldType"
-			v-on:focus="setFieldVisited()"
-			v-on:blur="validateThisField()"
-			v-on:keyup="validateThisField()"
-			v-model="value"
-		/>
+		<div class="field-primary">
+			<input
+				v-if="isInputTypeText"
+				:disabled="disabled"
+				:id="fieldId"
+				:name="fieldId"
+				:required="required"
+				:type="htmlFieldType"
+				v-on:focus="setFieldVisited()"
+				v-on:blur="validateThisField()"
+				v-on:keyup="validateThisField()"
+				v-model="value"
+			/>
 
-		<input
-			v-if="isInputTypeFile"
-			:disabled="disabled"
-			:id="fieldId"
-			:name="fieldId"
-			:required="required"
-			:accept="acceptFiletypes"
-			type="file"
-			v-on:focus="setFieldVisited()"
-			v-on:change="setFile"
-		/>
+			<input
+				v-if="isInputTypeFile"
+				:disabled="disabled"
+				:id="fieldId"
+				:name="fieldId"
+				:required="required"
+				:accept="acceptFiletypes"
+				type="file"
+				v-on:focus="setFieldVisited()"
+				v-on:change="setFile"
+			/>
 
-		<textarea
-			v-if="isInputTypeTextarea"
-			:disabled="disabled"
-			:id="fieldId"
-			:name="fieldId"
-			:required="required"
-			:maxlength="theMaxlength"
-			v-on:focus="setFieldVisited()"
-			v-on:keyup="validateThisField()"
-			v-on:blur="validateThisField()"
-			v-model="value"
-		/>
+			<textarea
+				v-if="isInputTypeTextarea"
+				:disabled="disabled"
+				:id="fieldId"
+				:name="fieldId"
+				:required="required"
+				:maxlength="theMaxlength"
+				v-on:focus="setFieldVisited()"
+				v-on:keyup="validateThisField()"
+				v-on:blur="validateThisField()"
+				v-model="value"
+			/>
 
-		<div
-			class="character-limit-gloss"
-			v-if="isInputTypeTextarea && maxlength"
-		>{{ characterLimitGloss() }}</div>
+			<div
+				class="character-limit-gloss"
+				v-if="isInputTypeTextarea && maxlength"
+			>{{ characterLimitGloss() }}</div>
 
-		<p
-			class="description"
-			v-if="description"
-		>{{ description }}</p>
+			<p
+				class="description"
+				v-if="description"
+			>{{ description }}</p>
 
-		<p
-			class="field-error"
-			v-if="validationError"
-		>{{ validationError }}</p>
+			<p
+				class="field-error"
+				v-if="validationError"
+			>{{ validationError }}</p>
+		</div>
 	</div>
 </template>
 
@@ -239,6 +241,10 @@
 
 	.add-new-field-textarea textarea {
 		margin-bottom: 12px;
+	}
+
+	.add-new-field-textarea textarea#add-new-file-description {
+		margin-bottom: 0;
 	}
 
 	.add-new-folder-container.has-error input,

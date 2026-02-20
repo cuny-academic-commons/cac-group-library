@@ -1,6 +1,6 @@
 <template>
 	<button
-		:class="{ 'add-new-submit-button': true, 'submit-in-progress': submitInProgress }"
+		:class="{ 'add-new-submit-button': true, 'submit-in-progress': submitInProgress, 'cac-button': true }"
 		v-bind:style="backgroundStyles( 'submit' )"
 		:disabled="disabled()"
 		@click.prevent="onSubmitClick()"
@@ -71,20 +71,6 @@
 </script>
 
 <style>
-.add-new-submit-button {
-	background: #1C576C;
-	border: none;
-	color: #fff;
-	font-size: 16px;
-	padding: 9px 15px;
-}
-
-.add-new-submit-button:hover {
-	background: #022d3c;
-	border: none;
-	color: #fff;
-}
-
 .add-new-submit-button:disabled {
 	opacity: .7;
 }

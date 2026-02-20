@@ -1,6 +1,6 @@
 <template>
 	<button
-		:class="{ 'delete-button': true, 'delete-in-progress': deleteInProgress }"
+		:class="{ 'delete-button': true, 'delete-in-progress': deleteInProgress, 'cac-button': true, 'cac-button-secondary': true }"
 		:disabled="disabled()"
 		v-bind:style="backgroundStyles( 'delete' )"
 		@click.prevent="onClick()"
@@ -69,20 +69,6 @@
 </script>
 
 <style>
-.delete-button {
-	background: #1C576C;
-	border: none;
-	color: #fff;
-	font-size: 16px;
-	padding: 9px 15px;
-}
-
-.delete-button:hover {
-	background: #022d3c;
-	border: none;
-	color: #fff;
-}
-
 .delete-button:disabled {
 	opacity: .7;
 }
@@ -90,5 +76,4 @@
 .delete-button:disabled:hover {
 	background: #1C576C;
 }
-
 </style>

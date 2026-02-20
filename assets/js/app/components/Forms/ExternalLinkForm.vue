@@ -58,9 +58,16 @@
 				/>
 
 				<DeleteButton
-					:itemId="itemId"
+					:itemId="getItemId()"
 					v-if="isEditMode"
 				/>
+				
+				<button
+					v-if="showCancelButton"
+					type="button"
+					class="drawer-cancel-button"
+					@click="onCancelClick"
+				>Cancel</button>
 			</div>
 		</form>
 	</div>
@@ -90,15 +97,16 @@
 			},
 
 			isEditMode() {
-				return this.itemId > 0
-			},
-
-			itemId() {
-				return this.$store.state.forms.externalLink.itemId
+				return this.getItemId() > 0
 			},
 
 			submitButtonText() {
-				return this.itemId > 0 ? 'Update link' : 'Add link'
+				return this.getItemId() > 0 ? 'Update link' : 'Add link'
+			},
+
+			showCancelButton() {
+				// Show cancel button when used in drawer (itemId passed as prop)
+				return this.$props.itemId !== null && this.$props.itemId !== undefined
 			},
 
 			title: {
@@ -138,6 +146,27 @@
 			isSilentChecked() {
 				return this.isEditMode
 			},
+
+			onCancelClick() {
+				this.$emit('cancel-edit')
+			},
+
+			getItemId() {
+				// Check if itemId is passed as a prop (drawer context)
+				if ( this.$props.itemId !== null && this.$props.itemId !== undefined ) {
+					return this.$props.itemId
+				}
+				// Otherwise get from store
+				return this.$store.state.forms.externalLink.itemId
+			}
+		},
+
+		props: {
+			itemId: {
+				type: Number,
+				required: false,
+				default: null
+			}
 		}
 	}
 </script>

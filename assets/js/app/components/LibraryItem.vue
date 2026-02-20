@@ -1,6 +1,19 @@
 <template>
 	<span>
 		<div class="library-item group-library-row">
+			<div class="group-library-item-toggle">
+				<button
+					class="drawer-toggle-button"
+					:class="{ 'drawer-toggle-open': isDrawerOpen }"
+					@click="toggleDrawer()"
+					:aria-expanded="isDrawerOpen"
+					:aria-label="isDrawerOpen ? 'Collapse details' : 'Expand details'"
+				>
+					<svg class="drawer-toggle-icon" viewBox="0 0 32 32" fill="none">
+						<path d="M13.8459 9.30324L19.5292 15.3442C19.7279 15.543 19.8074 15.7814 19.8074 15.9801C19.8074 16.2186 19.7279 16.457 19.569 16.6558L13.8459 22.6968C13.4882 23.0942 12.8921 23.0942 12.4946 22.7365C12.0972 22.3788 12.0972 21.7827 12.4549 21.3852L17.5421 15.9801L12.4549 10.6148C12.0972 10.2173 12.0972 9.62119 12.4946 9.2635C12.8921 8.90581 13.4882 8.90581 13.8459 9.30324Z" fill="#A1A1A1"/>
+					</svg>
+				</button>
+			</div>
 			<div class="group-library-item-title">
 				<div class="group-library-item-icon">
 					<img
@@ -32,17 +45,14 @@
 				<p v-else>
 					{{ description() }}
 				</p>
+			</div>
 
-				<p
-					class="item-folders"
-					v-if="showFolders()"
-				>
-					Tagged in: <a
-						class="item-folder-link"
-						v-for="folder in itemFolders()"
-						v-on:click="onFolderClick(folder)"
-					>{{folder}}</a>
-				</p>
+			<div class="group-library-item-tagged">
+				<a
+					class="item-folder-link"
+					v-for="folder in itemFolders()"
+					v-on:click="onFolderClick(folder)"
+				>{{folder}}</a>
 			</div>
 
 			<div class="group-library-item-date">
@@ -53,38 +63,12 @@
 				<a :href="addedByUrl()">{{ addedByName() }}</a>
 			</div>
 
-			<div
-				class="group-library-edit"
-				v-if="canEdit()"
-			>
-				<button
-					class="group-library-item-menu-toggle"
-					v-on:click="toggleMenu()"
-					aria-haspopup="true"
-					:aria-controls="'group-library-item-menu-' + itemId"
-					:aria-expanded="isMenuOpen"
-				><img
-					:src="moreIconUrl"
-					alt="Click for advanced options"
-				/></button>
-
-				<div
-					v-show="isMenuOpen"
-					class="group-library-item-menu"
-					:id="'group-library-item-menu-' + itemId"
-				>
-					<a
-						:href="editUrl()"
-						v-if="editLinkIsStatic()"
-					>Edit</a>
-
-					<router-link
-						:to="'/edit/' + itemId"
-						v-else
-					>Edit</router-link>
-				</div>
-			</div>
 		</div>
+
+		<ItemDetailsDrawer
+			v-if="isDrawerOpen"
+			:itemId="Number(itemId)"
+		/>
 
 		<div class="group-library-item-details-mobile group-library-row">
 			<p v-if="isForumAttachment()">
@@ -97,9 +81,9 @@
 
 			<p
 				class="item-folders"
-				v-if="showFolders()"
+				v-if="itemFolders().length > 0"
 			>
-				Tagged in: <a
+				Tagged: <a
 					class="item-folder-link"
 					v-for="folder in itemFolders()"
 					v-on:click="onFolderClick(folder)"
@@ -110,7 +94,13 @@
 </template>
 
 <script>
+	import ItemDetailsDrawer from './ItemDetailsDrawer.vue'
+
 	export default {
+		components: {
+			ItemDetailsDrawer
+		},
+
 		computed: {
 			folderIconUrl() {
 				const { imgUrlBase } = window.CACGroupLibrary;
@@ -125,7 +115,8 @@
 
 		data() {
 			return {
-				isMenuOpen: false
+				isMenuOpen: false,
+				isDrawerOpen: false
 			}
 		},
 
@@ -337,6 +328,10 @@
 				this.isMenuOpen = ! this.isMenuOpen
 			},
 
+			toggleDrawer() {
+				this.isDrawerOpen = ! this.isDrawerOpen
+			},
+
 			topicTitle() {
 				const item = this.getItem()
 				return item.hasOwnProperty( 'topic_title' ) ? item.topic_title : ''
@@ -368,6 +363,10 @@
 		display: none;
 	}
 
+	.group-library-item-tagged {
+		display: none;
+	}
+
 	.group-library-row.group-library-item-details-mobile {
 		display: block;
 	}
@@ -375,6 +374,40 @@
 
 .library-item {
 	padding: 12px;
+}
+
+.group-library-item-toggle {
+	flex: 0 0 24px;
+	display: flex;
+	align-items: center;
+}
+
+.drawer-toggle-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	transition: transform 0.2s ease;
+}
+
+.drawer-toggle-button:hover {
+	opacity: 0.7;
+}
+
+.drawer-toggle-button.drawer-toggle-open {
+	transform: rotate(90deg);
+}
+
+.drawer-toggle-icon {
+	flex: 0 0 32px;
+	width: 32px;
+	height: 32px;
+	color: #555;
 }
 
 .group-library-item-icon {
@@ -422,6 +455,25 @@ a.item-folder-link {
 
 a.item-folder-link:hover {
 	text-decoration: none;
+}
+
+.drawer-field {
+	a.item-folder-link {
+		background: white;
+		border: 1px solid #d8d8d8;
+		border-radius: 4px;
+		color: var(--black);
+		cursor: pointer;
+		display: inline-block;
+		font-size: 14px;
+		margin-right: 4px;
+		padding: 4px 6px;
+		text-decoration: none;
+	}
+
+	a.item-folder-link:hover {
+		background: var(--light-grey);
+	}
 }
 
 button.group-library-item-menu-toggle {

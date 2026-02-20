@@ -34,11 +34,13 @@
 				</div>
 
 				<div
-					:class="{ 'group-library-items': true, 'has-edit-column': showEditColumn }"
+					class="group-library-items"
 					id="group-library-items"
 					v-if="showItemList"
 				>
 					<div class="group-library-column-headers group-library-row">
+						<div class="group-library-column-header group-library-item-toggle">&nbsp;</div>
+
 						<SortableColumnHeader
 							label="File name"
 							name="title"
@@ -47,6 +49,10 @@
 
 						<div class="group-library-column-header group-library-item-details">
 							Details
+						</div>
+
+						<div class="group-library-column-header group-library-item-tagged">
+							Tagged
 						</div>
 
 						<SortableColumnHeader
@@ -60,11 +66,6 @@
 							name="added-by"
 							defaultSortOrder="asc"
 						/>
-
-						<div
-							class="group-library-column group-library-edit"
-							v-if="showEditColumn"
-						>&nbsp;</div>
 					</div>
 
 					<ul class="group-library-items-list">
@@ -421,6 +422,12 @@ body.groups.single-item.library #item-header {
 
 .group-library-column-headers {
 	background: #fff;
+
+	/* Make the 'File name' text look like it's aligned with the arrow */
+	.group-library-item-title {
+		margin-left: -24px;
+		padding-right: 50px; /* other columns need to align */
+	}
 }
 
 ul.group-library-items-list {
@@ -439,7 +446,7 @@ ul.group-library-items-list li:nth-child(odd) {
 	border-bottom: 1px solid var(--med-grey);
 	display: flex;
 	gap: 24px;
-	padding: 12px 48px;
+	padding: 12px 48px 12px 24px;
 	position: relative;
 }
 
@@ -449,7 +456,7 @@ ul.group-library-items-list li:nth-child(odd) {
 	gap: 12px;
 	flex: 0 0 30%;
 	overflow-wrap: anywhere;
-	padding: 16px 0;
+	padding: 0;
 }
 
 @media screen and (max-width: 768px) {
@@ -462,13 +469,54 @@ ul.group-library-items-list li:nth-child(odd) {
 	}
 
 	.group-library-item-title {
-		flex: 0 0 40%; 
+		flex: 0 0 40%;
+	}
+
+	.group-library-item-details,
+	.group-library-item-tagged {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+	.group-library-item-title {
+		flex: 0 0 25%;
+	}
+
+	.group-library-item-details {
+		flex: 0 0 18%;
+	}
+
+	.group-library-item-tagged {
+		flex: 0 0 15%;
+	}
+
+	.group-library-item-date {
+		flex: 0 0 12%;
+	}
+
+	.group-library-item-added-by {
+		flex: 0 0 12%;
 	}
 }
 
 .group-library-item-details {
 	color: var(--dark-grey);
-	flex: 0 0 30%;
+	flex: 0 0 20%;
+}
+
+.group-library-item-tagged {
+	color: var(--dark-grey);
+	flex: 0 0 15%;
+
+	a {
+		color: var(--dark-grey);
+		text-decoration: underline !important;
+
+		&:hover {
+			text-decoration: none !important;
+		}
+	}
 }
 
 .group-library-item-added-by {
@@ -561,6 +609,27 @@ ul.group-library-items-list li:nth-child(odd) {
 
 	.group-library-header h2 {
 		font-size: 28px;
+	}
+
+	.header-right {
+		flex-direction: column;
+		order: 1;
+		width: 100%;
+	}
+
+	.header-right > .add-new-item-button {
+		width: calc(100% - 32px);
+	}
+
+	.header-right .library-search {
+		width: 100%;
+	}
+
+	.header-filters {
+		flex-direction: column;
+		order: 2;
+		gap: 16px;
+		width: 100%;
 	}
 
 	.library-search-input {

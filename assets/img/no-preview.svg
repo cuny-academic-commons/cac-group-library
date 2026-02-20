@@ -1,0 +1,15 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gray background with diagonal lines -->
+  <defs>
+    <pattern id="diagonalLines" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="20" stroke="#9CA3AF" stroke-width="15"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="300" fill="#6B7280"/>
+  <rect width="400" height="300" fill="url(#diagonalLines)" opacity="0.3"/>
+  
+  <!-- White text in center -->
+  <text x="200" y="150" font-family="Arial, sans-serif" font-size="20" fill="white" text-anchor="middle" font-weight="normal">
+    No Preview Available
+  </text>
+</svg>
