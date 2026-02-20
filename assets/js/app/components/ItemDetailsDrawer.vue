@@ -654,6 +654,15 @@
 		padding: 24px;
 	}
 
+	.drawer-content {
+		margin-left: 0;
+		padding: 16px;
+	}
+
+	.drawer-content::before {
+		display: none;
+	}
+
 	.drawer-two-column {
 		grid-template-columns: 1fr;
 		gap: 24px;
