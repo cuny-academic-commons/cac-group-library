@@ -604,19 +604,7 @@ ul.group-library-items-list li:nth-child(odd) {
 	}
 }
 
-@media screen and (max-width:600px) {
-	.cac-group-library-inner {
-		width: 97%;
-	}
-
-	.group-library-header {
-		align-items: flex-start;
-	}
-
-	.group-library-header h2 {
-		font-size: 28px;
-	}
-
+@media screen and (max-width:768px) {
 	.header-right {
 		flex-direction: column;
 		order: 1;
@@ -636,6 +624,21 @@ ul.group-library-items-list li:nth-child(odd) {
 		order: 2;
 		gap: 16px;
 		width: 100%;
+	}
+
+}
+
+@media screen and (max-width:600px) {
+	.cac-group-library-inner {
+		width: 97%;
+	}
+
+	.group-library-header {
+		align-items: flex-start;
+	}
+
+	.group-library-header h2 {
+		font-size: 28px;
 	}
 
 	.library-search-input {
