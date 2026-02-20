@@ -246,6 +246,7 @@
 /* Better focus states for accessibility */
 .folder-tag-selector .vs__dropdown-toggle {
 	border-color: #ddd;
+	padding-top: 4px;
 }
 
 .folder-tag-selector .vs__dropdown-toggle:focus-within {

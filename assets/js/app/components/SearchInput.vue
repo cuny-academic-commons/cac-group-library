@@ -4,6 +4,7 @@
 			class="library-search-input"
 			type="text"
 			:placeholder="placeholderText"
+			:style="backgroundStyles"
 			v-on:focus="onFocus()"
 			v-model="currentSearchTerm"
 		/>
@@ -19,6 +20,21 @@
 <script>
 	export default {
 		computed: {
+			backgroundStyles() {
+				const iconUrl = require('../../../img/search.svg');
+
+				if (this.isSearchExpanded) {
+					return {
+						backgroundImage: `url(${iconUrl})`,
+					};
+				}
+
+				return {
+					backgroundImage: `url(${iconUrl})`,
+					opacity: '.75'
+				};
+			},
+
 			currentSearchTerm: {
 				get() {
 					return this.$store.state.route.query.hasOwnProperty( 'searchTerm' ) ? decodeURIComponent( this.$store.state.route.query.searchTerm ) : ''
@@ -70,29 +86,6 @@
 		},
 
 		methods: {
-			backgroundStyles() {
-				const { imgUrlBase } = window.CACGroupLibrary;
-
-				if ( this.isSearchExpanded ) {
-					return {
-						'background-image': 'url( ' + imgUrlBase + 'search.svg )',
-						'background-position': 'center left 8px',
-						'background-repeat': 'no-repeat',
-						'background-size': '12px',
-						'padding-left': '28px'
-					}
-
-				} else {
-					return {
-						'background-image': 'url( ' + imgUrlBase + 'search.svg )',
-						'background-position': 'center right 8px',
-						'background-repeat': 'no-repeat',
-						'background-size': '16px',
-						'opacity': '.75',
-					}
-				}
-			},
-
 			onCloseClick( event ) {
 				this.currentSearchTerm = ''
 				this.isSearchExpanded = ''
@@ -120,13 +113,6 @@
 </script>
 
 <style>
-.library-search-input {
-	background: url( ../../../img/search.svg );
-	background-repeat: no-repeat;
-	background-position: 0 100%;
-	width: 100%;
-}
-
 .library-search {
 	position: relative;
 	transition: width .5s ease-in-out;
@@ -142,6 +128,11 @@
 }
 
 input[type="text"].library-search-input {
+	background-repeat: no-repeat;
+	background-position: center left 8px;
+	background-size: 16px;
+	padding-left: 36px;
+	width: calc(100% - 48px);
 	border: 1px solid #cecece;
 	border-radius: 5px;
 	margin-bottom: 0;
