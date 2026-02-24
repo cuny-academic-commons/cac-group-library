@@ -81,7 +81,7 @@
 						</div>
 					</div>
 
-					<div class="drawer-field" v-if="itemFolders().length > 0">
+					<div class="drawer-field" v-if="itemHasFolders()">
 						<label class="drawer-field-label">Tagged</label>
 						<div class="drawer-field-value">
 							<a
@@ -133,7 +133,7 @@
 					</div>
 				</div>
 
-				<div class="drawer-field" v-if="itemFolders().length > 0">
+				<div class="drawer-field" v-if="itemHasFolders()">
 					<label class="drawer-field-label">Tagged</label>
 					<div class="drawer-field-value">
 						<a
@@ -274,6 +274,11 @@
 
 			itemFolders() {
 				return this.getItem().folders || []
+			},
+
+			itemHasFolders() {
+				const folders = this.itemFolders()
+				return Array.isArray(folders) && folders.length > 0
 			},
 
 			itemType() {

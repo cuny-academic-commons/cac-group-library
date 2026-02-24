@@ -81,7 +81,7 @@
 
 			<p
 				class="item-folders"
-				v-if="itemFolders().length > 0"
+				v-if="itemHasFolders()"
 			>
 				Tagged: <a
 					class="item-folder-link"
@@ -183,6 +183,11 @@
 
 			itemFolders() {
 				return this.getItem().folders
+			},
+
+			itemHasFolders() {
+				const item = this.getItem()
+				return item.hasOwnProperty( 'folders' ) && item.folders.length > 0
 			},
 
 			onFolderClick(folder) {
