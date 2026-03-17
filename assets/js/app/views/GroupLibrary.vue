@@ -502,7 +502,7 @@ ul.group-library-items-list li:nth-child(odd) {
 	}
 
 	.group-library-item-added-by {
-		flex: 0 0 12%;
+		flex-basis: 12%;
 	}
 }
 
@@ -527,7 +527,7 @@ ul.group-library-items-list li:nth-child(odd) {
 
 .group-library-item-added-by {
 	color: var(--dark-grey);
-	flex: 0 0 15%;
+	flex: 0 1 15%;
 }
 
 .directory-content .group-library-item-added-by a {
