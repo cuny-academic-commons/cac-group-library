@@ -517,11 +517,6 @@ ul.group-library-items-list li:nth-child(odd) {
 
 	a {
 		color: var(--dark-grey);
-		text-decoration: underline !important;
-
-		&:hover {
-			text-decoration: none !important;
-		}
 	}
 }
 

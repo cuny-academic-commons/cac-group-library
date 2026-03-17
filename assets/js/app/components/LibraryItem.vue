@@ -51,8 +51,9 @@
 				<a
 					class="item-folder-link"
 					v-for="folder in itemFolders()"
-					v-on:click="onFolderClick(folder)"
-				>{{folder}}</a>
+					@click.prevent="onFolderClick(folder)"
+					:href="'?folder=' + encodeURIComponent(folder)"
+				><span>{{folder}}</span></a>
 			</div>
 
 			<div class="group-library-item-date">
@@ -455,10 +456,18 @@
 
 a.item-folder-link {
 	cursor: pointer;
+	text-decoration: none;
+}
+
+a.item-folder-link span {
 	text-decoration: underline;
 }
 
-a.item-folder-link:hover {
+a.item-folder-link:not(:last-child)::after {
+	content: ", ";
+}
+
+a.item-folder-link:hover span {
 	text-decoration: none;
 }
 
