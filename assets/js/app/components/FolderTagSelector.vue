@@ -1,6 +1,7 @@
 <template>
 	<div class="folder-tag-selector">
 		<v-select
+			ref="vSelect"
 			:appendToBody="false"
 			:id="inputId"
 			v-model="selected"
@@ -155,6 +156,26 @@
 
 			onBlur() {
 				this.isFocused = false
+
+				const vSelect = this.$refs.vSelect
+				const searchText = vSelect && vSelect.search ? vSelect.search.trim() : ''
+
+				if ( ! searchText ) {
+					return
+				}
+
+				// Avoid adding a tag that is already selected
+				const alreadySelected = this.selected.some( opt => ( opt.code || opt.label || opt ) === searchText )
+				if ( alreadySelected ) {
+					vSelect.search = ''
+					return
+				}
+
+				// Create the new tag just as if the user had pressed Enter
+				const newOption = this.createOption( searchText )
+				this.selected = [ ...this.selected, newOption ]
+				this.onOptionCreated( newOption )
+				vSelect.search = ''
 			},
 
 			onOptionCreated( newOption ) {
