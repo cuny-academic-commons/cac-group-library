@@ -450,6 +450,10 @@ ul.group-library-items-list li:nth-child(odd) {
 	position: relative;
 }
 
+.group-library-row > div {
+	overflow-wrap: anywhere;
+}
+
 .group-library-item-title {
 	align-items: center;
 	display: flex;
