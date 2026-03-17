@@ -59,6 +59,10 @@
 		position: relative;
 	}
 
+	.delete-folder-dialog a {
+		cursor: pointer;
+	}
+
 	a.upper-right {
 		position: absolute;
 		right: 0px;

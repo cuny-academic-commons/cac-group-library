@@ -302,6 +302,10 @@
 		text-align: right;
 	}
 
+	.edit-folder-actions button {
+		cursor: pointer;
+	}
+
 	.edit-folder-non-edit-mode .edit-folder-actions button,
 	.edit-folder-non-edit-mode .edit-folder-actions button:hover,
 	.edit-folder-actions button.edit-folder-cancel,
