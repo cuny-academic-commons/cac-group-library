@@ -184,7 +184,7 @@
 
 				const dialogMessage = {
 					title: this.folderName,
-					body: 'Are you sure you want to DELETE the folder "' + this.folderName + '"?'
+					body: 'Are you sure you want to DELETE the tag "' + this.folderName + '"?'
 				}
 
 				this.$dialog.confirm(

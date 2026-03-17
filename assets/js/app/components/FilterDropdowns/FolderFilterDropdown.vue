@@ -72,7 +72,7 @@
 					return 'All (' + this.$store.state.libraryItemIds.length + ')'
 				} else if ( '_null' === folder ) {
 					const nullCount = folderCounts.hasOwnProperty( '_null' ) ? folderCounts._null : 0
-					return 'Not in a folder (' + nullCount + ')'
+					return 'Not tagged (' + nullCount + ')'
 				} else {
 
 					const folderCount = folderCounts.hasOwnProperty( folder ) ? folderCounts[ folder ] : 0
@@ -110,7 +110,7 @@
 				folderObjects.push( nullFolder )
 
 				if ( this.canEditFolders && foldersOfGroup.length > 0 ) {
-					const editFolders = { code: '_edit', label: 'Edit folders' }
+					const editFolders = { code: '_edit', label: 'Edit tags' }
 					folderObjects.push( editFolders )
 				}
 

@@ -13,7 +13,7 @@
 			<a
 				class="button"
 				v-on:click="onDeleteFolderAndContentsClick()"
-			>Delete folder and its contents</a>
+			>Delete tag and its contents</a>
 			<p class="description">This action cannot be reversed.</p>
 		</div>
 
@@ -21,7 +21,7 @@
 			<a
 				class="button"
 				v-on:click="onDeleteFolderOnlyClick()"
-			>Delete folder but keep its contents</a>
+			>Delete tag but keep its contents</a>
 			<p class="description">Contents will be placed in the top level of the Library.</p>
 		</div>
 	</div>

@@ -6,14 +6,14 @@
 			</div>
 
 			<div class="header-with-actions">
-				<h2>Manage folders</h2>
+				<h2>Manage tags</h2>
 
 				<div class="header-actions">
 					<a
 						v-on:click="onAddNewClick"
 						class="add-new-item-button"
 						href="#/editFolders"
-					>Add New Folder</a>
+					>Add New Tag</a>
 				</div>
 			</div>
 

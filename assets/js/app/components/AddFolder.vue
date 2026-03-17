@@ -1,6 +1,6 @@
 <template>
 	<div class="add-new-folder">
-		<h3>Add a new folder</h3>
+		<h3>Add a new tag</h3>
 
 		<div class="add-new-folder-fields edit-folder-edit-mode">
 			<input
@@ -16,7 +16,7 @@
 					:disabled="editValueIsEmpty"
 					v-bind:style="backgroundStyles( 'submit' )"
 					v-on:click="onAddClick()"
-				>Add Folder</button>
+				>Add Tag</button>
 
 				<button
 					class="edit-folder-cancel"
