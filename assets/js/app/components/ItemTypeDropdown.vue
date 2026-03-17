@@ -8,7 +8,8 @@
 				id="selected-item-type"
 				v-bind:clearable="false"
 				v-model="selected"
-				:options="opts">
+				:options="opts"
+				placeholder="Choose a type">
 			</v-select>
 		</div>
 	</div>
@@ -26,7 +27,6 @@
 		computed: {
 			opts() {
 				return [
-					{ code: '', label: 'Choose a type' },
 					{ code: 'bpGroupDocument', label: 'Upload a file' },
 					{ code: 'bpDoc', label: 'Create an editable doc' },
 					{ code: 'externalLink', label: 'Add an external link' },
