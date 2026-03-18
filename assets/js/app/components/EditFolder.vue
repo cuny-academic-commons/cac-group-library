@@ -349,6 +349,11 @@
 		width: 200px;
 	}
 
+	.group-library-dialog-container-wide .dg-content-cont--floating {
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
 	@media screen and (max-width:600px) {
 		.edit-folder-name {
 			margin-right: 12px;
