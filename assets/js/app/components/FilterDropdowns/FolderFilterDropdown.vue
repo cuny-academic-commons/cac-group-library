@@ -106,7 +106,7 @@
 				folderObjects.unshift( anyFolder )
 
 				const nullCount = folderCounts.hasOwnProperty( '_null' ) ? folderCounts._null : 0
-				const nullFolder = { code: '_null', label: 'Not in a folder (' + nullCount + ')' }
+				const nullFolder = { code: '_null', label: 'Not tagged (' + nullCount + ')' }
 				folderObjects.push( nullFolder )
 
 				if ( this.canEditFolders && foldersOfGroup.length > 0 ) {
