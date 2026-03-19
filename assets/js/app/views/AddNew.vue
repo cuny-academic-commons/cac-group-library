@@ -11,7 +11,7 @@
 
 			<div class="add-edit-content add-new-content">
 				<p class="add-new-content-intro">
-					You can select three different types of items to add to your Library. Files are standalone uploads from your desktop like images, PDFs or Word Docs (similar to an email attachment). Docs are editable documents you can create and edit via your Library later. External Links point to an item hosted elsewhere on the web, like Google, Dropbox, or Microsoft OneDrive.
+					You can select three different types of items to add to your Library. Files are standalone uploads from your desktop like images, PDFs or Word Docs (similar to an email attachment). External Links point to an item hosted elsewhere on the web, like Google or Dropbox. Docs are text documents that can be edited by any Group member. Files and external links can only be edited or removed by the original uploader or Group Admins and Moderators, but not by any other Group members.
 				</p>
 
 				<ItemTypeDropdown />
