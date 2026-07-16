@@ -7,7 +7,7 @@
 					:class="{ 'drawer-toggle-open': isDrawerOpen }"
 					@click="toggleDrawer()"
 					:aria-expanded="isDrawerOpen"
-					:aria-label="isDrawerOpen ? 'Collapse details' : 'Expand details'"
+					:aria-label="isDrawerOpen ? `Collapse details for ${title()}` : `Expand details for ${title()}`"
 				>
 					<svg class="drawer-toggle-icon" viewBox="0 0 32 32" fill="none">
 						<path d="M13.8459 9.30324L19.5292 15.3442C19.7279 15.543 19.8074 15.7814 19.8074 15.9801C19.8074 16.2186 19.7279 16.457 19.569 16.6558L13.8459 22.6968C13.4882 23.0942 12.8921 23.0942 12.4946 22.7365C12.0972 22.3788 12.0972 21.7827 12.4549 21.3852L17.5421 15.9801L12.4549 10.6148C12.0972 10.2173 12.0972 9.62119 12.4946 9.2635C12.8921 8.90581 13.4882 8.90581 13.8459 9.30324Z" fill="#A1A1A1"/>
