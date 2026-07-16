@@ -37,39 +37,43 @@
 					class="group-library-items"
 					id="group-library-items"
 					v-if="showItemList"
+					role="table"
+					aria-label="Library items"
 				>
-					<div class="group-library-column-headers group-library-row">
-						<div class="group-library-column-header group-library-item-toggle">&nbsp;</div>
+					<div class="group-library-column-headers-wrapper" role="rowgroup">
+						<div class="group-library-column-headers group-library-row" role="row">
+							<div class="group-library-column-header group-library-item-toggle" role="columnheader">&nbsp;</div>
 
-						<SortableColumnHeader
-							label="File name"
-							name="title"
-							defaultSortOrder="asc"
-						/>
+							<SortableColumnHeader
+								label="File name"
+								name="title"
+								defaultSortOrder="asc"
+							/>
 
-						<div class="group-library-column-header group-library-item-details">
-							Details
+							<div class="group-library-column-header group-library-item-details" role="columnheader">
+								Details
+							</div>
+
+							<div class="group-library-column-header group-library-item-tagged" role="columnheader">
+								Tagged
+							</div>
+
+							<SortableColumnHeader
+								label="Date uploaded"
+								name="date"
+								defaultSortOrder="desc"
+							/>
+
+							<SortableColumnHeader
+								label="Added by"
+								name="added-by"
+								defaultSortOrder="asc"
+							/>
 						</div>
-
-						<div class="group-library-column-header group-library-item-tagged">
-							Tagged
-						</div>
-
-						<SortableColumnHeader
-							label="Date uploaded"
-							name="date"
-							defaultSortOrder="desc"
-						/>
-
-						<SortableColumnHeader
-							label="Added by"
-							name="added-by"
-							defaultSortOrder="asc"
-						/>
 					</div>
 
-					<ul class="group-library-items-list">
-						<li v-for="itemId in paginatedItemIds">
+					<ul class="group-library-items-list" role="rowgroup">
+						<li v-for="itemId in paginatedItemIds" role="presentation">
 							<LibraryItem
 								:itemId='itemId'
 							/>

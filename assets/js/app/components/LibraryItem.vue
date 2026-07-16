@@ -1,7 +1,7 @@
 <template>
 	<span>
-		<div class="library-item group-library-row">
-			<div class="group-library-item-toggle">
+		<div class="library-item group-library-row" role="row">
+			<div class="group-library-item-toggle" role="cell">
 				<button
 					class="drawer-toggle-button"
 					:class="{ 'drawer-toggle-open': isDrawerOpen }"
@@ -14,7 +14,7 @@
 					</svg>
 				</button>
 			</div>
-			<div class="group-library-item-title">
+			<div class="group-library-item-title" role="cell">
 				<div class="group-library-item-icon">
 					<img
 						:class="iconClass()"
@@ -37,7 +37,7 @@
 				</div>
 			</div>
 
-			<div class="group-library-item-details">
+			<div class="group-library-item-details" role="cell">
 				<p v-if="isForumAttachment()">
 					In topic <a :href="topicUrl()">{{ topicTitle() }}</a>
 				</p>
@@ -47,7 +47,7 @@
 				</p>
 			</div>
 
-			<div class="group-library-item-tagged">
+			<div class="group-library-item-tagged" role="cell">
 				<a
 					class="item-folder-link"
 					v-for="folder in itemFolders()"
@@ -56,20 +56,27 @@
 				><span>{{folder}}</span></a>
 			</div>
 
-			<div class="group-library-item-date">
+			<div class="group-library-item-date" role="cell">
 				{{ date() }}
 			</div>
 
-			<div class="group-library-item-added-by">
+			<div class="group-library-item-added-by" role="cell">
 				<a :href="addedByUrl()">{{ addedByName() }}</a>
 			</div>
 
 		</div>
 
-		<ItemDetailsDrawer
+		<div
 			v-if="isDrawerOpen"
-			:itemId="Number(itemId)"
-		/>
+			class="group-library-item-drawer-row"
+			role="row"
+		>
+			<div class="group-library-item-drawer-cell" role="cell">
+				<ItemDetailsDrawer
+					:itemId="Number(itemId)"
+				/>
+			</div>
+		</div>
 
 		<div class="group-library-item-details-mobile group-library-row">
 			<p v-if="isForumAttachment()">

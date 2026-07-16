@@ -1,8 +1,15 @@
 <template>
-	<div :class='itemClass()'>
-		<span
+	<div
+		:class='itemClass()'
+		role="columnheader"
+		:aria-sort='ariaSort()'
+	>
+		<button
+			type="button"
+			class="sortable-column-header-button"
 			v-on:click='onHeaderClick'
-		>{{ this.labelText() }}</span>
+			:aria-label='ariaLabel()'
+		>{{ this.labelText() }}</button>
 	</div>
 </template>
 
@@ -35,6 +42,24 @@
 
 			labelText() {
 				return this.label
+			},
+
+			ariaSort() {
+				if ( this.name !== this.currentSort ) {
+					return 'none'
+				}
+
+				return 'asc' === this.currentSortOrder ? 'ascending' : 'descending'
+			},
+
+			ariaLabel() {
+				if ( this.name !== this.currentSort ) {
+					return `Sort by ${this.label}`
+				}
+
+				const nextOrder = 'asc' === this.currentSortOrder ? 'descending' : 'ascending'
+
+				return `Sort by ${this.label}, currently sorted ${'asc' === this.currentSortOrder ? 'ascending' : 'descending'}. Activate to sort ${nextOrder}.`
 			},
 
 			onHeaderClick() {
@@ -87,14 +112,21 @@
 	line-height: 28px;
 }
 
-.group-library-column-header span {
+.group-library-column-header .sortable-column-header-button {
+	background: none;
+	border: none;
+	color: inherit;
 	cursor: pointer;
+	font: inherit;
+	line-height: 28px;
+	margin: 0;
+	padding: 0;
 	position: relative;
 	text-decoration: none;
 	width: 100%;
 }
 
-.group-library-column-header span:after {
+.group-library-column-header .sortable-column-header-button:after {
 	font-family: "dashicons";
 	font-size: 10px;
 	line-height: 28px;
@@ -102,27 +134,27 @@
 	position: absolute;
 }
 
-.group-library-column-header.default-sort-order-asc:hover span:after {
+.group-library-column-header.default-sort-order-asc:hover .sortable-column-header-button:after {
 	content: "\f342";
 }
 
-.group-library-column-header.default-sort-order-desc:hover span:after {
+.group-library-column-header.default-sort-order-desc:hover .sortable-column-header-button:after {
 	content: "\f346";
 }
 
-.group-library-column-header.is-current-sort-order-desc span:after {
+.group-library-column-header.is-current-sort-order-desc .sortable-column-header-button:after {
 	content: "\f346";
 }
 
-.group-library-column-header.is-current-sort-order-asc span:after {
+.group-library-column-header.is-current-sort-order-asc .sortable-column-header-button:after {
 	content: "\f342";
 }
 
-.group-library-column-header.is-current-sort-order-desc:hover span:after {
+.group-library-column-header.is-current-sort-order-desc:hover .sortable-column-header-button:after {
 	content: "\f342";
 }
 
-.group-library-column-header.is-current-sort-order-asc:hover span:after {
+.group-library-column-header.is-current-sort-order-asc:hover .sortable-column-header-button:after {
 	content: "\f346";
 }
 </style>
