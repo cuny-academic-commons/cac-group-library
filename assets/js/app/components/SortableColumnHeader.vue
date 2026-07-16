@@ -112,7 +112,7 @@
 	line-height: 28px;
 }
 
-.group-library-column-header .sortable-column-header-button {
+#buddypress .group-library-column-header button.sortable-column-header-button {
 	background: none;
 	border: none;
 	color: inherit;
@@ -122,6 +122,7 @@
 	margin: 0;
 	padding: 0;
 	position: relative;
+	text-align: left;
 	text-decoration: none;
 	width: 100%;
 }
